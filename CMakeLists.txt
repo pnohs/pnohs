@@ -1,16 +1,10 @@
 cmake_minimum_required(VERSION 3.8)
-project(pnohs)
+include(config.cmake)
 
-# change to mpicc and mpicxx
-#set(CMAKE_C_COMPILER mpicc -cc=gcc -cxx=g++)
-#set(CMAKE_CXX_COMPILER mpicxx -cc=gcc -cxx=g++)
+project(${AppName})
 
 set(CMAKE_CXX_STANDARD 11)
 
-option(OpenMP_ENABLE_FLAG "Use OpenMP" OFF) #change this flag to OFF to disable OpenMP
-option(MPI_ENABLE_FLAG "Use MPI library" ON) #change this flag to false to disable mpi
-option(TEST_ENABLE_FLAG "Enable test" ON) # enable test
-option(TEST_MPI_ENABLE_FLAG "Enable MPI in test" ON) # enable mpi in test, its value depends on option MPI_ENABLE_FLAG.
 
 ################################
 # MPI and OpenMP
@@ -44,24 +38,6 @@ if (MPI_ENABLE_FLAG)
 endif ()
 ##### mpi and openmp end
 
-################################
-# platform support
-################################
-# does this system provide the log and exp functions?
-#include (${CMAKE_ROOT}/Modules/CheckFunctionExists.cmake)
-#
-#check_function_exists (log HAVE_LOG)
-#check_function_exists (exp HAVE_EXP)
-
-# configure a header file to pass some of the CMake settings to the source code
-#configure_file (
-#        "${PROJECT_SOURCE_DIR}/config.h.in"
-#        "${PROJECT_BINARY_DIR}/config.h"
-#)
-######  platform support end
-
-set(LIB_NAME_SRC lib_${PROJECT_NAME})
-string(TOUPPER ${PROJECT_NAME} HEAD_DEFINE_PREFIX)
 add_subdirectory(src)
 
 ##############################

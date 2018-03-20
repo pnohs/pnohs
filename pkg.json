@@ -1,0 +1,26 @@
+{
+  "name": "exampleProgram",
+  "version": "1.0.0",
+  "description": "an example program.",
+  "author": "genshen <genshenchu@gmail.com>",
+  "commands": {
+    "debug": "cmake ../",
+    "release": "cmake ../",
+    "test": "cmake ../"
+  },
+  "compilers": {
+    "cc": "clang",
+    "cxx": "clang++"
+  },
+  "packages": {
+    "git": {
+    "googletest": {
+        "path": "https://github.com/google/googletest.git",
+        "tag": "release-1.8.0"
+      }
+    },
+    "files": {
+     
+    }
+  }
+}

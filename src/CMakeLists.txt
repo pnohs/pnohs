@@ -1,5 +1,5 @@
-set(INCLUDE_FILES
-        )
+# src directory
+include_directories(${PROJECT_SOURCE_DIR}/vendor/include)
 
 set(HEADER_FILES
         app.h
@@ -11,8 +11,25 @@ set(SOURCE_FILES
 
 set(MAIN_FILE main.cpp)
 
-add_library(${LIB_NAME_SRC} STATIC ${INCLUDE_FILES} ${SOURCE_FILES} ${HEADER_FILES}) # libapp is also used in test.
+# set binary path and lib storage path for compiling process.
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
-add_executable(${PROJECT_NAME} ${MAIN_FILE})
+# make lib
+add_library(${M_LIB_NAME} STATIC ${ARCH_FILES} ${HEADER_FILES} ${SOURCE_FILES})
+set(EXTRA_LIBS ${EXTRA_LIBS} ${M_LIB_NAME})
 
-target_link_libraries(${PROJECT_NAME} ${LIB_NAME_SRC} ${EXTRA_LIBS}) # extra lib
+add_executable(${M_EXECUTE_BIN_NAME} ${MAIN_FILE})
+
+target_link_libraries(${M_EXECUTE_BIN_NAME} ${EXTRA_LIBS}) # extra lib
+
+##########################
+##### install files
+##########################
+install(TARGETS ${M_EXECUTE_BIN_NAME} ${M_LIB_NAME}
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        )
+
+install(FILES ${HEADER_FILES} DESTINATION include) # todo head file
