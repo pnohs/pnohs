@@ -22,7 +22,7 @@ option(TOOLS_BUILD_ENABLE_FLAG "Enable tools building" ON) # enable tools buildi
 ## const ##
 #############
 set(M_EXECUTE_BIN_NAME ${AppName})
-set(M_LIB_NAME "example-lib") # todo use PARENT_SCOPE to modify globle variable.
+set(M_LIB_NAME "pnohs-lib") # todo use PARENT_SCOPE to modify globle variable.
 # string(TOUPPER ${PROJECT_NAME} HEAD_DEFINE_PREFIX)
 
 # test

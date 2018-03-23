@@ -8,14 +8,14 @@ include_directories(${KIWI_EXPORT_INCLUDE_PATH})
 set(EXTRA_LIBS ${EXTRA_LIBS} kiwi)
 
 set(HEADER_FILES
-        app.h
+        pnohs.h
         )
 
 set(SOURCE_FILES
-        app.cpp
+        pnohs.cpp
         )
 
-set(MAIN_FILE main.cpp)
+set(MAIN_FILE main.cpp config_toml.cpp config_toml.h)
 
 # set binary path and lib storage path for compiling process.
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
