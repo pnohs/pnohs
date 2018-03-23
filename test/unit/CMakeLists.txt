@@ -1,36 +1,10 @@
 
-MESSAGE(STATUS "Set googletest as test library.")
-
 # configure a header file to pass some of the CMake settings to the source code
 configure_file(
         "${PROJECT_SOURCE_DIR}/test/unit/test_config.h.in"
         "${PROJECT_SOURCE_DIR}/test/unit/test_config.h"
 )
 
-
-################################
-# googletest:gtest and mocktest
-################################
-# or using ExternalProject_Add, see:https://github.com/kaizouman/gtest-cmake-example
-
-# download googletest from https://github.com/google/googletest/,and copy it to "external" directory.
-# Include the gtest library. gtest_SOURCE_DIR is available due to 'project(gtest)' above.
-# an issue for mingw on winodws, see: https://github.com/google/googletest/issues/606#issuecomment-234733757
-add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/src/googletest/googletest ${PROJECT_BINARY_DIR}/vendor/googletest)
-include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
-
-#googlemock
-#add_subdirectory("${source_dir}/googlemock")
-#include_directories(${gmock_SOURCE_DIR}/include ${gmock_SOURCE_DIR})
-
-# Standard linking to gtest stuff.
-set(EXTRA_LIBS ${EXTRA_LIBS} gtest gtest_main)
-## end of google test
-
-
-#########################
-# Unit Tests Settings
-#########################
 include_directories(${PROJECT_SOURCE_DIR}/vendor/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 

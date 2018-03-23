@@ -1,6 +1,12 @@
 # src directory
 include_directories(${PROJECT_SOURCE_DIR}/vendor/include)
 
+# include kiwi framework. # todo if has lib.
+add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/src/kiwi ${PROJECT_BINARY_DIR}/vendor/kiwi)
+include_directories(${KIWI_EXPORT_INCLUDE_PATH})
+
+set(EXTRA_LIBS ${EXTRA_LIBS} kiwi)
+
 set(HEADER_FILES
         app.h
         )

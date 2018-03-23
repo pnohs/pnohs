@@ -14,13 +14,15 @@
   },
   "packages": {
     "git": {
-    "googletest": {
+      "googletest": {
         "path": "https://github.com/google/googletest.git",
         "tag": "release-1.8.0"
+      },
+      "kiwi": {
+        "path": "http://git.gensh.me/genshen/kiwi.git"
       }
     },
     "files": {
-     
     }
   }
 }
