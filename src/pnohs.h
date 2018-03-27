@@ -6,8 +6,12 @@
 #define PNOHS_APP_H
 
 #include <kiwi_app.h>
+#include "simulation.h"
 
 class pnohs : public kiwi::kiwiApp {
+
+    Simulation *simulation = nullptr;
+
     bool beforeCreate() override;
 
     void onCreate() override;

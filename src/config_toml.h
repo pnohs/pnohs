@@ -7,28 +7,31 @@
 
 #include "config/config.h"
 
-class configToml : public kiwi::config {
+class ConfigToml : public kiwi::config {
 
 public:
     // config property here
     std::string Filename;
 
-    configToml();
+    ConfigToml();
 
     // a simple single mode example.
     // make a instance without resolving config file.
-    static configToml *newInstance();
+    static ConfigToml *newInstance();
 
     // make instance and resolve config file.
-    static configToml *newInstance(const std::string &configureFilePath);
+    static ConfigToml *newInstance(const std::string &configureFilePath);
 
 private:
-    static configToml *pConfigInstance;
+    static ConfigToml *pConfigInstance; // pointer of instance of this class.
 
+    // override this function to resolve parsed config file.
     void resolveConfig(std::shared_ptr<cpptoml::table> table) override;
 
+    // [master processor] pack config data for syncing to other processors.
     void putConfigData(kiwi::Bundle &bundle) override;
 
+    // [other processors] unpack config data
     void getConfigData(kiwi::Bundle &bundle) override;
 };
 

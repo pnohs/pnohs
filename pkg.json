@@ -19,7 +19,7 @@
         "tag": "release-1.8.0"
       },
       "kiwi": {
-        "path": "http://git.gensh.me/genshen/kiwi.git"
+        "path": "https://git.gensh.me/genshen/kiwi.git"
       }
     },
     "files": {

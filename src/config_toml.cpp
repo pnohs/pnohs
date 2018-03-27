@@ -5,40 +5,40 @@
 #include <iostream>
 #include "config_toml.h"
 
-// initial pointer of configToml.
-configToml *configToml::pConfigInstance = nullptr;
+// initial pointer of ConfigToml.
+ConfigToml *ConfigToml::pConfigInstance = nullptr;
 
-configToml::configToml() : kiwi::config::config() {
+ConfigToml::ConfigToml() : kiwi::config::config() {
 
 }
 
-configToml *configToml::newInstance() {
+ConfigToml *ConfigToml::newInstance() {
     if (pConfigInstance == nullptr) {
-        pConfigInstance = new configToml();
+        pConfigInstance = new ConfigToml();
     }
     return pConfigInstance; // make sure there is a configure instance.
 }
 
-configToml *configToml::newInstance(const std::string &configureFilePath) {
+ConfigToml *ConfigToml::newInstance(const std::string &configureFilePath) {
     if (pConfigInstance == nullptr) {
-        pConfigInstance = new configToml();
+        pConfigInstance = new ConfigToml();
         pConfigInstance->resolve(configureFilePath);
     }
     return pConfigInstance;
 }
 
 // @override only for master processor.
-void configToml::resolveConfig(std::shared_ptr<cpptoml::table> table) {
+void ConfigToml::resolveConfig(std::shared_ptr<cpptoml::table> table) {
     Filename = "filename";
 }
 
 // @override
-void configToml::putConfigData(kiwi::Bundle &bundle) {
+void ConfigToml::putConfigData(kiwi::Bundle &bundle) {
     bundle.put(MPI_COMM_WORLD, Filename);
 }
 
 // @override
-void configToml::getConfigData(kiwi::Bundle &bundle) {
+void ConfigToml::getConfigData(kiwi::Bundle &bundle) {
     int cursor = 0;
     bundle.get(MPI_COMM_WORLD, cursor, Filename);
 }

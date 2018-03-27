@@ -32,7 +32,7 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 #include_directories(${gmock_SOURCE_DIR}/include ${gmock_SOURCE_DIR})
 
 # Standard linking to gtest stuff.
-set(EXTRA_LIBS ${EXTRA_LIBS} gtest gtest_main)
+set(EXTRA_LIBS gtest gtest_main ${EXTRA_LIBS})
 MESSAGE(STATUS "Set googletest as test library.")
 
 

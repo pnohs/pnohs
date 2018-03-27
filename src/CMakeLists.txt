@@ -5,27 +5,50 @@ include_directories(${PROJECT_SOURCE_DIR}/vendor/include)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/src/kiwi ${PROJECT_BINARY_DIR}/vendor/kiwi)
 include_directories(${KIWI_EXPORT_INCLUDE_PATH})
 
-set(EXTRA_LIBS ${EXTRA_LIBS} kiwi)
+set(EXTRA_LIBS kiwi ${EXTRA_LIBS})
 
 set(HEADER_FILES
+        config_toml.h
         pnohs.h
+        route.h
+        simulation.h
+        simulation_node.h
+        graph/downstream.h
+        graph/downstream_node.h
+        graph/node.h
+        graph/stream_meta.h
+        graph/upstream.h
+        graph/upstream_node.h
+        utils/typedef.h
         )
 
 set(SOURCE_FILES
+        config_toml.cpp
         pnohs.cpp
+        route.cpp
+        simulation.cpp
+        simulation_node.cpp
+        graph/downstream.cpp
+        graph/downstream_node.cpp
+        graph/node.cpp
+        graph/stream_meta.cpp
+        graph/upstream.cpp
+        graph/upstream_node.cpp
         )
 
-set(MAIN_FILE main.cpp config_toml.cpp config_toml.h)
+set(MAIN_FILE main.cpp)
 
 # set binary path and lib storage path for compiling process.
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 # make lib
-add_library(${M_LIB_NAME} STATIC ${ARCH_FILES} ${HEADER_FILES} ${SOURCE_FILES})
-set(EXTRA_LIBS ${EXTRA_LIBS} ${M_LIB_NAME})
+add_library(${M_LIB_NAME} STATIC ${HEADER_FILES} ${SOURCE_FILES})
+set(EXTRA_LIBS ${M_LIB_NAME} ${EXTRA_LIBS})
 
 add_executable(${M_EXECUTE_BIN_NAME} ${MAIN_FILE})
+
+MESSAGE(STATUS ${EXTRA_LIBS})
 
 target_link_libraries(${M_EXECUTE_BIN_NAME} ${EXTRA_LIBS}) # extra lib
 
