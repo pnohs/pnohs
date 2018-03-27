@@ -29,9 +29,6 @@ public:
     // downstream of this node (usually,it has only one downstream node).
     Downstream downstream;
 
-private:
-    // time steps of this node.
-    unsigned long _time_steps;
 };
 
 #endif //PNOHS_NODE_H

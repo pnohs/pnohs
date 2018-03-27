@@ -3,13 +3,41 @@
 //
 
 #include <utils/mpi_utils.h>
+#include <argagg.hpp>
 #include "pnohs.h"
 #include "iostream"
-#include "config_toml.h"
 
-bool pnohs::beforeCreate() {
-    // todo parse argv here.
-    std::cout << "before create" << std::endl;
+bool pnohs::beforeCreate(int argc, char *argv[]) {
+    // parse arguments using lib args: https://github.com/vietjtnguyen/argagg.
+    argagg::parser argparser{{
+                                     {"help", {"-h", "--help"}, "shows this help message", 0},
+                                     {"version", {"-v", "--version"}, "show package version", 0},
+                                     {"config", {"-c", "--conf"}, "path of configure file", 1},
+                             }};
+
+    argagg::parser_results args;
+    try {
+        args = argparser.parse(argc, argv);
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+        return false;
+    }
+
+    if (args["help"]) {
+        argagg::fmt_ostream fmt(std::cerr);
+        fmt << "Usage: pnohs [options]" << std::endl // todo change program name.
+            << argparser;
+        return false;
+    }
+
+    if (args["version"]) {
+        argagg::fmt_ostream fmt(std::cerr);
+        fmt << "version 0.1.0" << std::endl
+            << "Copyright (C) 2017 USTB" << std::endl;
+        return false;
+    }
+
+    configFilePath = args["config"].as<std::string>("config.toml");
     return true;
 };
 
@@ -19,8 +47,7 @@ void pnohs::onCreate() {
     if (kiwi::mpiUtils::ownRank == MASTER_PROCESSOR) {
         std::cout << "mpi env was initialed." << std::endl;
         // initial config Obj, then read and resolve config file.
-        pConfig = ConfigToml::newInstance(
-                "/home/genshen/Documents/workspace/CPlusPlus/hpc/pnohs/example/config.toml"); // todo config file from argv.
+        pConfig = ConfigToml::newInstance(configFilePath); // todo config file from argv.
         if (pConfig->hasError) {
             std::cerr << "[Error] " << pConfig->errorMessage << std::endl;
             this->abort(2);

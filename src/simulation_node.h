@@ -5,9 +5,13 @@
 #ifndef PNOHS_SIMULATION_NODE_H
 #define PNOHS_SIMULATION_NODE_H
 
+#include "graph/node.h"
 
-class SimulationNode {
+class SimulationNode : public Node {
 
+private:
+    // time steps of this node.
+    unsigned long _time_steps;
 };
 
 

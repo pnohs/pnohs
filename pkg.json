@@ -23,6 +23,12 @@
       }
     },
     "files": {
+      "agrs": {
+        "path": "https://raw.githubusercontent.com/vietjtnguyen/argagg/master/include/argagg/",
+        "files": {
+          "argagg.hpp": "argagg.hpp"
+        }
+      }
     }
   }
 }

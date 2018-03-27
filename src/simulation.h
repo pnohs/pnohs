@@ -6,8 +6,13 @@
 #define PNOHS_SIMULATION_H
 
 
-class Simulation {
+#include "config_toml.h"
 
+class Simulation {
+public:
+
+private:
+    ConfigToml *pConfig; // config pointer.
 };
 
 

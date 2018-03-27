@@ -10,9 +10,12 @@
 
 class pnohs : public kiwi::kiwiApp {
 
+private:
+    std::string configFilePath; // configure file path.
+
     Simulation *simulation = nullptr;
 
-    bool beforeCreate() override;
+    bool beforeCreate(int argc, char *argv[]) override;
 
     void onCreate() override;
 
