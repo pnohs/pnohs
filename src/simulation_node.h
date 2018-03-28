@@ -9,9 +9,14 @@
 
 class SimulationNode : public Node {
 
-private:
+public:
     // time steps of this node.
-    unsigned long _time_steps;
+    unsigned long _time_steps = 0; // zero as initial vaule.
+    void runoff();
+
+    void deliver();
+
+    void riverRouting();
 };
 
 

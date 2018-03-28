@@ -28,17 +28,24 @@ ConfigToml *ConfigToml::newInstance(const std::string &configureFilePath) {
 }
 
 // @override only for master processor.
-void ConfigToml::resolveConfig(std::shared_ptr<cpptoml::table> table) {
-    Filename = "filename";
+// @see https://github.com/skystrife/cpptoml#example-usage for more details.
+void ConfigToml::resolveConfig(std::shared_ptr<cpptoml::table> config) {
+    // partition section.
+    auto confPartition = config->get_table("partition");
+    partitionFilePath = confPartition->get_as<std::string>("partition_file").value_or("pnohs.part");
+
+    // simulation section
+    auto confSimulation = config->get_table("simulation");
+    simulationTimeSteps = (unsigned long) confSimulation->get_as<int64_t>("time_steps").value_or(0);
 }
 
 // @override
 void ConfigToml::putConfigData(kiwi::Bundle &bundle) {
-    bundle.put(MPI_COMM_WORLD, Filename);
+    bundle.put(MPI_COMM_WORLD, partitionFilePath);
 }
 
 // @override
 void ConfigToml::getConfigData(kiwi::Bundle &bundle) {
     int cursor = 0;
-    bundle.get(MPI_COMM_WORLD, cursor, Filename);
+    bundle.get(MPI_COMM_WORLD, cursor, partitionFilePath);
 }

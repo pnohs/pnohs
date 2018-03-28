@@ -7,12 +7,26 @@
 
 
 #include "config_toml.h"
+#include "simulation_node.h"
+#include "context.h"
 
 class Simulation {
 public:
+    Simulation();
+
+    // get required simulation units (the nodes subset in river-routing relationship graph)
+    // allocated to this processor according to mipRankId
+    // by reading from partition result files.
+    void setupNodes();
+
+    void simulate();
 
 private:
     ConfigToml *pConfig; // config pointer.
+    Context *ctx;
+
+    // deliver simulation result to its downstream.
+    void deliver();
 };
 
 

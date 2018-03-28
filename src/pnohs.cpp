@@ -6,6 +6,7 @@
 #include <argagg.hpp>
 #include "pnohs.h"
 #include "iostream"
+#include "partition_parse.h"
 
 bool pnohs::beforeCreate(int argc, char *argv[]) {
     // parse arguments using lib args: https://github.com/vietjtnguyen/argagg.
@@ -58,36 +59,36 @@ void pnohs::onCreate() {
     }
     pConfig->sync(); // sync config data to other processors from master processor.
 
-    // new simulation instance.
-    simulation = new Simulation();
 }
 
 bool pnohs::prepare() {
-    std::cout << "prepare" << std::endl;
-
-    // get required simulation units (the nodes subset in river-routing relationship graph)
-    // allocated to this processor according to mipRankId
-    // by reading from partition result files.
-//    nodes = readNodesFromFile(rankId);
+    // new simulation instance.
+    mSimulation = new Simulation();
+    // initial river nodes and their upstream/downstream.
+    mSimulation->setupNodes();
 //    initialNodes(nodes); // 初始化各结点，及其上下游关系(记录各结点的上下游都是哪些结点)
 //    loadData(nodes);     // 根据结点加载模拟需要的数据(如地理信息数据、河段数据等)
-//    loadModleWithParams(); //加载水文模型及模型参数，或者模型和参数分开加载
-//    newTaskQueue(nodes);
+//    loadModuleWithParams(); //加载水文模型及模型参数，或者模型和参数分开加载
     return true;
 }
 
 void pnohs::onStart() {
-    std::cout << "start" << std::endl;
-}
-
-void pnohs::beforeDestroy() {
-    std::cout << "before destroy" << std::endl;
+    mSimulation->simulate();
 }
 
 void pnohs::onFinish() {
+    // todo remove nodes here (release memory).
+    // todo delete simulation context.
     std::cout << "on finish" << std::endl;
 }
 
+void pnohs::beforeDestroy() {
+    // todo delete simulation
+    // todo delete config
+    std::cout << "before destroy" << std::endl;
+}
+
+// do not use mpi in onDestroy.
 void pnohs::onDestroy() {
     std::cout << "on destroy" << std::endl;
 };

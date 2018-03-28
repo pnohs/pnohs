@@ -24,7 +24,7 @@ public:
     double area;  // todo example property of this node.
 
     // upstream of this node.
-    Upstream upstream;
+    Upstream upstream; // todo can be null
 
     // downstream of this node (usually,it has only one downstream node).
     Downstream downstream;

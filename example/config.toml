@@ -1,11 +1,19 @@
-# 这是一个TOML文件
+# This is the configure file for pnohs ---- a framewor for hydrology simulation.
+#
+# visite https://github.com/toml-lang/toml
+# and https://github.com/toml-lang/toml/blob/master/versions/cn/toml-v0.4.0.md
+# to see more information about toml standard.
+#
 
-title = "TOML Example"
+title = "Configure file for pnohs"
 version = "0.1.0"
 
-[owner]
-name = "Lance Uppercut"
+[partition]
+partition_file = "pnohs.part"
 dob = 1979-05-27T07:32:00-08:00 # 日期是一等公民
+
+[simulation]
+time_steps = 100
 
 [database]
 server = "192.168.1.1"

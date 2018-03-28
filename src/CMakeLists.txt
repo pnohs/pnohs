@@ -9,6 +9,7 @@ set(EXTRA_LIBS kiwi ${EXTRA_LIBS})
 
 set(HEADER_FILES
         config_toml.h
+        partition_parse.h
         pnohs.h
         route.h
         simulation.h
@@ -24,6 +25,7 @@ set(HEADER_FILES
 
 set(SOURCE_FILES
         config_toml.cpp
+        partition_parse.cpp
         pnohs.cpp
         route.cpp
         simulation.cpp
@@ -36,7 +38,7 @@ set(SOURCE_FILES
         graph/upstream_node.cpp
         )
 
-set(MAIN_FILE main.cpp)
+set(MAIN_FILE main.cpp context.cpp context.h)
 
 # set binary path and lib storage path for compiling process.
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)

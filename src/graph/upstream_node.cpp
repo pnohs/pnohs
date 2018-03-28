@@ -7,3 +7,7 @@
 bool UpstreamNode::hasTask() { // todo
     return taskQueue.empty();
 }
+
+void UpstreamNode::newTaskQueue() { // todo
+//    taskQueue
+}

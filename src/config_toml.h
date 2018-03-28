@@ -11,7 +11,8 @@ class ConfigToml : public kiwi::config {
 
 public:
     // config property here
-    std::string Filename;
+    unsigned long simulationTimeSteps = 0;
+    std::string partitionFilePath;
 
     ConfigToml();
 

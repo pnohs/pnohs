@@ -12,6 +12,7 @@
 // not just like upstream (a node may have multiple upstream nodes).
 
 class Downstream {
+public:
     // node id of downstream node. Null or empty indicates that there is no downstream node.
     // but usually, for a given node, it is has only one downstream node. (That is the length of is usually 1 or 0).
     DownstreamNode downstreamNode;

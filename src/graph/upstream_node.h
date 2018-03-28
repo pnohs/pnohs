@@ -11,9 +11,15 @@
 
 class UpstreamNode : public StreamMeta {
 public:
-    // this is a shared variable, when it is modified by multiple thread, make sure to be thread-safe.
-    std::deque<int> taskQueue; // todo thread safe.
+
     bool hasTask();
+
+    void newTaskQueue(); // todo
+
+private:
+    // this is a shared variable, when it is modified by multiple thread, make sure to be thread-safe.
+    // todo thread safe.
+    std::deque<double> taskQueue;
 };
 
 #endif //PNOHS_UPSTREAM_NODE_H
