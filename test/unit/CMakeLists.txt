@@ -8,20 +8,29 @@ configure_file(
 include_directories(${PROJECT_SOURCE_DIR}/vendor/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 #include_directories(${PROJECT_SOURCE_DIR}/src/pre_handle)
-#include_directories(${PROJECT_SOURCE_DIR}/src/pre_handle/entity)
+#include_directories(${PROJECT_SOURCE_DIR}/src/pre_handle/base_entity)
 
 set(TEST_HEADER_FILES
         test_config.h
         gtest_env.h
+        ../../src/pre_handle/entity/info_subbasin.h
+        ../../src/pre_handle/entity/geo_info_subbasin.h
+        ../../src/pre_handle/entity/soil_info_subbasin.h
+        ../../src/pre_handle/entity/force_info_subbasin.h
+        ../../src/pre_handle/constant.h
+        ../../src/pre_handle/read_subbasins_info.h
+        ../../src/pre_handle/dao_read_subbasins_info.h
+        test_read_subbasin_info.h
         )
 
 set(TEST_SOURCE_FILES
         main.cpp
         app_test.cpp
-        ../../../src/pre_handle/entity/info_subbasin.cpp ../../../src/pre_handle/entity/info_subbasin.h ../../../src/pre_handle/entity/geo_info_subbasin.cpp ../../../src/pre_handle/entity/geo_info_subbasin.h ../../../src/pre_handle/entity/soil_info_subbasin.cpp ../../../src/pre_handle/entity/soil_info_subbasin.h ../../../src/pre_handle/entity/force_info_subbasin.cpp ../../../src/pre_handle/entity/force_info_subbasin.h ../../../src/pre_handle/constant_subbasin_info.h ../../../src/pre_handle/constant.h ../../../src/pre_handle/read_subbasins_info.cpp ../../../src/pre_handle/read_subbasins_info.h ../../../src/pre_handle/dao_read_subbasins_info.cpp ../../../src/pre_handle/dao_read_subbasins_info.h test_read_subbasin_info.h
+        ../../src/pre_handle/entity/info_subbasin.cpp
+        ../../src/pre_handle/read_subbasins_info.cpp
+        ../../src/pre_handle/dao_read_subbasins_info.cpp
         )
 
-set(pre_handle/entity/info_subbasin.cpp pre_handle/entity/info_subbasin.h pre_handle/entity/geo_info_subbasin.cpp pre_handle/entity/geo_info_subbasin.h pre_handle/entity/soil_info_subbasin.cpp pre_handle/entity/soil_info_subbasin.h pre_handle/entity/force_info_subbasin.cpp pre_handle/entity/force_info_subbasin.h pre_handle/constant_subbasin_info.h pre_handle/constant.h pre_handle/read_subbasins_info.cpp pre_handle/read_subbasins_info.h pre_handle/dao_read_subbasins_info.cpp pre_handle/dao_read_subbasins_info.h)
 
 # set binary path and lib storage path wile compiling process.
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)

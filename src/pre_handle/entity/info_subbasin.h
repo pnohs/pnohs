@@ -8,7 +8,6 @@
 #include "geo_info_subbasin.h"
 #include "soil_info_subbasin.h"
 #include "force_info_subbasin.h"
-#include "../constant_subbasin_info.h"
 #include "../constant.h"
 
 /**
@@ -16,9 +15,10 @@
  */
 
 class info_subbasin {
+
 public:
     info_subbasin();
-    virtual ~info_subbasin();
+    ~info_subbasin();
     SUBBASIN_ID_TYPE getSubbasin_id() const;
     void setSubbasin_id(SUBBASIN_ID_TYPE subbasin_id);
 
@@ -50,26 +50,22 @@ public:
 
     force_info_subbasin *getForce_data() const;
 
-private:
-    SUBBASIN_ID_TYPE                                subbasin_id;                //the id of a subbasion after division
-    SUBBASIN_ID_TYPE                                up_subbasin_count;          //Number of subbasins upstream of the subbasin
-    SUBBASIN_ID_CONTAINER_TYPE                      *up_subbasin_ids;     //the ids of subbasins upstream of the subbasin
-    PROCESSOR_ID_CONTAINER_TYPE                     *up_subbasin_belong_processor;
-    SUBBASIN_ID_TYPE                                down_subbasin_count;        //Number of subbasins downstream of the subbasin
-    SUBBASIN_ID_CONTAINER_TYPE                      *down_subbasin_ids;   //ids of subbasins downupstream of the subbasin
-    PROCESSOR_ID_CONTAINER_TYPE                     *down_subbasin_belong_processor;
-    geo_info_subbasin                               *geo_data;
-public:
+
     void setUp_subbasin_ids(std::vector<unsigned long> *up_subbasin_ids);
-
     void setUp_subbasin_belong_processor(std::vector<unsigned long> *up_subbasin_belong_processor);
-
     void setDown_subbasin_ids(std::vector<unsigned long> *down_subbasin_ids);
-
     void setDown_subbasin_belong_processor(std::vector<unsigned long> *down_subbasin_belong_processor);
 
 private:
-    //the geographical data of the subbasin
+    SUBBASIN_ID_TYPE                                subbasin_id;                //the id of a subbasion after division
+    SUBBASIN_COUNT_TYPE                             up_subbasin_count;          //Number of subbasins upstream of the subbasin
+    SUBBASIN_ID_CONTAINER_TYPE                      *up_subbasin_ids;     //the ids of subbasins upstream of the subbasin
+    PROCESSOR_ID_CONTAINER_TYPE                     *up_subbasin_belong_processor;
+    SUBBASIN_COUNT_TYPE                             down_subbasin_count;        //Number of subbasins downstream of the subbasin
+    SUBBASIN_ID_CONTAINER_TYPE                      *down_subbasin_ids;   //ids of subbasins downupstream of the subbasin
+    PROCESSOR_ID_CONTAINER_TYPE                     *down_subbasin_belong_processor;
+
+    geo_info_subbasin                               *geo_data; //the geographical data of the subbasin
     soil_info_subbasin                              *soil_data;                  //the soil data of the subbasin
     force_info_subbasin                             *force_data;                 //the atosphere data of the subbasin
 };

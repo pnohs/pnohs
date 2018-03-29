@@ -5,13 +5,17 @@
 #ifndef PNOHS_SOIL_INFO_SUBBASIN_H
 #define PNOHS_SOIL_INFO_SUBBASIN_H
 
+
+
 /**
  * soil infomation of a subbasin node needed by simmulation
  */
+
 class soil_info_subbasin {
+
 public:
-    soil_info_subbasin();
     unsigned int                soil_layers;
+
 };
 
 

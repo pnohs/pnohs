@@ -99,6 +99,10 @@ void info_subbasin::setForce_data(force_info_subbasin *force_data) {
     info_subbasin::force_data = force_data;
 }
 
+
+
+
+
 void info_subbasin::setUp_subbasin_ids(std::vector<unsigned long> *up_subbasin_ids) {
     info_subbasin::up_subbasin_ids = up_subbasin_ids;
 }
@@ -114,5 +118,6 @@ void info_subbasin::setDown_subbasin_ids(std::vector<unsigned long> *down_subbas
 void info_subbasin::setDown_subbasin_belong_processor(std::vector<unsigned long> *down_subbasin_belong_processor) {
     info_subbasin::down_subbasin_belong_processor = down_subbasin_belong_processor;
 }
+
 
 

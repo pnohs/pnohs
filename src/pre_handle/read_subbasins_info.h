@@ -19,11 +19,12 @@ public:
      * @param self_processor_id 本进程id
      */
     read_subbasins_info(const std::string &filename, const PROCESSOR_ID_TYPE self_processor_id);
+
     /**
      * 根据子流域id，和tag，选择性地从文件中读入单个子流域的某部分数据:
      * 考虑到神威内存容量小而子流域描述数据又很多，可能无法一次性将本进程模拟的所有子流域信息都读入，则需要用时读取
      * @param subbasin_id 子流域ID
-     * @param subbasins 本进程已读入子流域数据存储容器
+     * @param subb_info 子流域数据存储容器
      * @param tag 标识次调用将读入哪部分数据：      TAG_ALL_INFO代表读入用于该子流域的全部数据、
      *                                          TAG_BASE_INFO代表只读入与河网拓扑有关的基本数据
      *                                          TAG_OTHER_INFO代表读入除TAG_BASE_INFO以外的子流域数据
@@ -31,7 +32,7 @@ public:
      *                                          TAG_SOIL_INFO代表读入土壤相关数据
      *                                          TAG_FORCE_INFO代表读入大气相关数据
      */
-    void add_one_subasin(const SUBBASIN_ID_TYPE subbasin_id,SUBBASINS_CONTAINER_TYPE &subbasins, int tag);
+    void add_one_subasin(const SUBBASIN_ID_TYPE subbasin_id,SUBBASIN_INFO_TYPE &subb_info, int tag);
     /**
      * 根据多个子流域id，和tag，选择性地从文件中读入该些个子流域的某部分数据:
      * 考虑到神威内存容量小而子流域描述数据又很多，可能无法一次性将本进程模拟的所有子流域信息都读入，则需要用时读取
@@ -44,7 +45,7 @@ public:
      *                                          TAG_SOIL_INFO代表读入土壤相关数据
      *                                          TAG_FORCE_INFO代表读入大气相关数据
      */
-    void add_some_subasins(const SUBBASIN_ID_CONTAINER_TYPE subbasin_ids, SUBBASINS_CONTAINER_TYPE &subbasins, int tag);
+    void add_some_subasins(const SUBBASIN_ID_CONTAINER_TYPE &subbasin_ids, SUBBASINS_CONTAINER_TYPE &subbasins, int tag);
 
     /**
      * 根据tag，选择性地从文件中读入本进程所需要模拟子流域的某部分数据:
