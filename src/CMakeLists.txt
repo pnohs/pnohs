@@ -21,6 +21,13 @@ set(HEADER_FILES
         graph/stream_meta.h
         graph/upstream.h
         graph/upstream_node.h
+        pre_handle/entity/info_subbasin.h
+        pre_handle/entity/geo_info_subbasin.h
+        pre_handle/entity/soil_info_subbasin.h
+        pre_handle/entity/force_info_subbasin.h
+        pre_handle/constant.h
+        pre_handle/read_subbasins_info.h
+        pre_handle/dao_read_subbasins_info.h
         utils/typedef.h
         )
 
@@ -38,9 +45,13 @@ set(SOURCE_FILES
         graph/stream_meta.cpp
         graph/upstream.cpp
         graph/upstream_node.cpp
+        pre_handle/entity/info_subbasin.cpp
+        pre_handle/dao_read_subbasins_info.cpp
+        pre_handle/read_subbasins_info.cpp
         )
 
 set(MAIN_FILE main.cpp)
+
 
 # set binary path and lib storage path for compiling process.
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
