@@ -58,7 +58,7 @@
 #define OPEN_WRITE_BINARY_FILE_MODE                 (std::ios::binary | std::ios::trunc | std::ios::out)
 #endif
 
-enum{
+enum {
     TAG_ALL_INFO,                           //代表读入用于该子流域的全部数据、
     TAG_BASE_INFO,                          //代表只读入与河网拓扑有关的基本数据
     TAG_OTHER_INFO,                         //代表读入除TAG_BASE_INFO以外的子流域数据
@@ -67,9 +67,9 @@ enum{
     TAG_FORCE_INFO                          //代表读入大气相关数据
 };
 
-class err_handle{
+class err_handle {
 public:
-    static void sys_err(std::string msg, int merrno){
+    static void sys_err(std::string msg, int merrno) {
         std::cerr << msg << std::endl;
         exit(merrno);
     }

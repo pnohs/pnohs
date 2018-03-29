@@ -3,8 +3,7 @@
 //
 #include "info_subbasin.h"
 
-info_subbasin::info_subbasin()
-{
+info_subbasin::info_subbasin() {
     // 不该在此初始化，应该初次用时实例化(new)
     this->force_data = nullptr;
     this->geo_data = nullptr;
@@ -20,16 +19,15 @@ info_subbasin::info_subbasin()
     this->up_subbasin_count = 0;
 }
 
-info_subbasin::~info_subbasin()
-{
-    delete(this->force_data);
-    delete(this->soil_data);
-    delete(this->geo_data);
+info_subbasin::~info_subbasin() {
+    delete (this->force_data);
+    delete (this->soil_data);
+    delete (this->geo_data);
 
-    delete(this->up_subbasin_ids);
-    delete(this->down_subbasin_ids);
-    delete(this->down_subbasin_belong_processor);
-    delete(this->up_subbasin_belong_processor);
+    delete (this->up_subbasin_ids);
+    delete (this->down_subbasin_ids);
+    delete (this->down_subbasin_belong_processor);
+    delete (this->up_subbasin_belong_processor);
 }
 
 SUBBASIN_ID_TYPE info_subbasin::getUp_subbasin_count() const {
@@ -98,9 +96,6 @@ void info_subbasin::setSoil_data(soil_info_subbasin *soil_data) {
 void info_subbasin::setForce_data(force_info_subbasin *force_data) {
     info_subbasin::force_data = force_data;
 }
-
-
-
 
 
 void info_subbasin::setUp_subbasin_ids(std::vector<unsigned long> *up_subbasin_ids) {

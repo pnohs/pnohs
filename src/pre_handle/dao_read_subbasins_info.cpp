@@ -20,24 +20,24 @@ void dao_read_subbasins_info::read_subbasins_count() {
     this->read_data_at_offset(this->start_offset,
                               reinterpret_cast<char *>(&this->subbasins_count),
                               sizeof(this->subbasins_count));
-    if(this->subbasins_count <= 0)
+    if (this->subbasins_count <= 0) {
         err_handle::sys_err("subbasins_count can't be 0", -1);
+    }
 }
 
 void dao_read_subbasins_info::read_subbasins_info_offsets() {
 
     //使用C++11特性,data()函数
     this->subbasins_info_offsets.resize(this->subbasins_count);
-    this->read_data_at_offset(this->start_offset+sizeof(SUBBASIN_ID_TYPE),
+    this->read_data_at_offset(this->start_offset + sizeof(SUBBASIN_ID_TYPE),
                               reinterpret_cast<char *>(this->subbasins_info_offsets.data()),
-                              this->subbasins_count*sizeof(OFFSET_TYPE));
+                              this->subbasins_count * sizeof(OFFSET_TYPE));
 }
 
 void dao_read_subbasins_info::read_subbasin_ids() {
 
     SUBBASIN_ID_TYPE tmp_id;
-    for(int i = 0; i < this->subbasins_count; i++)
-    {
+    for (int i = 0; i < this->subbasins_count; i++) {
         this->read_data_at_offset(this->first_subbasin_offset + this->subbasins_info_offsets[i],
                                   reinterpret_cast<char *>(&tmp_id), sizeof(SUBBASIN_ID_TYPE));
         this->subbasin_ids.push_back(tmp_id);
@@ -50,7 +50,7 @@ void dao_read_subbasins_info::init(const std::string &filename, const PROCESSOR_
     //打开二进制输入文件
     this->fste.open(filename, OPEN_READ_BINARY_FILE_MODE);
 
-    if(!fste){
+    if (!fste) {
         //出错处理需要额外的模板，暂时先这样
         err_handle::sys_err("file" + filename + "not exit", -1);
     }
@@ -72,7 +72,6 @@ void dao_read_subbasins_info::init(const std::string &filename, const PROCESSOR_
     //读取本进程需要模拟的各个子流域ID
     this->read_subbasin_ids();
 
-
 }
 
 void dao_read_subbasins_info::finish() {
@@ -83,8 +82,8 @@ dao_read_subbasins_info::~dao_read_subbasins_info() {
     this->finish();
 }
 
-void
-dao_read_subbasins_info::read_subbasin_allinfo_byid(const SUBBASIN_ID_TYPE subb_id, SUBBASIN_INFO_TYPE &out_subb_info) {
+void dao_read_subbasins_info::read_subbasin_allinfo_byid(const SUBBASIN_ID_TYPE subb_id,
+                                                         SUBBASIN_INFO_TYPE &out_subb_info) {
 
     // 1.根据子流域id计算子流域数据在输入文件中的绝对偏移量
     OFFSET_TYPE subb_offset = this->get_offset_by_id(subb_id);
@@ -116,8 +115,8 @@ void dao_read_subbasins_info::read_subbasin_otherinfo_byid(const SUBBASIN_ID_TYP
 
 }
 
-void
-dao_read_subbasins_info::read_subbasin_geoinfo_byid(const SUBBASIN_ID_TYPE subb_id, SUBBASIN_INFO_TYPE &out_subb_info) {
+void dao_read_subbasins_info::read_subbasin_geoinfo_byid(const SUBBASIN_ID_TYPE subb_id,
+                                                         SUBBASIN_INFO_TYPE &out_subb_info) {
 
     // 1.根据子流域id计算子流域geo数据在输入文件中的绝对偏移量
     OFFSET_TYPE subb_offset = this->get_offset_by_id(subb_id)
@@ -126,7 +125,6 @@ dao_read_subbasins_info::read_subbasin_geoinfo_byid(const SUBBASIN_ID_TYPE subb_
 
     // 2.读入geo数据到out_subb_info
     this->read_one_subbasin_geo_data(out_subb_info);
-
 }
 
 void dao_read_subbasins_info::read_subbasin_soilinfo_byid(const SUBBASIN_ID_TYPE subb_id,
@@ -193,27 +191,25 @@ void dao_read_subbasins_info::read_subbasins_allinfo_all(SUBBASINS_CONTAINER_TYP
     this->fste.seekg(this->first_subbasin_offset);
 
     // 2.读数据
-    for(int i = 0; i < this->subbasins_count; i++)
-    {
+    for (int i = 0; i < this->subbasins_count; i++) {
         subb_info = new SUBBASIN_INFO_TYPE;
         this->read_one_subbasin_all_data(*subb_info);
         //out_subbs_info[subb_info->getSubbasin_id()] = subb_info; // 存在效率问题，因为是第一次插入，使用改种方式会先检查容器中是否存在该子流域ID
-        out_subbs_info.insert(SUBBASINS_CONTAINER_TYPE::value_type(subb_info->getSubbasin_id(),subb_info));
+        out_subbs_info.insert(SUBBASINS_CONTAINER_TYPE::value_type(subb_info->getSubbasin_id(), subb_info));
     }
 }
 
 void dao_read_subbasins_info::read_subbasins_baseinfo_all(SUBBASINS_CONTAINER_TYPE &out_subbs_info) {
     SUBBASIN_INFO_TYPE *subb_info = nullptr;
     SUBBASIN_ID_TYPE tmp;
-    for(int i = 0; i < this->subbasins_count; i++)
-    {
+    for (int i = 0; i < this->subbasins_count; i++) {
         subb_info = new SUBBASIN_INFO_TYPE;
 
         this->fste.seekg(this->first_subbasin_offset + this->subbasins_info_offsets[i]);
         this->read_one_subbasin_base_data(*subb_info);
 
         //out_subbs_info[subb_info->getSubbasin_id()] = subb_info; // 存在效率问题，因为是第一次插入，使用改种方式会先检查容器中是否存在该子流域ID
-        out_subbs_info.insert(SUBBASINS_CONTAINER_TYPE::value_type(subb_info->getSubbasin_id(),subb_info));
+        out_subbs_info.insert(SUBBASINS_CONTAINER_TYPE::value_type(subb_info->getSubbasin_id(), subb_info));
     }
 }
 
@@ -222,7 +218,7 @@ void dao_read_subbasins_info::read_subbasins_geoinfo_all(SUBBASINS_CONTAINER_TYP
     OFFSET_TYPE subb_offset;
     // 遍历out_subbs_info
     SUBBASINS_CONTAINER_TYPE::iterator it = out_subbs_info.begin();
-    for( ; it != out_subbs_info.end(); it++){
+    for (; it != out_subbs_info.end(); it++) {
 
         // 1.根据子流域id计算每个子流域数据在输入文件中的绝对偏移量
         subb_offset = this->get_offset_by_id(it->first);
@@ -232,14 +228,13 @@ void dao_read_subbasins_info::read_subbasins_geoinfo_all(SUBBASINS_CONTAINER_TYP
         // 3.开始读取数据
         this->read_one_subbasin_geo_data(*it->second);
     }
-
 }
 
 void dao_read_subbasins_info::read_subbasins_soilinfo_all(SUBBASINS_CONTAINER_TYPE &out_subbs_info) {
     OFFSET_TYPE subb_offset;
     // 遍历out_subbs_info
     SUBBASINS_CONTAINER_TYPE::iterator it = out_subbs_info.begin();
-    for( ; it != out_subbs_info.end(); it++){
+    for (; it != out_subbs_info.end(); it++) {
 
         // 1.根据子流域id计算每个子流域数据在输入文件中的绝对偏移量
         subb_offset = this->get_offset_by_id(it->first);
@@ -255,7 +250,7 @@ void dao_read_subbasins_info::read_subbasins_forceinfo_all(SUBBASINS_CONTAINER_T
     OFFSET_TYPE subb_offset;
     // 遍历out_subbs_info
     SUBBASINS_CONTAINER_TYPE::iterator it = out_subbs_info.begin();
-    for( ; it != out_subbs_info.end(); it++){
+    for (; it != out_subbs_info.end(); it++) {
 
         // 1.根据子流域id计算每个子流域数据在输入文件中的绝对偏移量
         subb_offset = this->get_offset_by_id(it->first);
@@ -276,7 +271,7 @@ void dao_read_subbasins_info::read_subbasins_otherinfo_all(SUBBASINS_CONTAINER_T
     OFFSET_TYPE subb_offset;
     // 遍历out_subbs_info
     SUBBASINS_CONTAINER_TYPE::iterator it = out_subbs_info.begin();
-    for( ; it != out_subbs_info.end(); it++){
+    for (; it != out_subbs_info.end(); it++) {
 
         // 1.根据子流域id计算每个子流域数据在输入文件中的绝对偏移量
         subb_offset = this->get_offset_by_id(it->first);
@@ -291,10 +286,7 @@ void dao_read_subbasins_info::read_subbasins_otherinfo_all(SUBBASINS_CONTAINER_T
 
 void dao_read_subbasins_info::read_subbasins_otherinfo_byids(const SUBBASIN_ID_CONTAINER_TYPE subb_ids,
                                                              SUBBASINS_CONTAINER_TYPE &out_subbs_info) {
-
 }
-
-
 
 SUBBASIN_ID_TYPE dao_read_subbasins_info::getSubbasins_count() const {
     return this->subbasins_count;
@@ -303,8 +295,8 @@ SUBBASIN_ID_TYPE dao_read_subbasins_info::getSubbasins_count() const {
 OFFSET_TYPE dao_read_subbasins_info::get_offset_by_id(SUBBASIN_ID_TYPE subb_id) {
     int index;
     OFFSET_TYPE offset = 0;
-    for(index = 0; index < this->subbasins_count; index++){
-        if(this->subbasin_ids[index] == subb_id)
+    for (index = 0; index < this->subbasins_count; index++) {
+        if (this->subbasin_ids[index] == subb_id)
             break;
     }
     offset = this->first_subbasin_offset + this->subbasins_info_offsets[index];
@@ -316,7 +308,6 @@ void dao_read_subbasins_info::read_one_subbasin_other_data(SUBBASIN_INFO_TYPE &s
     this->read_one_subbasin_soil_data(subb_info);
     this->read_one_subbasin_force_data(subb_info);
 }
-
 
 //void dao_read_subbasins_info::read_subb_info_gseek(OFFSET_TYPE offset) {
 //    this->fste.seekg(offset);
@@ -339,32 +330,33 @@ void dao_read_subbasins_info::read_one_subbasin_base_data(SUBBASIN_INFO_TYPE &su
     subb_info.setUp_subbasin_count(tmp_count);
 
 
-    if(!subb_info.getDown_subbasin_ids()){
-       subb_info.setDown_subbasin_ids(new SUBBASIN_ID_CONTAINER_TYPE(subb_info.getDown_subbasin_count()));
-    }else{
+    if (!subb_info.getDown_subbasin_ids()) {
+        subb_info.setDown_subbasin_ids(new SUBBASIN_ID_CONTAINER_TYPE(subb_info.getDown_subbasin_count()));
+    } else {
         subb_info.getDown_subbasin_ids()->resize(subb_info.getDown_subbasin_count());
     }
     this->fste.read(reinterpret_cast<char *>(subb_info.getDown_subbasin_ids()->data()),
                     sizeof(SUBBASIN_ID_TYPE) * subb_info.getDown_subbasin_count());
-    if(!subb_info.getDown_subbasin_belong_processor()){
-        subb_info.setDown_subbasin_belong_processor(new PROCESSOR_ID_CONTAINER_TYPE(subb_info.getDown_subbasin_count()));
-    }else{
+    if (!subb_info.getDown_subbasin_belong_processor()) {
+        subb_info.setDown_subbasin_belong_processor(
+                new PROCESSOR_ID_CONTAINER_TYPE(subb_info.getDown_subbasin_count()));
+    } else {
         subb_info.getDown_subbasin_belong_processor()->resize(subb_info.getDown_subbasin_count());
     }
     this->fste.read(reinterpret_cast<char *>(subb_info.getDown_subbasin_belong_processor()->data()),
                     sizeof(PROCESSOR_ID_TYPE) * subb_info.getDown_subbasin_count());
 
 
-    if(!subb_info.getUp_subbasin_ids()){
+    if (!subb_info.getUp_subbasin_ids()) {
         subb_info.setUp_subbasin_ids(new SUBBASIN_ID_CONTAINER_TYPE(subb_info.getUp_subbasin_count()));
-    }else{
+    } else {
         subb_info.getUp_subbasin_ids()->resize(subb_info.getUp_subbasin_count());
     }
     this->fste.read(reinterpret_cast<char *>(subb_info.getUp_subbasin_ids()->data()),
                     sizeof(SUBBASIN_ID_TYPE) * subb_info.getUp_subbasin_count());
-    if(!subb_info.getUp_subbasin_belong_processor()){
+    if (!subb_info.getUp_subbasin_belong_processor()) {
         subb_info.setUp_subbasin_belong_processor(new PROCESSOR_ID_CONTAINER_TYPE(subb_info.getUp_subbasin_count()));
-    }else{
+    } else {
         subb_info.getUp_subbasin_belong_processor()->resize(subb_info.getUp_subbasin_count());
     }
     this->fste.read(reinterpret_cast<char *>(subb_info.getUp_subbasin_belong_processor()->data()),
@@ -372,32 +364,27 @@ void dao_read_subbasins_info::read_one_subbasin_base_data(SUBBASIN_INFO_TYPE &su
 
 }
 
-
-
 void dao_read_subbasins_info::read_one_subbasin_soil_data(SUBBASIN_INFO_TYPE &subb_info) {
-    if(!subb_info.getSoil_data())
+    if (!subb_info.getSoil_data())
         subb_info.setSoil_data(new soil_info_subbasin);
     this->fste.read(reinterpret_cast<char *>(subb_info.getSoil_data()), sizeof(*subb_info.getSoil_data()));
 }
 
 void dao_read_subbasins_info::read_one_subbasin_force_data(SUBBASIN_INFO_TYPE &subb_info) {
-    if(!subb_info.getForce_data())
+    if (!subb_info.getForce_data())
         subb_info.setForce_data(new force_info_subbasin);
     this->fste.read(reinterpret_cast<char *>(subb_info.getForce_data()), sizeof(*subb_info.getForce_data()));
 }
 
 void dao_read_subbasins_info::read_one_subbasin_geo_data(SUBBASIN_INFO_TYPE &subb_info) {
-    if(!subb_info.getGeo_data())
+    if (!subb_info.getGeo_data()) {
         subb_info.setGeo_data(new geo_info_subbasin);
+    }
     this->fste.read(reinterpret_cast<char *>(subb_info.getGeo_data()), sizeof(*subb_info.getGeo_data()));
 }
 
 OFFSET_TYPE dao_read_subbasins_info::solve_base_data_size(SUBBASIN_INFO_TYPE &subb_info) {
-
-   return sizeof(SUBBASIN_ID_TYPE) + sizeof(SUBBASIN_COUNT_TYPE)*2
-                + (subb_info.getDown_subbasin_count() + subb_info.getUp_subbasin_count())
-                  * (sizeof(SUBBASIN_ID_TYPE) + sizeof(PROCESSOR_ID_TYPE));
+    return sizeof(SUBBASIN_ID_TYPE) + sizeof(SUBBASIN_COUNT_TYPE) * 2
+           + (subb_info.getDown_subbasin_count() + subb_info.getUp_subbasin_count())
+             * (sizeof(SUBBASIN_ID_TYPE) + sizeof(PROCESSOR_ID_TYPE));
 }
-
-
-

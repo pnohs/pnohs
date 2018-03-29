@@ -9,12 +9,11 @@
 /**
  * geographical infomation of a subbasin node needed by simmulation
  */
-class geo_info_subbasin{
+class geo_info_subbasin {
 public:
-    double              lat;
-    double              lon;
-    double              elev;
-
+    double lat;
+    double lon;
+    double elev;
 };
 
 

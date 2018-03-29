@@ -13,7 +13,7 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 set(TEST_HEADER_FILES
         test_config.h
         gtest_env.h
-        test_read_subbasin_info.h
+        test_read_subbasin_info.cpp
         )
 
 set(TEST_SOURCE_FILES
