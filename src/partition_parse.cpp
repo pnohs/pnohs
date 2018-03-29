@@ -7,3 +7,19 @@
 void PartitionParse::parse(std::string partitionFilePath) {
 
 }
+
+void PartitionParse::locate() {
+
+}
+
+bool PartitionParse::nextNode() {
+    return false;
+}
+
+int PartitionParse::getUpstream() {
+    return 0;
+}
+
+int PartitionParse::getDownstream() {
+    return 0;
+}

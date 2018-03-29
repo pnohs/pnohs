@@ -27,4 +27,3 @@ void Simulation::simulate() {
     }
     // To here, it has finished all simulation time steps.
 }
-
