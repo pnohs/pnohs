@@ -27,7 +27,19 @@
         "path": "https://raw.githubusercontent.com/vietjtnguyen/argagg/master/include/argagg/",
         "files": {
           "argagg.hpp": "argagg.hpp"
-        }
+        },
+        "build": [
+          "CP argagg.hpp {INCLUDE}"
+        ]
+      },
+      "nlohmann": {
+        "path": "https://github.com/nlohmann/json/releases/download/v3.1.2/",
+        "files": {
+          "json.hpp": "json.hpp"
+        },
+        "build": [
+          "CP json.hpp {INCLUDE}"
+        ]
       }
     }
   }
