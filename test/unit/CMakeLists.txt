@@ -7,20 +7,17 @@ configure_file(
 
 include_directories(${PROJECT_SOURCE_DIR}/vendor/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
-#include_directories(${PROJECT_SOURCE_DIR}/src/pre_handle)
-#include_directories(${PROJECT_SOURCE_DIR}/src/pre_handle/base_entity)
 
 set(TEST_HEADER_FILES
         test_config.h
         gtest_env.h
-        test_read_subbasin_info.cpp
         )
 
 set(TEST_SOURCE_FILES
         main.cpp
         app_test.cpp
-        )
-
+        read_subbasin_info_test.cpp
+        partition_test.cpp)
 
 # set binary path and lib storage path wile compiling process.
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)

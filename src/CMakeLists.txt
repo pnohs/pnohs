@@ -10,7 +10,7 @@ set(EXTRA_LIBS kiwi ${EXTRA_LIBS})
 set(HEADER_FILES
         config_toml.h
         context.h
-        partition_parse.h
+        partition/partition_parse.h
         pnohs.h
         route.h
         simulation.h
@@ -34,7 +34,7 @@ set(HEADER_FILES
 set(SOURCE_FILES
         config_toml.cpp
         context.cpp
-        partition_parse.cpp
+        partition/partition_parse.cpp
         pnohs.cpp
         route.cpp
         simulation.cpp
@@ -50,7 +50,7 @@ set(SOURCE_FILES
         pre_handle/read_subbasins_info.cpp
         )
 
-set(MAIN_FILE main.cpp)
+set(MAIN_FILE main.cpp partition/partition_type.h partition/node_parse.cpp partition/node_parse.h)
 
 
 # set binary path and lib storage path for compiling process.

@@ -7,14 +7,14 @@
 
 #include <gtest/gtest.h>
 #include <fstream>
+#include <utils/mpi_utils.h>
 #include "pre_handle/read_subbasins_info.h"
-#include "pre_handle/entity/info_subbasin.h"
 
 /**
  * 该方法生成测试用的子流域数据
  */
 static void format_input_file() {
-    PROCESSOR_ID_TYPE processor_count = 10;
+    PROCESSOR_ID_TYPE processor_count = 10; //kiwi::mpiUtils::allRanks;
     std::vector<SUBBASIN_ID_TYPE> subbs_count_at_one_processor;
     std::vector<std::vector<info_subbasin *> *> datas;
     std::vector<std::vector<OFFSET_TYPE> *> subb_offsets_at_diff_proc;
@@ -29,56 +29,50 @@ static void format_input_file() {
 
         OFFSET_TYPE pre_subb_data_size = 0;
         for (int j = 0; j < subbs_count_at_one_processor[i]; j++) {
-            info_subbasin *tmp_subb = new info_subbasin;
+            info_subbasin *tmp_subb = new info_subbasin(j + 3, j + i + 1, j * (i + 1));
 
-            tmp_subb->setSubbasin_id(j + 3);
-            tmp_subb->setDown_subbasin_ids(new SUBBASIN_ID_CONTAINER_TYPE);
-            tmp_subb->setDown_subbasin_belong_processor(new PROCESSOR_ID_CONTAINER_TYPE);
-            tmp_subb->setDown_subbasin_count(j * (i + 1));
-            for (int k = 0; k < tmp_subb->getDown_subbasin_count(); k++) {
-                tmp_subb->getDown_subbasin_ids()->push_back(k + j);
-                tmp_subb->getDown_subbasin_belong_processor()->push_back(i + k);
+            for (int k = 0; k < tmp_subb->down_subbasin_count; k++) {
+                tmp_subb->down_subbasin_ids->push_back(k + j);
+                tmp_subb->down_subbasin_belong_processor->push_back(i + k);
             }
 
-            tmp_subb->setUp_subbasin_count(j + i + 1);
-            tmp_subb->setUp_subbasin_ids(new SUBBASIN_ID_CONTAINER_TYPE);
-            tmp_subb->setUp_subbasin_belong_processor(new PROCESSOR_ID_CONTAINER_TYPE);
-            for (int k = 0; k < tmp_subb->getUp_subbasin_count(); k++) {
-                tmp_subb->getUp_subbasin_ids()->push_back(k + i);
-                tmp_subb->getUp_subbasin_belong_processor()->push_back(i + k);
+            for (int k = 0; k < tmp_subb->up_subbasin_count; k++) {
+                tmp_subb->up_subbasin_ids->push_back(k + i);
+                tmp_subb->up_subbasin_belong_processor->push_back(i + k);
             }
 
-            tmp_subb->setGeo_data(new geo_info_subbasin);
-            tmp_subb->getGeo_data()->elev = 200.8 + j + i;
-            tmp_subb->getGeo_data()->lat = 127.8 + i + j;
-            tmp_subb->getGeo_data()->lon = 80.8 + i + j;
+            tmp_subb->setGeo_data(new geo_info_subbasin());
+            tmp_subb->geo_data->elev = 200.8 + j + i;
+            tmp_subb->geo_data->lat = 127.8 + i + j;
+            tmp_subb->geo_data->lon = 80.8 + i + j;
 
             tmp_subb->setForce_data(new force_info_subbasin);
-            tmp_subb->getForce_data()->air_tmp = 24.8 + i + j;
+            tmp_subb->force_data->air_tmp = 24.8 + i + j;
 
             tmp_subb->setSoil_data(new soil_info_subbasin);
-            tmp_subb->getSoil_data()->soil_layers = 10;
+            tmp_subb->soil_data->soil_layers = 10; // todo set data
 
             tmp_data->push_back(tmp_subb);
 
-            if (j == 0)
+            if (j == 0) {
                 tmp_subb_offsets->at(j) = pre_subb_data_size;
-            else
+            } else {
                 tmp_subb_offsets->at(j) = pre_subb_data_size + tmp_subb_offsets->at(j - 1);
+            }
 
-            pre_subb_data_size = sizeof(tmp_subb->getSubbasin_id())
-                                 + sizeof(tmp_subb->getUp_subbasin_count())
-                                 + sizeof(tmp_subb->getDown_subbasin_count())
-                                 + sizeof(SUBBASIN_ID_TYPE) * tmp_subb->getDown_subbasin_count() +
-                                 sizeof(PROCESSOR_ID_TYPE) * tmp_subb->getDown_subbasin_count()
-                                 + sizeof(SUBBASIN_ID_TYPE) * tmp_subb->getUp_subbasin_count() +
-                                 sizeof(PROCESSOR_ID_TYPE) * tmp_subb->getUp_subbasin_count()
-                                 //+ sizeof(tmp_subb->getGeo_data()->lon) + sizeof(tmp_subb->getGeo_data()->lat) + sizeof(tmp_subb->getGeo_data()->elev)
-                                 + sizeof(*tmp_subb->getGeo_data())
-                                 //+ sizeof(tmp_subb->getSoil_data()->soil_layers)
-                                 + sizeof(*tmp_subb->getSoil_data())
-                                 //+ sizeof(tmp_subb->getForce_data()->air_tmp);
-                                 + sizeof(*tmp_subb->getForce_data());
+            pre_subb_data_size = sizeof(tmp_subb->subbasin_id)
+                                 + sizeof(tmp_subb->up_subbasin_count)
+                                 + sizeof(tmp_subb->down_subbasin_count)
+                                 + sizeof(SUBBASIN_ID_TYPE) * tmp_subb->down_subbasin_count +
+                                 sizeof(PROCESSOR_ID_TYPE) * tmp_subb->down_subbasin_count
+                                 + sizeof(SUBBASIN_ID_TYPE) * tmp_subb->up_subbasin_count +
+                                 sizeof(PROCESSOR_ID_TYPE) * tmp_subb->up_subbasin_count
+                                 //+ sizeof(tmp_subb->geo_data->lon) + sizeof(tmp_subb->geo_data->lat) + sizeof(tmp_subb->geo_data->elev)
+                                 + sizeof(*tmp_subb->geo_data)
+                                 //+ sizeof(tmp_subb->soil_data->soil_layers)
+                                 + sizeof(*tmp_subb->soil_data)
+                                 //+ sizeof(tmp_subb->force_data->air_tmp);
+                                 + sizeof(*tmp_subb->force_data);
 
             all_subb_size_on_diff_proc[i] += pre_subb_data_size;
         }
@@ -114,33 +108,33 @@ static void format_input_file() {
         //2.4.3写各个子流域数据
         for (int j = 0; j < subbs_count_at_one_processor[i]; j++) {
             //2.4.3.1写子流域ID
-            SUBBASIN_ID_TYPE tmp = datas[i]->at(j)->getSubbasin_id();
+            SUBBASIN_ID_TYPE tmp = datas[i]->at(j)->subbasin_id;
             fp.write(reinterpret_cast<const char *>(&tmp), sizeof(SUBBASIN_ID_TYPE));
             //2.4.3.2写下游数目数目
-            tmp = datas[i]->at(j)->getDown_subbasin_count();
+            tmp = datas[i]->at(j)->down_subbasin_count;
             fp.write(reinterpret_cast<const char *>(&tmp), sizeof(SUBBASIN_ID_TYPE));
             //2.4.3.3写上游数目数目
-            tmp = datas[i]->at(j)->getUp_subbasin_count();
+            tmp = datas[i]->at(j)->up_subbasin_count;
             fp.write(reinterpret_cast<const char *>(&tmp), sizeof(SUBBASIN_ID_TYPE));
             //2.4.3.4写下游节点子流域ids
-            fp.write(reinterpret_cast<const char *>(datas.at(i)->at(j)->getDown_subbasin_ids()->data()),
-                     sizeof(SUBBASIN_ID_TYPE) * datas[i]->at(j)->getDown_subbasin_count());
+            fp.write(reinterpret_cast<const char *>(datas.at(i)->at(j)->down_subbasin_ids->data()),
+                     sizeof(SUBBASIN_ID_TYPE) * datas[i]->at(j)->down_subbasin_count);
             //2.4.3.5写下游子流域所属进程
             fp.write(
-                    reinterpret_cast<const char *>(datas.at(i)->at(j)->getDown_subbasin_belong_processor()->data()),
-                    sizeof(PROCESSOR_ID_TYPE) * datas[i]->at(j)->getDown_subbasin_count());
+                    reinterpret_cast<const char *>(datas.at(i)->at(j)->down_subbasin_belong_processor->data()),
+                    sizeof(PROCESSOR_ID_TYPE) * datas[i]->at(j)->down_subbasin_count);
             //2.4.3.6写上游游节点子流域ids
-            fp.write(reinterpret_cast<const char *>(datas.at(i)->at(j)->getUp_subbasin_ids()->data()),
-                     sizeof(SUBBASIN_ID_TYPE) * datas[i]->at(j)->getUp_subbasin_count());
+            fp.write(reinterpret_cast<const char *>(datas.at(i)->at(j)->up_subbasin_ids->data()),
+                     sizeof(SUBBASIN_ID_TYPE) * datas[i]->at(j)->up_subbasin_count);
             //2.4.3.7写上游子流域所属进程
-            fp.write(reinterpret_cast<const char *>(datas.at(i)->at(j)->getUp_subbasin_belong_processor()->data()),
-                     sizeof(PROCESSOR_ID_TYPE) * datas[i]->at(j)->getUp_subbasin_count());
+            fp.write(reinterpret_cast<const char *>(datas.at(i)->at(j)->up_subbasin_belong_processor->data()),
+                     sizeof(PROCESSOR_ID_TYPE) * datas[i]->at(j)->up_subbasin_count);
             //2.4.3.8写geo数据
-            fp.write(reinterpret_cast<const char *>(datas[i]->at(j)->getGeo_data()), sizeof(geo_info_subbasin));
+            fp.write(reinterpret_cast<const char *>(datas[i]->at(j)->geo_data), sizeof(geo_info_subbasin));
             //2.4.3.8写soil数据
-            fp.write(reinterpret_cast<const char *>(datas[i]->at(j)->getSoil_data()), sizeof(soil_info_subbasin));
+            fp.write(reinterpret_cast<const char *>(datas[i]->at(j)->soil_data), sizeof(soil_info_subbasin));
             //2.4.3.8写force数据
-            fp.write(reinterpret_cast<const char *>(datas[i]->at(j)->getForce_data()), sizeof(force_info_subbasin));
+            fp.write(reinterpret_cast<const char *>(datas[i]->at(j)->force_data), sizeof(force_info_subbasin));
         }
         fp.flush();
     }
@@ -149,7 +143,9 @@ static void format_input_file() {
 
 TEST(morton_test_2, partition_read_test) {
     //测试生成输入文件
-    format_input_file();
+    if (kiwi::mpiUtils::ownRank == MASTER_PROCESSOR) {
+        format_input_file();
+    }
 }
 
 TEST(morton_test_3, partition_read_test) {

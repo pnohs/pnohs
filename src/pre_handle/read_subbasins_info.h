@@ -46,8 +46,7 @@ public:
      *                                          TAG_SOIL_INFO代表读入土壤相关数据
      *                                          TAG_FORCE_INFO代表读入大气相关数据
      */
-    void
-    add_some_subasins(const SUBBASIN_ID_CONTAINER_TYPE &subbasin_ids, SUBBASINS_CONTAINER_TYPE &subbasins, int tag);
+    void add_some_subasins(const SUBBASIN_ID_CONTAINER_TYPE &subbasin_ids, SUBBASINS_CONTAINER_TYPE &subbasins, int tag);
 
     /**
      * 根据tag，选择性地从文件中读入本进程所需要模拟子流域的某部分数据:

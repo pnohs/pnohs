@@ -5,6 +5,7 @@
 #ifndef PNOHS_STREAM_META_H
 #define PNOHS_STREAM_META_H
 
+#include <utils/data_def.h>
 #include "../utils/typedef.h"
 
 /**
@@ -14,7 +15,7 @@ class StreamMeta {
 public:
     // node id in graph.
     nodeid id;
-    int location; // mpi int type.
+    kiwi::RID location; // mpi int type.
 };
 
 

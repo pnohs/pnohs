@@ -2,8 +2,9 @@
 // Created by genshen on 3/27/18.
 //
 
+#include <utils/mpi_utils.h>
 #include "simulation.h"
-#include "partition_parse.h"
+#include "partition/partition_parse.h"
 
 
 Simulation::Simulation() {
@@ -12,8 +13,11 @@ Simulation::Simulation() {
 }
 
 void Simulation::setupNodes() {
-    PartitionParse *parser = new PartitionParse();
-    parser->parse(this->pConfig->partitionFilePath);
+    PartitionParse *pa = new PartitionParse(this->pConfig->partitionFilePath, kiwi::mpiUtils::ownRank);
+    pa->locate();
+    while (pa->nextNode()) {
+
+    }
     // todo parse partition file.
     ctx->newTaskQueue();
 }

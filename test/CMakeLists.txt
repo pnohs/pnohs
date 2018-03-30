@@ -35,5 +35,8 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 set(EXTRA_LIBS gtest gtest_main ${EXTRA_LIBS})
 MESSAGE(STATUS "Set googletest as test library.")
 
+## add kiwi framefork
+include_directories(${KIWI_EXPORT_INCLUDE_PATH})
+set(EXTRA_LIBS kiwi ${EXTRA_LIBS})
 
 add_subdirectory(unit)

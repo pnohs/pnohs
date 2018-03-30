@@ -5,7 +5,6 @@
 #ifndef PNOHS_DAO_READ_SUBBASINS_INFO_H
 #define PNOHS_DAO_READ_SUBBASINS_INFO_H
 
-
 #include <fstream>
 #include <vector>
 #include <map>
@@ -177,7 +176,7 @@ private:
 
     OFFSET_TYPE start_offset;           //本进程所要模拟的子流域数据在输入文件中的绝对首偏移量
     OFFSET_TYPE first_subbasin_offset;  //本进程所要模拟的第一个子流域的实际数据在输入文件中偏移量
-    std::fstream fste;                   //输入文件的输入流
+    std::fstream fs;                   //输入文件的输入流
     SUBBASIN_ID_TYPE subbasins_count;
 
     //本进程所要模拟的子流域数目

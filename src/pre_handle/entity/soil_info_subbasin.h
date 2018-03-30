@@ -14,7 +14,6 @@ class soil_info_subbasin {
 
 public:
     unsigned int soil_layers;
-
 };
 
 #endif //PNOHS_SOIL_INFO_SUBBASIN_H
