@@ -41,13 +41,13 @@ set(SOURCE_FILES
         route.cpp
         simulation.cpp
         simulation_node.cpp
-        dispatch/dnode.hpp
+        dispatch/node.hpp
         dispatch/node_parse.cpp
         dispatch/dispatch_parse.cpp
         dispatch/dispatch_writer.cpp
         graph/downstream.cpp
         graph/downstream_node.cpp
-        graph/dnode.cpp
+        graph/node.cpp
         graph/stream_meta.cpp
         graph/upstream.cpp
         graph/upstream_node.cpp

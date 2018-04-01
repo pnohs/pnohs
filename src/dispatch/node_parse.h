@@ -10,7 +10,7 @@
 #include <vector>
 #include "dispatch_type.h"
 #include "../graph/stream_meta.h"
-#include "dnode.hpp"
+#include "node.hpp"
 
 
 class NodeParse : public DNode {

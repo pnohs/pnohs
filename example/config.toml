@@ -9,7 +9,7 @@ title = "Configure file for pnohs"
 version = "0.1.0"
 
 [dispatch]
-dispatch_file = "pnohs.dis"
+dispatch_file = "dispatch.dis"
 dob = 1979-05-27T07:32:00-08:00 # 日期是一等公民
 
 [simulation]
