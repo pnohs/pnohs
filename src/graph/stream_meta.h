@@ -16,6 +16,9 @@ public:
     // node id in graph.
     nodeid id;
     kiwi::RID location; // mpi int type.
+    StreamMeta() = default;
+
+    StreamMeta(nodeid id, kiwi::RID location);
 };
 
 

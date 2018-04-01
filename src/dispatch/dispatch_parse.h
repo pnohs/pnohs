@@ -2,43 +2,42 @@
 // Created by genshen on 3/28/18.
 //
 
-#ifndef PNOHS_PARTITION_PARSE_H
-#define PNOHS_PARTITION_PARSE_H
+#ifndef PNOHS_DISPATCH_PARSE_H
+#define PNOHS_DISPATCH_PARSE_H
 
 #include <string>
 #include <fstream>
 #include <utils/data_def.h>
 #include "../utils/typedef.h"
-#include "partition_type.h"
+#include "dispatch_type.h"
 #include "node_parse.h"
 
 /**
- * PartitionParse read partition file, so each processor can handle some simulation units (usually they are sub-basins).
- * this partition file format:
+ * DispatchParse read dispatch file, so each processor can handle some simulation units (usually they are sub-basins).
+ * this dispatch file format:
  * todo
  *
  * Usage:
- * PartitionParse pa = new PartitionParse(filePath,rankId);
- * pa->parse();
- * pa->locate()
+ * DispatchParse *pa = new DispatchParse(filePath,rankId);
+ * pa->locate();
  * while(pa->nextNode()){
  *  // process this unit.
  * }
  */
 
-class PartitionParse {
+class DispatchParse {
 
 public:
 
     /** initial parse.
-     * @param partitionFilePath file path of partition file.
+     * @param dispatchFilePath file path of dispatch file.
      */
 
-    PartitionParse(const std::string &partitionFilePath, const kiwi::RID processorId);
+    DispatchParse(const std::string &dispatchFilePath, const kiwi::RID processorId);
 
     /**
-         * locate the start position of this processor in partition file.
-         */
+    * locate the start position of this processor in dispatch file.
+    */
     void locate();
 
     /**
@@ -62,7 +61,7 @@ public:
 
 protected:
     std::fstream fs; //输入文件的输入流
-    _type_part_offset base_offset = 0; // absolute offset from beginning of file to data position of this processor in partition file.
+    _type_part_offset base_offset = 0; // absolute offset from beginning of file to data position of this processor in dispatch file.
     //  kiwi::_type_io_offset relative_file_offset = 0; // relative offset form base_offset.
 
     _type_nodes_count nodes_count = 0; // simulation unit(node) count on this processor.
@@ -71,7 +70,8 @@ protected:
 
 private:
     /**
-     * this function locate file pointer to the start position of ith node.
+     * This function locate file pointer to the start position of ith node.
+     * It first read index of ith node, then locate to the node data by the node index.
      *
      * [count of nodes] [nodes index]       [nodes data]
      *   |_________|___________________|___________________________|
@@ -97,4 +97,4 @@ private:
     }
 };
 
-#endif //PNOHS_PARTITION_PARSE_H
+#endif //PNOHS_DISPATCH_PARSE_H

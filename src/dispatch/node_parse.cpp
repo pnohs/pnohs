@@ -7,10 +7,11 @@
 #include "node_parse.h"
 
 NodeParse::NodeParse(std::fstream &fs, long base_offset) :
-        fs(fs), base_offset(base_offset),
-        upstreamNodesMeta(), downstreamNodesMeta() {}
+        fs(fs), base_offset(base_offset), DNode() {} // initial DNode by calling base class's constructor.
 
 void NodeParse::parse() {
+    // seek from beginning of stream to position base_offset.
+    fs.seekg(base_offset, std::ios_base::beg);
     // read count of upstream and downstream.
     kiwi::seekRead(fs, &node_id, 0, std::ios_base::cur, 1); // file pointer is just here,so offset if 0.
     kiwi::seekRead(fs, &downstream_nodes_count, 0, std::ios_base::cur, 1);
@@ -19,11 +20,11 @@ void NodeParse::parse() {
     assert(upstream_nodes_count >= 0);
 
     // resize vector of stream.
-    if (downstream_nodes_count > 0) { //
+    if (downstream_nodes_count > 0) {
         // convert long to unsigned long
         downstreamNodesMeta.resize(downstream_nodes_count);
     }
-    if (upstream_nodes_count > 0) { //
+    if (upstream_nodes_count > 0) {
         // convert long to unsigned long
         upstreamNodesMeta.resize(static_cast<unsigned long>(upstream_nodes_count));
     }

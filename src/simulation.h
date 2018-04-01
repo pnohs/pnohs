@@ -16,7 +16,7 @@ public:
 
     // get required simulation units (the nodes subset in river-routing relationship graph)
     // allocated to this processor according to mipRankId
-    // by reading from partition result files.
+    // by reading from dispatch result files.
     void setupNodes();
 
     void simulate();

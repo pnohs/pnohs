@@ -1,5 +1,5 @@
-# src directory
-include_directories(${PROJECT_SOURCE_DIR}/vendor/include)
+# include directory
+include_directories(${PROJECT_SOURCE_DIR}/vendor/pkg/include)
 
 # include kiwi framework. # todo if has lib.
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/src/kiwi ${PROJECT_BINARY_DIR}/vendor/kiwi)
@@ -10,11 +10,14 @@ set(EXTRA_LIBS kiwi ${EXTRA_LIBS})
 set(HEADER_FILES
         config_toml.h
         context.h
-        partition/partition_parse.h
         pnohs.h
         route.h
         simulation.h
         simulation_node.h
+        dispatch/dispatch_parse.h
+        dispatch/dispatch_type.h
+        dispatch/node_parse.h
+        dispatch/dispatch_writer.h
         graph/downstream.h
         graph/downstream_node.h
         graph/node.h
@@ -34,14 +37,17 @@ set(HEADER_FILES
 set(SOURCE_FILES
         config_toml.cpp
         context.cpp
-        partition/partition_parse.cpp
         pnohs.cpp
         route.cpp
         simulation.cpp
         simulation_node.cpp
+        dispatch/dnode.hpp
+        dispatch/node_parse.cpp
+        dispatch/dispatch_parse.cpp
+        dispatch/dispatch_writer.cpp
         graph/downstream.cpp
         graph/downstream_node.cpp
-        graph/node.cpp
+        graph/dnode.cpp
         graph/stream_meta.cpp
         graph/upstream.cpp
         graph/upstream_node.cpp
@@ -50,7 +56,7 @@ set(SOURCE_FILES
         pre_handle/read_subbasins_info.cpp
         )
 
-set(MAIN_FILE main.cpp partition/partition_type.h partition/node_parse.cpp partition/node_parse.h)
+set(MAIN_FILE main.cpp)
 
 
 # set binary path and lib storage path for compiling process.
@@ -62,8 +68,6 @@ add_library(${M_LIB_NAME} STATIC ${HEADER_FILES} ${SOURCE_FILES})
 set(EXTRA_LIBS ${M_LIB_NAME} ${EXTRA_LIBS})
 
 add_executable(${M_EXECUTE_BIN_NAME} ${MAIN_FILE})
-
-MESSAGE(STATUS ${EXTRA_LIBS})
 
 target_link_libraries(${M_EXECUTE_BIN_NAME} ${EXTRA_LIBS}) # extra lib
 

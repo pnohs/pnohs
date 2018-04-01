@@ -40,6 +40,11 @@ endif ()
 
 add_subdirectory(src)
 
+###### tools
+if (TOOLS_BUILD_ENABLE_FLAG)
+    add_subdirectory(tools)
+endif ()
+
 ##############################
 ## test configure
 ##############################

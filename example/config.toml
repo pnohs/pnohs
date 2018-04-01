@@ -8,8 +8,8 @@
 title = "Configure file for pnohs"
 version = "0.1.0"
 
-[partition]
-partition_file = "pnohs.part"
+[dispatch]
+dispatch_file = "pnohs.dis"
 dob = 1979-05-27T07:32:00-08:00 # 日期是一等公民
 
 [simulation]

@@ -4,7 +4,7 @@
 
 #include <utils/mpi_utils.h>
 #include "simulation.h"
-#include "partition/partition_parse.h"
+#include "dispatch/dispatch_parse.h"
 
 
 Simulation::Simulation() {
@@ -13,12 +13,12 @@ Simulation::Simulation() {
 }
 
 void Simulation::setupNodes() {
-    PartitionParse *pa = new PartitionParse(this->pConfig->partitionFilePath, kiwi::mpiUtils::ownRank);
+    DispatchParse *pa = new DispatchParse(this->pConfig->dispatchFilePath, kiwi::mpiUtils::ownRank);
     pa->locate();
     while (pa->nextNode()) {
 
     }
-    // todo parse partition file.
+    // todo parse dispatch file.
     ctx->newTaskQueue();
 }
 

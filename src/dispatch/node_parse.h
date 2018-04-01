@@ -8,28 +8,24 @@
 
 #include <utils/data_def.h>
 #include <vector>
-#include "partition_type.h"
+#include "dispatch_type.h"
 #include "../graph/stream_meta.h"
+#include "dnode.hpp"
 
 
-class NodeParse {
+class NodeParse : public DNode {
 public:
-    _type_node_id node_id;
 
-    std::vector<StreamMeta> upstreamNodesMeta;
-    std::vector<StreamMeta> downstreamNodesMeta;
-
-    // initial fs.
+    // initial with fs for parsing.
     NodeParse(std::fstream &fs, long base_offset);
 
+    // parse information about this node (including upstream and downstream metadata)
+    // from dispatch binary file starting from base_offset.
     void parse();
 
 private:
     std::fstream &fs;
-    long base_offset; // base offset on this node.
-
-    _type_nodes_count downstream_nodes_count; // usually equals to 0 or 1.
-    _type_nodes_count upstream_nodes_count;
+    long base_offset; // absolute offset of this node from beginning of file, only used in parse.
 
     /**
     * calculate relative offset by the offset to data position of this processor.
@@ -39,7 +35,6 @@ private:
     inline long relativeOffset(long offset) {
         return base_offset + offset - fs.tellg();
     }
-
 };
 
 
