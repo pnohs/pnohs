@@ -6,29 +6,38 @@
 #include "ahct.h"
 
 void convert::convertToText(const std::string disBinPath, const std::string disTextPath) {
-    DispatchParse *pa = new DispatchParse(disBinPath, 1);  // todo 需要将所有处理器上的任务划分节点数据都写入到JSON文本中去，而不是单个的
+    std::fstream fs = std::fstream(disBinPath, std::ios::in | std::ios::binary);
+    if (!fs.good()) {
+        std::cerr << "file" + disBinPath + "not exit" << std::endl;
+        return;
+    }
+
+    DispatchParse *pa = new DispatchParse(fs, 1);  // todo 需要将所有处理器上的任务划分节点数据都写入到JSON文本中去，而不是单个的
     pa->locate();
-    NodeParse *np;
-    while ((np = pa->nextNode()) != nullptr) {
-        std::cout << "id: " << np->node_id << std::endl;
+
+    DNode node;
+    while (pa->isAfterLast()) {
+        node = pa->nextNode();
+        std::cout << "id: " << node.node_id << std::endl;
         std::cout << "upstream: " << std::endl;
-        for (const StreamMeta &s:np->getUpstreamNodes()) {
+        for (const StreamMeta &s:node.getUpstreamNodes()) {
             std::cout << "id: " << s.id << " locate: " << s.location << std::endl;
         }
         std::cout << "downstream: " << std::endl;
-        for (const StreamMeta &s:np->getDownstreamNodes()) {
+        for (const StreamMeta &s:node.getDownstreamNodes()) {
             std::cout << "id: " << s.id << " locate: " << s.location << std::endl;
         }
-        std::cout << "end of node " << np->node_id << std::endl << std::endl;
+        std::cout << "end of node " << node.node_id << std::endl << std::endl;
     }
+
     delete pa;
+    fs.close();
 }
 
 void convert::convertToBinary(std::string disTextPath, std::string disBinPath) {
     //using json = nlohmann::json;
     std::ifstream is(disTextPath);
-    if (!is.good())
-    {
+    if (!is.good()) {
         std::cerr << "open file " << disTextPath << " failed!" << std::endl;
     }
     nlohmann::json json;

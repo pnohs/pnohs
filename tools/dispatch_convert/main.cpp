@@ -5,23 +5,19 @@
 #include <fstream>
 #include <iostream>
 #include <json.hpp>
-#include <io/io_utils.hpp>
-#include <dispatch/dispatch_parse.h>
-#include <dispatch/dispatch_writer.h>
 #include <argagg.hpp>
+
 #include "convert.h"
 #include "ahct.h"
 
 bool doConvertion(int argc, char *argv[]);
 
 int main(int argc, char *argv[]) {
-
     if (doConvertion(argc, argv)) {
         return 0;
-    }else {
+    } else {
         return -1;
     }
-
 }
 
 bool doConvertion(int argc, char *argv[]) {
@@ -77,16 +73,16 @@ bool doConvertion(int argc, char *argv[]) {
         outputFilePath = args.as<std::string>(1);
     } else if (args.pos.size() == 1) { // 只指定了输入文件路径，则输出文件路径使用默认路径
         inputFilePath = args.as<std::string>(0);
-        if (args["ARGS_JSON2BIN_OPTION_NAME"]){
+        if (args["ARGS_JSON2BIN_OPTION_NAME"]) {
             outputFilePath = ahct::DEFAULT_DIS_BIN_FILE_PATH;
-        }else {
+        } else {
             outputFilePath = ahct::DEFAULT_DIS_JSON_FILE_PATH;
         }
     } else if (args.pos.size() == 0) {  // 未指定输入输出文件路径，则输入输出文件路径为默认
-        if (args["ARGS_JSON2BIN_OPTION_NAME"]){
+        if (args["ARGS_JSON2BIN_OPTION_NAME"]) {
             inputFilePath = ahct::DEFAULT_DIS_JSON_FILE_PATH;
             outputFilePath = ahct::DEFAULT_DIS_BIN_FILE_PATH;
-        }else {
+        } else {
             inputFilePath = ahct::DEFAULT_DIS_BIN_FILE_PATH;
             outputFilePath = ahct::DEFAULT_DIS_JSON_FILE_PATH;
         }
