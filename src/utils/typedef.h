@@ -6,6 +6,6 @@
 #define PNOHS_TYPEDEF_H
 
 // graph
-typedef unsigned long nodeid;
+typedef unsigned long _type_graph_node_id;
 
 #endif //PNOHS_TYPEDEF_H

@@ -13,7 +13,7 @@
 #include "node_parse.h"
 
 /**
- * DispatchParse read dispatch file, so each processor can handle some simulation units (usually they are sub-basins).
+ * DispatchParse read dispatch file, so each processor can handle some nodes(also called simulation units (usually they are sub-basins)).
  * this dispatch file format:
  * todo
  *
@@ -26,14 +26,14 @@
  */
 
 class DispatchParse {
-
 public:
 
-    /** initial parse.
-     * @param dispatchFilePath file path of dispatch file.
+    /**
+     * parse with file stream.
+     * @param dispatchStream file path of dispatch file.
+     * @param processorId  id (can be mpi rank). Each processor handle several simulation unit (nodes).
      */
-
-    DispatchParse(const std::string &dispatchFilePath, const kiwi::RID processorId);
+    DispatchParse(std::fstream &dispatchStream, const kiwi::RID processorId);
 
     /**
     * locate the start position of this processor in dispatch file.
@@ -41,11 +41,21 @@ public:
     void locate();
 
     /**
+     * check if the end of the nodes result has been reached.
+     * true for have more node(s), false for there is no more node to be read.
+     */
+    inline bool isAfterLast() {
+        return current_node_index < nodes_count;
+    }
+
+    /**
      * Get next simulation unit (sub-basin) dispatched to this processor sequentially.
      * Can use traverse to get all simulation units.
      * @return return parsed node information, null for no other node (get to the end) for this processor.
+     * @deprecated pointer may cause memory leak
+     *
      */
-    NodeParse *nextNode();
+    const DNode nextNode();
 
     /**
      * Get current node's upstream metadata.
@@ -60,7 +70,7 @@ public:
     int getDownstream();
 
 protected:
-    std::fstream fs; //输入文件的输入流
+    std::fstream &fs; //输入文件的输入流
     _type_part_offset base_offset = 0; // absolute offset from beginning of file to data position of this processor in dispatch file.
     //  kiwi::_type_io_offset relative_file_offset = 0; // relative offset form base_offset.
 

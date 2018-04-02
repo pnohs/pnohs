@@ -26,8 +26,8 @@ public:
     bool isReady();
 
     // checkout whether there is a upstream node whose id is the given id,
-    // if true, return pointer of th UpstreamNode, otherwise return null.
-    UpstreamNode *findUpstreamNodeById(nodeid id);
+    // if true, return pointer of this UpstreamNode, otherwise return null.
+    UpstreamNode *findUpstreamNodeById(_type_graph_node_id id);
 };
 
 #endif //PNOHS_UPSTREAM_H

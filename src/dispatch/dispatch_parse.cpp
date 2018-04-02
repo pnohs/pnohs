@@ -3,20 +3,13 @@
 //
 
 #include <iostream>
-#include <io/io_utils.hpp>
 #include <cassert>
+
+#include <io/io_utils.hpp>
 #include "dispatch_parse.h"
 
-// todo fstream as param
-DispatchParse::DispatchParse(const std::string &dispatchFilePath, const kiwi::RID processorId) : rid(processorId) {
-    // 打开二进制输入文件
-    fs = std::fstream(dispatchFilePath, std::ios::in | std::ios::binary);
-    if (!fs.good()) {
-        // todo 出错处理需要额外的模板，暂时先这样
-        std::cerr << "file" + dispatchFilePath + "not exit" << std::endl;
-        exit(1);
-    }
-}
+DispatchParse::DispatchParse(std::fstream &dispatchStream, const kiwi::RID processorId) :
+        fs(dispatchStream), rid(processorId) {}
 
 void DispatchParse::locate() {
     // 读取本进程所需子流域数据在输入文件中的最开始偏移量
@@ -41,14 +34,13 @@ void DispatchParse::locateNode(_type_node_index index) {
     fs.seekg(relativeOffset(node_offset), std::ios_base::cur); // seek to node date location.
 }
 
-// todo api: return DNode.
-NodeParse *DispatchParse::nextNode() {
+const DNode DispatchParse::nextNode() {
     if (current_node_index < nodes_count) {
         locateNode(current_node_index);
-        NodeParse *np = new NodeParse(fs, fs.tellg()); // todo remember to delete.
-        np->parse();
+        NodeParse np = NodeParse(fs, fs.tellg()); // todo remember to delete.
+        np.parse();
         current_node_index++;
         return np;
     }
-    return nullptr;
+    return DNode();
 }

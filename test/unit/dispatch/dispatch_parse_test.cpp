@@ -53,51 +53,65 @@ void generateDispatchBinFile() {
 // test node_id nad stream meta.
 TEST(dispatch_parse_test_1, dispatch_parse_test) {
     generateDispatchBinFile();
+    std::fstream fs = std::fstream(dispatch_bin_file, std::ios::in | std::ios::binary);
+    if (!fs.good()) {
+        FAIL();
+    }
 
-    DispatchParse *pa = new DispatchParse(dispatch_bin_file, 0);
+    DispatchParse *pa = new DispatchParse(fs, 0);
     pa->locate();
-    NodeParse *np;
-    np = pa->nextNode();
+    DNode dn = pa->nextNode(); // but no boundary check.
 
-    EXPECT_EQ(np->node_id, 16);
+    EXPECT_EQ(dn.node_id, 16);
 
-    auto up_nodes = np->getUpstreamNodes(); // size = 4
+    auto up_nodes = dn.getUpstreamNodes(); // size = 4
     EXPECT_EQ(up_nodes[0].id, 1000);
     EXPECT_EQ(up_nodes[0].location, 2000);
 
     EXPECT_EQ(up_nodes[3].id, 1003);
     EXPECT_EQ(up_nodes[3].location, 2006);
+
     delete pa;
+    fs.close();
 }
 
 // test node count, and up/down stream count.
 TEST(dispatch_parse_test_2, dispatch_parse_test) {
     generateDispatchBinFile();
+    std::fstream fs = std::fstream(dispatch_bin_file, std::ios::in | std::ios::binary);
+    if (!fs.good()) {
+        FAIL();
+    }
 
-    DispatchParse *pa = new DispatchParse(dispatch_bin_file, 1);
+    DispatchParse *pa = new DispatchParse(fs, 1);
     pa->locate();
-    NodeParse *np;
 
-    np = pa->nextNode();
-    EXPECT_EQ(np->getUpstreamNodesCount(), 4);
-    EXPECT_EQ(np->getDownstreamNodesCount(), 1);
+    DNode dn_pre = pa->nextNode();
+    EXPECT_EQ(dn_pre.getUpstreamNodesCount(), 4);
+    EXPECT_EQ(dn_pre.getDownstreamNodesCount(), 1);
 
-    np = pa->nextNode();
-    EXPECT_EQ(np->getUpstreamNodesCount(), 0);
-    EXPECT_EQ(np->getDownstreamNodesCount(), 1);
+    DNode dn_next = pa->nextNode();
+    EXPECT_EQ(dn_next.getUpstreamNodesCount(), 0);
+    EXPECT_EQ(dn_next.getDownstreamNodesCount(), 1);
 
-    EXPECT_EQ(pa->nextNode(), nullptr);
+    EXPECT_FALSE(pa->isAfterLast()); // no more nodes
 
     delete pa;
+    fs.close();
 }
 
 // test empty node.
 TEST(dispatch_parse_test_3, dispatch_parse_test) {
     generateDispatchBinFile();
+    std::fstream fs = std::fstream(dispatch_bin_file, std::ios::in | std::ios::binary);
+    if (!fs.good()) {
+        FAIL();
+    }
 
-    DispatchParse *pa = new DispatchParse(dispatch_bin_file, 2);
+    DispatchParse *pa = new DispatchParse(fs, 2);
     pa->locate();
-    EXPECT_EQ(pa->nextNode(), nullptr); // no nodes
+    EXPECT_FALSE(pa->isAfterLast()); // no more nodes
 
     delete pa;
+    fs.close();
 }

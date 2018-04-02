@@ -5,7 +5,11 @@
 #include "simulation_node.h"
 
 void SimulationNode::deliver() {
-    nodeid streamId = this->downstream.downstreamNode.id;
+    if (this->downstream.isOutlet()) {
+        // todo out put to letout
+    } else {
+        _type_graph_node_id streamId = this->downstream.downstreamNodes[0].id; // todo
+    }
 }
 
 void SimulationNode::runoff() {

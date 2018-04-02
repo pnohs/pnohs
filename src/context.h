@@ -21,6 +21,13 @@ public:
     // select one node that can run (this node didn't finish simulation, and its all upstream is ready).
     bool select();
 
+    /**
+     *  abort all processors with exit code specified by {@var code}
+     * @param reason the error message wil print.
+     * @param code exit code
+     */
+    void abort(const std::string &reason, int code);
+
 private:
     ConfigToml *pConfig;
     std::vector<SimulationNode> simulationNodes;
