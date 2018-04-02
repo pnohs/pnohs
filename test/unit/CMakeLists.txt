@@ -19,7 +19,6 @@ set(TEST_HEADER_FILES
 set(TEST_SOURCE_FILES
         main.cpp
         app_test.cpp
-        read_subbasin_info_test.cpp
         dispatch/dispatch_parse_test.cpp
         )
 
