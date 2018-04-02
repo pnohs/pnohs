@@ -13,7 +13,7 @@ bool Upstream::isReady() {
     return true;
 }
 
-UpstreamNode *Upstream::findUpstreamNodeById(nodeid id) {
+UpstreamNode *Upstream::findUpstreamNodeById(_type_graph_node_id id) {
     for (UpstreamNode &node:nodes) {
         if (node.id == id) {
             return &node;

@@ -19,7 +19,7 @@
 
 class Node {
 public:
-    nodeid id; // node id.
+    _type_graph_node_id id; // node id.
 
     double area;  // todo example property of this node.
 

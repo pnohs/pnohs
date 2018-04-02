@@ -4,4 +4,4 @@
 
 #include "stream_meta.h"
 
-StreamMeta::StreamMeta(nodeid id, kiwi::RID location) : id(id), location(location) {}
+StreamMeta::StreamMeta(_type_graph_node_id id, kiwi::RID location) : id(id), location(location) {}

@@ -14,11 +14,11 @@
 class StreamMeta {
 public:
     // node id in graph.
-    nodeid id;
+    _type_graph_node_id id;
     kiwi::RID location; // mpi int type.
     StreamMeta() = default;
 
-    StreamMeta(nodeid id, kiwi::RID location);
+    StreamMeta(_type_graph_node_id id, kiwi::RID location);
 };
 
 

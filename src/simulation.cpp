@@ -1,8 +1,9 @@
 //
-// Created by genshen on 3/27/18.
+// Created by genshen on 2018-03-27.
 //
 
 #include <utils/mpi_utils.h>
+#include <iostream>
 #include "simulation.h"
 #include "dispatch/dispatch_parse.h"
 
@@ -13,13 +14,23 @@ Simulation::Simulation() {
 }
 
 void Simulation::setupNodes() {
-    // todo delete
-    DispatchParse *pa = new DispatchParse(this->pConfig->dispatchFilePath, kiwi::mpiUtils::ownRank);
-    pa->locate();
-    while (pa->nextNode()) {
-
+    // parse dispatch file to get nodes for this processor.
+    std::string dispatchFilePath = this->pConfig->dispatchFilePath;
+    std::fstream fs = std::fstream(dispatchFilePath, std::ios::in | std::ios::binary);
+    if (!fs.good()) {
+        ctx->abort("file" + dispatchFilePath + "not exit", 1);
     }
-    // todo parse dispatch file.
+
+    DispatchParse pa = DispatchParse(fs, kiwi::mpiUtils::ownRank);
+    pa.locate();
+
+    DNode node;
+    while (pa.isAfterLast()) {
+        node = pa.nextNode();
+//        ctx
+    }
+    fs.close();
+
     ctx->newTaskQueue();
 }
 
