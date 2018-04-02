@@ -17,34 +17,34 @@ public:
     DNode() : node_id(0), upstreamNodesMeta(), downstreamNodesMeta(),
               upstream_nodes_count(0), downstream_nodes_count(0) {}
 
-    const std::vector<StreamMeta> &getUpstreamNodes() const {
+    inline const std::vector<StreamMeta> &getUpstreamNodes() const {
         return upstreamNodesMeta;
     }
 
-    const std::vector<StreamMeta> &getDownstreamNodes() const {
+    inline const std::vector<StreamMeta> &getDownstreamNodes() const {
         return downstreamNodesMeta;
     }
 
-    const _type_nodes_count getUpstreamNodesCount() const {
+    inline const _type_nodes_count getUpstreamNodesCount() const {
         return upstream_nodes_count;
     }
 
-    const _type_nodes_count getDownstreamNodesCount() const {
+    inline const _type_nodes_count getDownstreamNodesCount() const {
         return downstream_nodes_count;
     }
 
-    void addUpstreamNode(const StreamMeta &up) {
+    inline void addUpstreamNode(const StreamMeta &up) {
         upstreamNodesMeta.push_back(up);
         upstream_nodes_count++;
     }
 
-    void addDownstreamNode(const StreamMeta &down) {
+    inline void addDownstreamNode(const StreamMeta &down) {
         downstreamNodesMeta.push_back(down);
         downstream_nodes_count++;
     }
 
     // how many bytes will cost if we write this node information to file.
-    unsigned long lenInfile()const {
+    inline unsigned long lenInfile() const {
         return sizeof(node_id) + sizeof(upstream_nodes_count) + sizeof(downstream_nodes_count) +
                sizeof(StreamMeta) * (upstreamNodesMeta.size() + downstreamNodesMeta.size());
         // todo more meta data.

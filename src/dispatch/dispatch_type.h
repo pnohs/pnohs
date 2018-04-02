@@ -15,4 +15,4 @@ typedef _type_node_index _type_nodes_count; // node count type.
 
 //typedef long _type_rank_id;   // use long here, while int is used in MPI.
 
-#endif //PNOHS_DISPATCH_TYPE_H
+#endif // PNOHS_DISPATCH_TYPE_H

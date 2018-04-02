@@ -34,7 +34,7 @@ set(SOURCE_FILES
         route.cpp
         simulation.cpp
         simulation_node.cpp
-        dispatch/node.hpp
+        dispatch/dnode.hpp
         dispatch/node_parse.cpp
         dispatch/dispatch_parse.cpp
         dispatch/dispatch_writer.cpp
