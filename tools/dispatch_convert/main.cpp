@@ -8,75 +8,104 @@
 #include <io/io_utils.hpp>
 #include <dispatch/dispatch_parse.h>
 #include <dispatch/dispatch_writer.h>
+#include <argagg.hpp>
+#include "convert.h"
+#include "ahct.h"
 
-void convertToBinary();
+bool doConvertion(int argc, char *argv[]);
 
-void convertToText();
+int main(int argc, char *argv[]) {
 
-using json = nlohmann::json;
+    if (doConvertion(argc, argv)) {
+        return 0;
+    }else {
+        return -1;
+    }
 
-int main() {
-//    convertToBinary();
-    convertToText();
-    return 0;
 }
 
-void convertToText() {
-    DispatchParse *pa = new DispatchParse("../../example/dispatch.dis", 1);
-    pa->locate();
-    NodeParse *np;
-    while ((np = pa->nextNode()) != nullptr) {
-        std::cout << "id: " << np->node_id << std::endl;
-        std::cout << "upstream: " << std::endl;
-        for (const StreamMeta &s:np->getUpstreamNodes()) {
-            std::cout << "id: " << s.id << " locate: " << s.location << std::endl;
-        }
-        std::cout << "downstream: " << std::endl;
-        for (const StreamMeta &s:np->getDownstreamNodes()) {
-            std::cout << "id: " << s.id << " locate: " << s.location << std::endl;
-        }
-        std::cout << "end of node " << np->node_id << std::endl << std::endl;
+bool doConvertion(int argc, char *argv[]) {
+    // parse arguments using lib args: https://github.com/vietjtnguyen/argagg.
+    argagg::parser argparser{{
+                                     {ahct::ARGS_HELP_OPTION_NAME, {ahct::ARGS_HELP_OPTION1, ahct::ARGS_HELP_OPTION2},
+                                             ahct::ARGS_HELP_OPTION_DESCRIPTE, ahct::ARGS_HELP_ARGC},
+                                     {ahct::ARGS_VERSION_OPTION_NAME, {ahct::ARGS_VERSION_OPTION1, ahct::ARGS_VERSION_OPTION2},
+                                             ahct::ARGS_VERSION_OPTION_DESCRIPTE, ahct::ARGS_VERSION_ARGC},
+                                     {ahct::ARGS_BIN2JSON_OPTION_NAME, {ahct::ARGS_BIN2JSON_OPTION1, ahct::ARGS_BIN2JSON_OPTION2},
+                                             ahct::ARGS_BIN2JSON_OPTION_DESCRIPTE, ahct::ARGS_BIN2JSON_ARGC},
+                                     {ahct::ARGS_JSON2BIN_OPTION_NAME, {ahct::ARGS_JSON2BIN_OPTION1, ahct::ARGS_JSON2BIN_OPTION2},
+                                             ahct::ARGS_JSON2BIN_OPTION_DESCRIPTE, ahct::ARGS_JSON2BIN_ARGC},
+//                                     {"json", {"-j", "--json",}, "path of input json file (default:dispatch.json)", 1},
+//                                     {"bin", {"-b", "--bin"}, "path of input bin file (default:dispatch.dis)", 1},
+//                                     {"output", {"-o", "--output"}, "path of output file (-j'default:dispatch.dis -b'default:dispatch.json)", 1},
+                             }};
+
+    argagg::parser_results args;
+    argagg::fmt_ostream fmtErr(std::cerr);
+    argagg::fmt_ostream fmtOut(std::cerr);
+
+    std::string inputFilePath, outputFilePath;
+
+    try {
+        args = argparser.parse(argc, argv);
+    } catch (const std::exception &e) {
+        fmtErr << e.what() << std::endl;
+        return false;
     }
-}
 
-void convertToBinary() {
-    std::ifstream is("../../example/dispatch.json"); // todo file name from argv.
-    json json;
-    is >> json;
-
-    // todo file name from argv.
-    std::fstream fs("../../example/dispatch.dis", std::ios::out | std::ios::binary);
-
-    // todo parse header.
-    kiwi::RID ranks = json["header"]["ranks"];
-    _type_dispatch_fileoffset cursor_in_file = DispatchWriter::stat(ranks);
-    int rank_i = 0;
-    for (auto &rank_dispatch : json["dispatch"]) { // for each processors/randId
-        // kiwi::RID rank_id = rank_dispatch["rank_id"];
-        DispatchWriter disWriter = DispatchWriter(fs, cursor_in_file, rank_i); // or use rank_id from json
-        _type_nodes_count nodes_count = rank_dispatch["nodes_count"];
-        disWriter.locate(nodes_count);
-
-        for (auto &node : rank_dispatch["nodes"]) { // for each nodes on each processors.
-            // move pointer to the start of this node data.
-            auto *dp = new DNode();
-            dp->node_id = node["node_id"];
-            for (auto downstream : node["downstream"]) { // for each downstream node of each node
-                StreamMeta downNode{};
-                downNode.id = downstream["node_id"];
-                downNode.location = downstream["locate"];
-                dp->addDownstreamNode(downNode);
-            }
-            for (auto upstream : node["upstream"]) { // for each upstream node of each node
-                StreamMeta upNode{};
-                upNode.id = upstream["node_id"];
-                upNode.location = upstream["locate"];
-                dp->addUpstreamNode(upNode);
-            }
-            disWriter.write(dp);
-        }
-        disWriter.postWrite(&cursor_in_file);
-        rank_i++;
+    if (args[ahct::ARGS_HELP_OPTION_NAME]) {
+        fmtOut << "Usage: " << argv[0] << ahct::ARGS_HINT_MSEEAGE << std::endl << argparser;
+        return true;
     }
-    // todo write processors.
+    if (args[ahct::ARGS_VERSION_OPTION_NAME]) {
+        fmtOut << ahct::ARGS_VERSION_MSEEAGE << std::endl;
+        return true;
+    }
+
+    //-j 和 -b 选项有且只能有一个
+    if ((!args[ahct::ARGS_JSON2BIN_OPTION_NAME] && !args[ahct::ARGS_BIN2JSON_OPTION_NAME])
+        || (args[ahct::ARGS_JSON2BIN_OPTION_NAME] && args[ahct::ARGS_BIN2JSON_OPTION_NAME])) {
+
+        fmtOut << "Usage: " << argv[0] << ahct::ARGS_HINT_MSEEAGE << std::endl << argparser;
+
+        return false;
+    }
+
+    // 要么有两个参数<inputfile outputfile>，要么有一个参数<inputfile>，要么没有参数<>，才会往后执行
+    if (args.pos.size() == 2) {
+        inputFilePath = args.as<std::string>(0);
+        outputFilePath = args.as<std::string>(1);
+    } else if (args.pos.size() == 1) { // 只指定了输入文件路径，则输出文件路径使用默认路径
+        inputFilePath = args.as<std::string>(0);
+        if (args["ARGS_JSON2BIN_OPTION_NAME"]){
+            outputFilePath = ahct::DEFAULT_DIS_BIN_FILE_PATH;
+        }else {
+            outputFilePath = ahct::DEFAULT_DIS_JSON_FILE_PATH;
+        }
+    } else if (args.pos.size() == 0) {  // 未指定输入输出文件路径，则输入输出文件路径为默认
+        if (args["ARGS_JSON2BIN_OPTION_NAME"]){
+            inputFilePath = ahct::DEFAULT_DIS_JSON_FILE_PATH;
+            outputFilePath = ahct::DEFAULT_DIS_BIN_FILE_PATH;
+        }else {
+            inputFilePath = ahct::DEFAULT_DIS_BIN_FILE_PATH;
+            outputFilePath = ahct::DEFAULT_DIS_JSON_FILE_PATH;
+        }
+    } else {
+        fmtErr << "Usage: " << argv[0] << ahct::ARGS_HINT_MSEEAGE << std::endl << argparser;
+        return false;
+    }
+
+    if (args["ARGS_JSON2BIN_OPTION_NAME"]) {
+        convert::convertToBinary(inputFilePath, outputFilePath);
+        return true;
+    }
+    if (args["ARGS_BIN2JSON_OPTION_NAME"]) {
+        convert::convertToText(inputFilePath, outputFilePath);
+        return true;
+    }
+
+    // 无option时，提示
+    fmtErr << "Usage: " << argv[0] << ahct::ARGS_HINT_MSEEAGE << std::endl << argparser;
+    return false;
+
 }
