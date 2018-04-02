@@ -42,6 +42,7 @@ void generateDispatchBinFile() {
                 dp->addUpstreamNode(upNode);
             }
             disWriter.write(dp);
+            delete dp;
         }
         disWriter.postWrite(&cursor_in_file);
         rank_i++;
@@ -66,6 +67,7 @@ TEST(dispatch_parse_test_1, dispatch_parse_test) {
 
     EXPECT_EQ(up_nodes[3].id, 1003);
     EXPECT_EQ(up_nodes[3].location, 2006);
+    delete pa;
 }
 
 // test node count, and up/down stream count.
@@ -85,6 +87,8 @@ TEST(dispatch_parse_test_2, dispatch_parse_test) {
     EXPECT_EQ(np->getDownstreamNodesCount(), 1);
 
     EXPECT_EQ(pa->nextNode(), nullptr);
+
+    delete pa;
 }
 
 // test empty node.
@@ -94,4 +98,6 @@ TEST(dispatch_parse_test_3, dispatch_parse_test) {
     DispatchParse *pa = new DispatchParse(dispatch_bin_file, 2);
     pa->locate();
     EXPECT_EQ(pa->nextNode(), nullptr); // no nodes
+
+    delete pa;
 }

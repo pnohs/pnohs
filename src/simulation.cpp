@@ -9,10 +9,11 @@
 
 Simulation::Simulation() {
     pConfig = ConfigToml::newInstance();
-    ctx = new Context(pConfig);
+    ctx = new Context(pConfig); // todo delete
 }
 
 void Simulation::setupNodes() {
+    // todo delete
     DispatchParse *pa = new DispatchParse(this->pConfig->dispatchFilePath, kiwi::mpiUtils::ownRank);
     pa->locate();
     while (pa->nextNode()) {

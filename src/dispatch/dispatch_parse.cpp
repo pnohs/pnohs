@@ -45,7 +45,7 @@ void DispatchParse::locateNode(_type_node_index index) {
 NodeParse *DispatchParse::nextNode() {
     if (current_node_index < nodes_count) {
         locateNode(current_node_index);
-        NodeParse *np = new NodeParse(fs, fs.tellg()); // todo delete.
+        NodeParse *np = new NodeParse(fs, fs.tellg()); // todo remember to delete.
         np->parse();
         current_node_index++;
         return np;
