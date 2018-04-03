@@ -15,11 +15,17 @@ public:
 
     Context(ConfigToml *pConfig);
 
-    // initial task queue for every upstream of every node.
-    void newTaskQueue();
-
-    // select one node that can run (this node didn't finish simulation, and its all upstream is ready).
+    /**
+     * select one node that can run (this node didn't finish simulation, and its all upstream is ready).
+     * todo thread block in select.
+     * @return true for no more available node
+     */
     bool select();
+
+    /**
+     * add a simulation node to vector @var simulationNodes,
+     */
+    void addSimulationNode(const SimulationNode &snode);
 
     /**
      *  abort all processors with exit code specified by {@var code}

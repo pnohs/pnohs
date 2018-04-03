@@ -11,14 +11,20 @@
 
 class UpstreamNode : public StreamMeta {
 public:
+    /**
+     * initial a UpstreamNode and whit its task queue.
+     */
+    UpstreamNode();
 
+    /**
+     * check whether there is task in task queue.
+     * @return
+     */
     bool hasTask();
-
-    void newTaskQueue(); // todo
 
 private:
     // this is a shared variable, when it is modified by multiple thread, make sure to be thread-safe.
-    // todo thread safe.
+    // todo thread safe, lock.
     std::deque<double> taskQueue;
 };
 

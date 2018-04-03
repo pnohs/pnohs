@@ -10,10 +10,6 @@ Context::Context(ConfigToml *pConfig) : simulationNodes() {
     this->pConfig = pConfig;
 }
 
-void Context::newTaskQueue() {
-
-}
-
 bool Context::select() {
     for (SimulationNode &sNode : simulationNodes) {
         if (sNode._time_steps <= pConfig->simulationTimeSteps
@@ -30,4 +26,8 @@ void Context::abort(const std::string &reason, int code) {
         std::cerr << reason << std::endl;
     }
     MPI_Abort(MPI_COMM_WORLD, code);
+}
+
+void Context::addSimulationNode(const SimulationNode &snode) {
+    simulationNodes.push_back(snode);
 }
