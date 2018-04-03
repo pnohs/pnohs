@@ -4,17 +4,15 @@
 
 #include <io/io_utils.hpp>
 #include "convert.h"
-#include "ahct.h"
 
-void convert::convertToText(const std::string disBinPath, const std::string disTextPath) {
-
-    std::fstream fs = std::fstream(disBinPath, ahct::MODE_OPEN_DIS_BIN_FILE4READING);
+void convert::convertToJson(std::string disBinPath, std::string disTextPath) {
+    std::fstream fs = std::fstream(disBinPath, std::ios::binary | std::ios::in);
     if (!fs.good()) {
         std::cerr << "open file " << disBinPath << " failed!" << std::endl;
         return;
     }
 
-    std::fstream ofs = std::fstream(disTextPath, ahct::MODE_OPEN_DIS_TEXT_FILE4WRITING);
+    std::fstream ofs = std::fstream(disTextPath, std::ios::out);
     if (!ofs.good()) {
         std::cerr << "open file " << disTextPath << " failed!" << std::endl;
         return;
@@ -80,7 +78,6 @@ void convert::convertToText(const std::string disBinPath, const std::string disT
         delete pa;
     }
 
-
     ofs << std::setw(4) << json << std::endl;
 
     fs.close();
@@ -88,7 +85,7 @@ void convert::convertToText(const std::string disBinPath, const std::string disT
 }
 
 void convert::convertToBinary(std::string disTextPath, std::string disBinPath) {
-    std::ifstream is(disTextPath);
+    std::ifstream is(disTextPath, std::ios::in);
     if (!is.good()) {
         std::cerr << "open file " << disTextPath << " failed!" << std::endl;
         return;
@@ -97,7 +94,7 @@ void convert::convertToBinary(std::string disTextPath, std::string disBinPath) {
     nlohmann::json json;
     is >> json;
 
-    std::fstream fs(disBinPath, ahct::MODE_OPEN_DIS_BIN_FILE4WRITING);
+    std::fstream fs(disBinPath, std::ios::binary | std::ios::out);
     if (!fs.good()) {
         std::cerr << "open file " << disTextPath << " failed!" << std::endl;
         return;

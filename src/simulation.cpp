@@ -47,7 +47,7 @@ void Simulation::simulate() {
     while (ctx->select()) {
         ctx->curNode->riverRouting();
         ctx->curNode->runoff();
-        ctx->curNode->deliver();
+        ctx->curNode->deliver(); // deliver simulation result of this node to its downstream node(s).
         // todo write results of this time-step of this node to I/O.
     }
     // To here, it has finished all simulation time steps.
