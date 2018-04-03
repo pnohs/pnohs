@@ -4,8 +4,7 @@
 
 #include "upstream_node.h"
 
-UpstreamNode::UpstreamNode() : taskQueue() {
-
+UpstreamNode::UpstreamNode() : StreamMeta(), taskQueue() {
 }
 
 bool UpstreamNode::hasTask() { // todo

@@ -16,7 +16,7 @@ public:
     Context(ConfigToml *pConfig);
 
     /**
-     * select one node that can run (this node didn't finish simulation, and its all upstream is ready).
+     * select method pick one node that can run (this node didn't finish simulation, and its all upstream is ready).
      * todo thread block in select.
      * @return true for no more available node
      */

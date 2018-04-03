@@ -44,11 +44,11 @@ void Simulation::setupNodes() {
 }
 
 void Simulation::simulate() {
-//    while (ctx->select()) {
-//        ctx->curNode->riverRouting();
-//        ctx->curNode->runoff();
-//        ctx->curNode->deliver();
-//        // todo write results of this time-step of this node to I/O.
-//    }
+    while (ctx->select()) {
+        ctx->curNode->riverRouting();
+        ctx->curNode->runoff();
+        ctx->curNode->deliver();
+        // todo write results of this time-step of this node to I/O.
+    }
     // To here, it has finished all simulation time steps.
 }
