@@ -11,7 +11,7 @@
 class pnohs : public kiwi::kiwiApp {
 
 private:
-    std::string configFilePath; // configure file path.
+    std::string configFilePath = "config.toml"; // configure file path default value.
 
     Simulation *mSimulation = nullptr;
 

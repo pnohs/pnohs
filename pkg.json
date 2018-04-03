@@ -25,16 +25,16 @@
     },
     "files": {
       "agrs": {
-        "path": "https://raw.githubusercontent.com/vietjtnguyen/argagg/master/include/argagg/",
+        "path": "https://raw.githubusercontent.com/Taywee/args/master",
         "files": {
-          "argagg.hpp": "argagg.hpp"
+          "args.hxx": "args.hpp"
         },
         "build": [
-          "CP argagg.hpp {INCLUDE}"
+          "CP args.hpp {INCLUDE}"
         ]
       },
       "nlohmann": {
-        "path": "https://github.com/nlohmann/json/releases/download/v3.1.2/",
+        "path": "https://github.com/nlohmann/json/releases/download/v3.1.2",
         "files": {
           "json.hpp": "json.hpp"
         },
@@ -43,7 +43,7 @@
         ]
       },
       "concurrentqueue": {
-        "path": "https://raw.githubusercontent.com/cameron314/concurrentqueue/master/",
+        "path": "https://raw.githubusercontent.com/cameron314/concurrentqueue/master",
         "files": {
           "concurrentqueue.h": "concurrentqueue.hpp"
         },

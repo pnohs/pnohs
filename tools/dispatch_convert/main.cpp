@@ -3,105 +3,77 @@
 //
 
 #include <iostream>
-#include <argagg.hpp>
+#include <args.hpp>
 #include "convert.h"
-#include "ahct.h"
 
-bool doConversion(int argc, char **argv);
+void binaryToJson(args::Subparser &parser);
+
+void jsonToBinary(args::Subparser &parser);
+
+
+//args::Group arguments("arguments");
+//args::ValueFlag<std::string> input(arguments, "input", "input file path", {'i', "input"});
+//args::ValueFlag<std::string> output(arguments, "output", "output file path", {'o', "output"});
 
 int main(int argc, char *argv[]) {
-    if (doConversion(argc, argv)) {
-        return 0;
+    // parse arguments using lib args: https://github.com/Taywee/args#refactoring-commands.
+    args::ArgumentParser parser("dispatch file conversion tool");
+    args::HelpFlag help(parser, "help", "Display this help menu", {'h', "help"});
+
+    args::Group commands(parser, "commands");
+    args::Command b2j(commands, "b2j", "Convert binary dispatch file to json dispatch file.", &binaryToJson);
+    args::Command j2b(commands, "j2b", "Convert json dispatch file to binary dispatch file.", &jsonToBinary);
+
+//    args::GlobalOptions globals(parser, arguments);
+
+    try {
+        parser.ParseCLI(argc, argv);
+    } catch (args::Help) {
+        std::cout << parser;
+        std::cout << "  use \"" << parser.helpParams.programName
+                  << " COMMAND --help\" for more information about a command." << std::endl;
+    } catch (args::Error &e) {
+        std::cerr << e.what() << std::endl << parser;
+        return 1;
+    }
+    return 0;
+}
+
+// todo refactor: most code of binaryToJson and jsonToBinary are the same.
+void binaryToJson(args::Subparser &parser) {
+    args::ValueFlag<std::string> bin(parser, "bin", "path of binary file.", {'b', "bin"});
+    args::ValueFlag<std::string> output(parser, "output", "path of output json file.", {'o', "output"});
+    args::HelpFlag help(parser, "help", "Display this help message of this command.", {'h', "help"});
+    parser.Parse();
+
+    if (bin) {
+        std::string bin_file = args::get(bin);
+        std::string output_file = "dispatch.json"; // default value for output.
+        if (output) {
+            output_file = args::get(output);
+        }
+        convert::convertToJson(bin_file, output_file); // do conversion.
     } else {
-        return -1;
+        std::cerr << "error: no input file." << std::endl;
     }
 }
 
-bool doConversion(int argc, char **argv) {
-    // parse arguments using lib args: https://github.com/vietjtnguyen/argagg.
-    argagg::parser argparser{{
-                                     {"help", {"-h", "--help"}, "shows this help message.", 0},
-                                     {"version", {"-v", "--version"}, "show this dispatch convert tool version", 0},
-                                     {"bin2json", {"--b2j"},
-                                             "convert binary dispatch file to json dispatch file"
-                                                     " (arguments: binaryFilePath jsonFilePath)"
-                                                     " (default: dispatch.dis  dispatch.json)",
-                                             0},
-                                     {"json2bin", {"--j2b"},
-                                             "convert binary json file to binary dispatch file"
-                                                     " (arguments: jsonFilePath binaryFilePath)"
-                                                     " (default: dispatch.json dispatch.dis)",
-                                             0},
-//                                     {"json", {"-j", "--json",}, "path of input json file (default:dispatch.json)", 1},
-//                                     {"bin", {"-b", "--bin"}, "path of input bin file (default:dispatch.dis)", 1},
-//                                     {"output", {"-o", "--output"}, "path of output file (-j'default:dispatch.dis -b'default:dispatch.json)", 1},
-                             }};
+void jsonToBinary(args::Subparser &parser) {
+    args::ValueFlag<std::string> json(parser, "json", "path of json file.", {'j', "json"});
+    args::ValueFlag<std::string> output(parser, "output", "path of output json file.", {'o', "output"});
+    args::HelpFlag help(parser, "help", "Display this help message of this command.", {'h', "help"});
+    parser.Parse();
 
-    argagg::parser_results args;
-    argagg::fmt_ostream fmt_err_stream(std::cerr);
-    argagg::fmt_ostream fmt_out_stream(std::cerr);
-
-    try {
-        args = argparser.parse(argc, argv);
-    } catch (const std::exception &e) {
-        fmt_err_stream << e.what() << std::endl;
-        return false;
-    }
-
-    if (args["help"]) {
-        fmt_out_stream << "Usage: " << argv[0] << ahct::ARGS_HINT_MSEEAGE << std::endl
-                       << argparser;
-        return true;
-    }
-    if (args["version"]) {
-        fmt_out_stream << ahct::ARGS_VERSION_MSEEAGE << std::endl;
-        return true;
-    }
-
-    //-j2b 和 -b2j 选项有且只能有一个
-    if (!args[ahct::ARGS_JSON2BIN_OPTION_NAME] == !args[ahct::ARGS_BIN2JSON_OPTION_NAME]) {
-        fmt_out_stream << "Usage: " << argv[0] << ahct::ARGS_HINT_MSEEAGE << std::endl
-                       << argparser;
-        return false;
-    }
-
-    // 要么有两个参数<inputfile outputfile>，要么有一个参数<inputfile>，要么没有参数<>，才会往后执行
-    std::string inputFilePath, outputFilePath;
-    if (args.pos.size() == 2) {
-        inputFilePath = args.as<std::string>(0);
-        outputFilePath = args.as<std::string>(1);
-    } else if (args.pos.size() == 1) { // 只指定了输入文件路径，则输出文件路径使用默认路径
-        inputFilePath = args.as<std::string>(0);
-        if (args[ahct::ARGS_JSON2BIN_OPTION_NAME]) { // todo ?
-            outputFilePath = ahct::DEFAULT_DIS_BIN_FILE_PATH;
+    if (json) {
+        if (json) {
+            std::string json_file = args::get(json);
+            std::string output_file = "dispatch.bin"; // default value for output.
+            if (output) {
+                output_file = args::get(output);
+            }
+            convert::convertToBinary(json_file, output_file); // do conversion.
         } else {
-            outputFilePath = ahct::DEFAULT_DIS_JSON_FILE_PATH;
+            std::cerr << "error: no json input file." << std::endl;
         }
-    } else if (args.pos.size() == 0) {  // 未指定输入输出文件路径，则输入输出文件路径为默认
-        if (args[ahct::ARGS_JSON2BIN_OPTION_NAME]) { // todo ?
-            inputFilePath = ahct::DEFAULT_DIS_JSON_FILE_PATH;
-            outputFilePath = ahct::DEFAULT_DIS_BIN_FILE_PATH;
-        } else {
-            inputFilePath = ahct::DEFAULT_DIS_BIN_FILE_PATH;
-            outputFilePath = ahct::DEFAULT_DIS_JSON_FILE_PATH;
-        }
-    } else {
-        fmt_err_stream << "Usage: " << argv[0] << ahct::ARGS_HINT_MSEEAGE << std::endl
-                       << argparser;
-        return false;
     }
-
-    if (args[ahct::ARGS_JSON2BIN_OPTION_NAME]) { // todo ?
-        convert::convertToBinary(inputFilePath, outputFilePath);
-        return true;
-    }
-    if (args[ahct::ARGS_BIN2JSON_OPTION_NAME]) { // todo ?
-        convert::convertToText(inputFilePath, outputFilePath);
-        return true;
-    }
-
-    // 无option时，提示
-    fmt_err_stream << "Usage: " << argv[0] << ahct::ARGS_HINT_MSEEAGE << std::endl
-                   << argparser;
-    return false;
 }

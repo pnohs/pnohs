@@ -10,7 +10,7 @@ set(HEADER_FILES
 set(SOURCE_FILES
         main.cpp
         convert.cpp
-        ahct.h)
+        )
 
 # set binary path and lib storage path for compiling process.
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
