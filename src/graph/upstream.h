@@ -31,7 +31,7 @@ public:
      * @param id node id
      * @return if true, return pointer of this UpstreamNode, otherwise return null.
      */
-    UpstreamNode *findUpstreamNodeById(_type_graph_node_id id);
+    UpstreamNode *findUpstreamNodeById(_type_node_id id);
 
     /**
      * add a upstream node to vector @var nodes and create a queue for this node

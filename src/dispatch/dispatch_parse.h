@@ -33,7 +33,7 @@ public:
      * @param dispatchStream file path of dispatch file.
      * @param processorId  id (can be mpi rank). Each processor handle several simulation unit (nodes).
      */
-    DispatchParse(std::fstream &dispatchStream, const kiwi::RID processorId);
+    DispatchParse(std::fstream &dispatchStream, const _type_dispatch_rank_id processorId);
 
     /**
     * locate the start position of this processor in dispatch file.
@@ -71,12 +71,12 @@ public:
 
 protected:
     std::fstream &fs; //输入文件的输入流
-    _type_part_offset base_offset = 0; // absolute offset from beginning of file to data position of this processor in dispatch file.
+    _type_dispatch_file_offset base_offset = 0; // absolute offset from beginning of file to data position of this processor in dispatch file.
     //  kiwi::_type_io_offset relative_file_offset = 0; // relative offset form base_offset.
 
-    _type_nodes_count nodes_count = 0; // simulation unit(node) count on this processor.
-    _type_node_index current_node_index = 0;
-    kiwi::RID rid;
+    _type_dispatch_nodes_count nodes_count = 0; // simulation unit(node) count on this processor.
+    _type_dispatch_node_index current_node_index = 0;
+    _type_dispatch_rank_id rid;
 
 private:
     /**
@@ -95,7 +95,7 @@ private:
      *
      * @param index node index starting from 0, 1, 2 ...
      */
-    void locateNode(_type_node_index index);
+    void locateNode(_type_dispatch_node_index index);
 
     /**
      * calculate relative offset by the offset to data position of this processor.

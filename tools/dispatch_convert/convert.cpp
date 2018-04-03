@@ -46,13 +46,13 @@ void convert::convertToBinary(std::string disTextPath, std::string disBinPath) {
     std::fstream fs(disBinPath, ahct::MODE_OPEN_DIS_BIN_FILE4WRITING);
 
     // todo parse header.
-    kiwi::RID ranks = json["header"]["ranks"];
-    _type_dispatch_fileoffset cursor_in_file = DispatchWriter::stat(ranks);
+    _type_dispatch_rank_id ranks = json["header"]["ranks"];
+    _type_dispatch_file_offset cursor_in_file = DispatchWriter::stat(ranks);
     int rank_i = 0;
     for (auto &rank_dispatch : json["dispatch"]) { // for each processors/randId
         // kiwi::RID rank_id = rank_dispatch["rank_id"];
         DispatchWriter disWriter = DispatchWriter(fs, cursor_in_file, rank_i); // or use rank_id from json
-        _type_nodes_count nodes_count = rank_dispatch["nodes_count"];
+        _type_dispatch_nodes_count nodes_count = rank_dispatch["nodes_count"];
         disWriter.locate(nodes_count);
 
         for (auto &node : rank_dispatch["nodes"]) { // for each nodes on each processors.
