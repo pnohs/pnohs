@@ -2,11 +2,8 @@
 // Created by genshen on 2018-03-31.
 //
 
-#include <fstream>
 #include <iostream>
-#include <json.hpp>
 #include <argagg.hpp>
-
 #include "convert.h"
 #include "ahct.h"
 
@@ -62,7 +59,7 @@ bool doConversion(int argc, char **argv) {
     }
 
     //-j2b 和 -b2j 选项有且只能有一个
-    if (!args["json2bin"] != !args["bin2json"]) {
+    if (!args[ahct::ARGS_JSON2BIN_OPTION_NAME] == !args[ahct::ARGS_BIN2JSON_OPTION_NAME]) {
         fmt_out_stream << "Usage: " << argv[0] << ahct::ARGS_HINT_MSEEAGE << std::endl
                        << argparser;
         return false;
@@ -75,13 +72,13 @@ bool doConversion(int argc, char **argv) {
         outputFilePath = args.as<std::string>(1);
     } else if (args.pos.size() == 1) { // 只指定了输入文件路径，则输出文件路径使用默认路径
         inputFilePath = args.as<std::string>(0);
-        if (args["ARGS_JSON2BIN_OPTION_NAME"]) { // todo ?
+        if (args[ahct::ARGS_JSON2BIN_OPTION_NAME]) { // todo ?
             outputFilePath = ahct::DEFAULT_DIS_BIN_FILE_PATH;
         } else {
             outputFilePath = ahct::DEFAULT_DIS_JSON_FILE_PATH;
         }
     } else if (args.pos.size() == 0) {  // 未指定输入输出文件路径，则输入输出文件路径为默认
-        if (args["ARGS_JSON2BIN_OPTION_NAME"]) { // todo ?
+        if (args[ahct::ARGS_JSON2BIN_OPTION_NAME]) { // todo ?
             inputFilePath = ahct::DEFAULT_DIS_JSON_FILE_PATH;
             outputFilePath = ahct::DEFAULT_DIS_BIN_FILE_PATH;
         } else {
@@ -93,11 +90,11 @@ bool doConversion(int argc, char **argv) {
         return false;
     }
 
-    if (args["ARGS_JSON2BIN_OPTION_NAME"]) { // todo ?
+    if (args[ahct::ARGS_JSON2BIN_OPTION_NAME]) { // todo ?
         convert::convertToBinary(inputFilePath, outputFilePath);
         return true;
     }
-    if (args["ARGS_BIN2JSON_OPTION_NAME"]) { // todo ?
+    if (args[ahct::ARGS_BIN2JSON_OPTION_NAME]) { // todo ?
         convert::convertToText(inputFilePath, outputFilePath);
         return true;
     }
