@@ -26,14 +26,11 @@ void convert::convertToText(const std::string disBinPath, const std::string disT
     kiwi::RID ranks;
     kiwi::seekRead(fs, &ranks, 0, std::ios_base::beg, 1);
 
-
-
     json["dispatch"] = nlohmann::json::array();
     json["header"] = nlohmann::json::object();
     json["header"]["ranks"] = ranks;
 
-    for (int rank_i = 0; rank_i < ranks; rank_i++)
-    {
+    for (int rank_i = 0; rank_i < ranks; rank_i++) {
         nlohmann::json json_rank_i;
         nlohmann::json json_rank_i_nodes = nlohmann::json::array();
 
@@ -65,7 +62,7 @@ void convert::convertToText(const std::string disBinPath, const std::string disT
                 json_rank_i_node_downstream.push_back(downstreamNode);
             }
 
-            node_count ++;
+            node_count++;
 
             json_rank_i_node["downstream"] = json_rank_i_node_downstream;
             json_rank_i_node["upstream"] = json_rank_i_node_upstream;
@@ -91,7 +88,6 @@ void convert::convertToText(const std::string disBinPath, const std::string disT
 }
 
 void convert::convertToBinary(std::string disTextPath, std::string disBinPath) {
-
     std::ifstream is(disTextPath);
     if (!is.good()) {
         std::cerr << "open file " << disTextPath << " failed!" << std::endl;
@@ -108,15 +104,15 @@ void convert::convertToBinary(std::string disTextPath, std::string disBinPath) {
     }
 
     // todo parse header.
-    kiwi::RID ranks = json["header"]["ranks"];
-    _type_dispatch_fileoffset cursor_in_file = DispatchWriter::stat(ranks); // todo stat函数中未将ranks写入文件
+    _type_dispatch_rank_id ranks = json["header"]["ranks"];
+    _type_dispatch_file_offset cursor_in_file = DispatchWriter::stat(ranks); // todo stat函数中未将ranks写入文件
     kiwi::seekWrite(fs, &ranks, 0, std::ios_base::beg, 1); // todo stat完善后需删除
 
     int rank_i = 0;
     for (auto &rank_dispatch : json["dispatch"]) { // for each processors/randId
         // kiwi::RID rank_id = rank_dispatch["rank_id"];
         DispatchWriter disWriter = DispatchWriter(fs, cursor_in_file, rank_i); // or use rank_id from json
-        _type_nodes_count nodes_count = rank_dispatch["nodes_count"];
+        _type_dispatch_nodes_count nodes_count = rank_dispatch["nodes_count"];
         disWriter.locate(nodes_count);
 
         for (auto &node : rank_dispatch["nodes"]) { // for each nodes on each processors.
@@ -138,8 +134,6 @@ void convert::convertToBinary(std::string disTextPath, std::string disBinPath) {
             disWriter.write(dp);
             delete dp;
         }
-        kiwi::seekWrite(fs, &cursor_in_file, sizeof(ranks) + rank_i * sizeof(cursor_in_file),
-                        std::ios_base::beg, 1); // todo 写入各进程的划分数据在输入文件中的base_offset
         disWriter.postWrite(&cursor_in_file);
         rank_i++;
     }

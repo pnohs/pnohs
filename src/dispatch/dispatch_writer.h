@@ -20,7 +20,7 @@ public:
      * @param fs file stream for writer
      * @param offset_cursor writer data starting from this offset.
      */
-    DispatchWriter(std::fstream &fs, _type_dispatch_fileoffset offset_cursor, const kiwi::RID rankId);
+    DispatchWriter(std::fstream &fs, _type_dispatch_file_offset offset_cursor, const _type_dispatch_rank_id rankId);
 
     /**
      * todo rename function name
@@ -28,20 +28,20 @@ public:
      * @param rank_count all ranks/processors.
      * @return file pointer, initialed absolute offset cursor
      */
-    static _type_dispatch_fileoffset stat(const kiwi::RID rank_count);
+    static _type_dispatch_file_offset stat(const _type_dispatch_rank_id rank_count);
 
     /**
      * locate write node count to file stream and initial variable offset_in_rank.
      * @param nodes_count
      */
-    void locate(_type_nodes_count nodes_count);
+    void locate(_type_dispatch_nodes_count nodes_count);
 
     /**
      * postWrite write index of this processor's dispatch data to file stream.
      * this function is called after all nodes has been written to file stream.
      * @return how many bytes of data of nodes dispatched to this rank.
      */
-    _type_dispatch_fileoffset postWrite(_type_dispatch_fileoffset *cursor);
+    _type_dispatch_file_offset postWrite(_type_dispatch_file_offset *cursor);
 
     /**
      * write a node data dispatched to this processor to file stream, as well as the node relative index.
@@ -50,13 +50,13 @@ public:
     void write(const DNode *np);
 
 private:
-    _type_nodes_count node_i = 0;
-    kiwi::RID rankId;
+    _type_dispatch_nodes_count node_i = 0;
+    _type_dispatch_rank_id rankId;
     // base offset in file, we then write nodes data of this rank from this offset.
     // we may modify this offset after finishing writing.
-    const _type_dispatch_fileoffset base_offset;
+    const _type_dispatch_file_offset base_offset;
     // default is the space size of nodes count plus size of node indexes.
-    _type_dispatch_fileoffset offset_in_rank;
+    _type_dispatch_file_offset offset_in_rank;
 
     std::fstream &ofs; // file stream for output.
 };

@@ -25,9 +25,19 @@ public:
     // That is the task queues of each upstream nodes are all not empty.
     bool isReady();
 
-    // checkout whether there is a upstream node whose id is the given id,
-    // if true, return pointer of this UpstreamNode, otherwise return null.
-    UpstreamNode *findUpstreamNodeById(_type_graph_node_id id);
+    /**
+     * checkout whether there is a upstream node whose id is the given id,
+     * returns pointer of UpstreamNode if found.
+     * @param id node id
+     * @return if true, return pointer of this UpstreamNode, otherwise return null.
+     */
+    UpstreamNode *findUpstreamNodeById(_type_node_id id);
+
+    /**
+     * add a upstream node to vector @var nodes and create a queue for this node
+     * It is used when doing stream parsing.
+     */
+    void putUpMetaStream(const StreamMeta &meta);
 };
 
 #endif //PNOHS_UPSTREAM_H

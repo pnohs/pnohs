@@ -17,12 +17,12 @@ void generateDispatchBinFile() {
     std::fstream fs(dispatch_bin_file, std::ios::out | std::ios::binary);
     auto dispatch_json = nlohmann::json::parse(DISPATCH_JSON);
 
-    _type_dispatch_fileoffset cursor_in_file = DispatchWriter::stat(ranks);
+    _type_dispatch_file_offset cursor_in_file = DispatchWriter::stat(ranks);
     int rank_i = 0;
     for (auto &rank_dispatch : dispatch_json["dispatch"]) { // for each processors/randId
         // kiwi::RID rank_id = rank_dispatch["rank_id"];
         DispatchWriter disWriter = DispatchWriter(fs, cursor_in_file, rank_i); // or use rank_id from json
-        _type_nodes_count nodes_count = rank_dispatch["nodes_count"];
+        _type_dispatch_nodes_count nodes_count = rank_dispatch["nodes_count"];
         disWriter.locate(nodes_count);
 
         for (auto &node : rank_dispatch["nodes"]) { // for each nodes on each processors.

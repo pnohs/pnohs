@@ -63,11 +63,10 @@ void pnohs::onCreate() {
 bool pnohs::prepare() {
     // new simulation instance.
     mSimulation = new Simulation();
-    // initial river nodes and their upstream/downstream.
+    // initial river nodes and their upstream/downstream (up/down stream nodes ids and MPI rank id).
     mSimulation->setupNodes();
-//    initialNodes(nodes); // 初始化各结点，及其上下游关系(记录各结点的上下游都是哪些结点)
-//    loadData(nodes);     // 根据结点加载模拟需要的数据(如地理信息数据、河段数据等)
-//    loadModuleWithParams(); //加载水文模型及模型参数，或者模型和参数分开加载
+//  todo  loadData(nodes);     // 根据结点加载模拟需要的数据(如地理信息数据、河段数据等)
+//  todo  loadModuleWithParams(); //加载水文模型及模型参数，或者模型和参数分开加载
     return true;
 }
 
@@ -84,10 +83,14 @@ void pnohs::onFinish() {
 void pnohs::beforeDestroy() {
     // todo delete simulation
     // todo delete config
-    std::cout << "before destroy" << std::endl;
+    if (kiwi::mpiUtils::ownRank == MASTER_PROCESSOR) {
+        std::cout << "before destroy" << std::endl;
+    }
 }
 
 // do not use mpi in onDestroy.
 void pnohs::onDestroy() {
-    std::cout << "on destroy" << std::endl;
+    if (kiwi::mpiUtils::ownRank == MASTER_PROCESSOR) {
+        std::cout << "on destroy" << std::endl;
+    }
 };

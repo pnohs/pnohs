@@ -86,7 +86,8 @@ bool doConversion(int argc, char **argv) {
             outputFilePath = ahct::DEFAULT_DIS_JSON_FILE_PATH;
         }
     } else {
-        fmt_err_stream << "Usage: " << argv[0] << ahct::ARGS_HINT_MSEEAGE << std::endl << argparser;
+        fmt_err_stream << "Usage: " << argv[0] << ahct::ARGS_HINT_MSEEAGE << std::endl
+                       << argparser;
         return false;
     }
 
@@ -100,7 +101,7 @@ bool doConversion(int argc, char **argv) {
     }
 
     // 无option时，提示
-    fmt_err_stream << "Usage: " << argv[0] << ahct::ARGS_HINT_MSEEAGE << std::endl << argparser;
+    fmt_err_stream << "Usage: " << argv[0] << ahct::ARGS_HINT_MSEEAGE << std::endl
+                   << argparser;
     return false;
-
 }

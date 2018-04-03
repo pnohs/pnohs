@@ -10,19 +10,20 @@ Context::Context(ConfigToml *pConfig) : simulationNodes() {
     this->pConfig = pConfig;
 }
 
-void Context::newTaskQueue() {
-
-}
-
+// todo select strategy.
 bool Context::select() {
     for (SimulationNode &sNode : simulationNodes) {
         if (sNode._time_steps <= pConfig->simulationTimeSteps
-            && sNode.upstream.isReady()) { // todo
+            && sNode.upstream.isReady()) {
             curNode = &sNode;
             return true;
         }
     }
     return false;
+}
+
+void Context::addSimulationNode(const SimulationNode &snode) {
+    simulationNodes.push_back(snode);
 }
 
 void Context::abort(const std::string &reason, int code) {

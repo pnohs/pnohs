@@ -19,7 +19,8 @@
         "tag": "release-1.8.0"
       },
       "kiwi": {
-        "path": "https://git.gensh.me/genshen/kiwi.git"
+        "path": "https://git.gensh.me/genshen/kiwi.git",
+        "hash": "b8ba914ca622d94a47a3430bd8a449658c8839a8"
       }
     },
     "files": {
@@ -39,6 +40,15 @@
         },
         "build": [
           "CP json.hpp {INCLUDE}"
+        ]
+      },
+      "concurrentqueue": {
+        "path": "https://raw.githubusercontent.com/cameron314/concurrentqueue/master/",
+        "files": {
+          "concurrentqueue.h": "concurrentqueue.hpp"
+        },
+        "build": [
+          "CP concurrentqueue.hpp {INCLUDE}"
         ]
       }
     }

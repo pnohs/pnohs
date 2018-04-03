@@ -12,7 +12,7 @@
 // node information, including upstream and downstream nodes metadata.
 class DNode {
 public:
-    _type_node_id node_id; // todo make it read only.
+    _type_dispatch_node_id node_id; // todo make it read only.
 
     DNode() : node_id(0), upstreamNodesMeta(), downstreamNodesMeta(),
               upstream_nodes_count(0), downstream_nodes_count(0) {}
@@ -25,11 +25,11 @@ public:
         return downstreamNodesMeta;
     }
 
-    inline const _type_nodes_count getUpstreamNodesCount() const {
+    inline const _type_dispatch_nodes_count getUpstreamNodesCount() const {
         return upstream_nodes_count;
     }
 
-    inline const _type_nodes_count getDownstreamNodesCount() const {
+    inline const _type_dispatch_nodes_count getDownstreamNodesCount() const {
         return downstream_nodes_count;
     }
 
@@ -54,8 +54,8 @@ protected:
     std::vector<StreamMeta> upstreamNodesMeta;
     std::vector<StreamMeta> downstreamNodesMeta;
 
-    _type_nodes_count downstream_nodes_count; // usually equals to 0 or 1.
-    _type_nodes_count upstream_nodes_count;
+    _type_dispatch_nodes_count downstream_nodes_count; // usually equals to 0 or 1.
+    _type_dispatch_nodes_count upstream_nodes_count;
 };
 
 #endif //PNOHS_D_NODE_H
