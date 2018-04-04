@@ -1,5 +1,5 @@
 <a name=""></a>
-#  (2018-04-03)
+#  (2018-04-04)
 
 
 ### Bug Fixes
@@ -11,11 +11,13 @@
 
 ### Features
 
+* **cli:** use new lib Taywee/args for command line parsing. ([9b14721](https://git.gensh.me/HPCer/hydrology/pnohs/commits/9b14721))
 * **config:** add configure parse ([b619d5d](https://git.gensh.me/HPCer/hydrology/pnohs/commits/b619d5d))
 * **config:** add configure sync ([a9eb0e0](https://git.gensh.me/HPCer/hydrology/pnohs/commits/a9eb0e0))
 * **dependency:** add package.json for changelog ([eea21eb](https://git.gensh.me/HPCer/hydrology/pnohs/commits/eea21eb))
 * **dispatch:** new file stream api for dispatch parsing ([b58ae89](https://git.gensh.me/HPCer/hydrology/pnohs/commits/b58ae89))
 * **dispatch-convert-tool:** add command line parse for dispatch-convert-tool. ([fdb24ac](https://git.gensh.me/HPCer/hydrology/pnohs/commits/fdb24ac))
+* **dispatch-convert-tool:** finish the function of dispatch convertion between binary file and json file. ([177f84f](https://git.gensh.me/HPCer/hydrology/pnohs/commits/177f84f))
 * **graph:** bind dispatch parse results to river-routing graph. ([e98fd7f](https://git.gensh.me/HPCer/hydrology/pnohs/commits/e98fd7f))
 * **init:** initial commit ([9a66a79](https://git.gensh.me/HPCer/hydrology/pnohs/commits/9a66a79))
 * **partition:** add a new dispatch parse and generator with tested, and add a tool based on this di ([630e523](https://git.gensh.me/HPCer/hydrology/pnohs/commits/630e523))

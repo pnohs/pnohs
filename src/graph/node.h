@@ -39,7 +39,7 @@ public:
      */
     void notifyDataSetChanged() {
         _is_river_outlet = downstream.nodes.empty();
-        _is_river_outlet = (upstream.count() == 0);
+        _is_river_origin = (upstream.count() == 0);
     }
 
     /**
@@ -59,8 +59,8 @@ public:
     }
 
 private:
-    bool _is_river_outlet;
-    bool _is_river_origin;
+    bool _is_river_outlet = true; // default value
+    bool _is_river_origin = true;
 };
 
 #endif //PNOHS_NODE_H
