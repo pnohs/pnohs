@@ -14,10 +14,10 @@ class Upstream {
 public:
 
     // node id of upstream nodes. Null or empty indicates that there is no upstream node.
-    std::vector<UpstreamNode> nodes; // nodes meta information
+    std::vector<UpstreamNode> nodes; // nodes meta information // todo make private.
 
     // count of upstream nodes of this node.
-    inline unsigned long count() {
+    inline const unsigned long count() {
         return nodes.size(); // todo
     }
 

@@ -8,5 +8,5 @@ UpstreamNode::UpstreamNode() : StreamMeta(), taskQueue() {
 }
 
 bool UpstreamNode::hasTask() { // todo
-    return taskQueue.empty();
+    return !taskQueue.empty();
 }

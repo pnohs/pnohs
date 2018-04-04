@@ -22,15 +22,7 @@ public:
      * Empty indicates that there is no downstream node, that is the node this the river outlet..
      * For a given node, it usually has only one downstream node. (That is the length of is usually 1 or 0).
      */
-    std::vector<DownstreamNode> nodes;
-
-    /**
-     * Check whether this node is the river outlet.
-     * @return
-     */
-    inline bool isOutlet() {
-        return nodes.empty();
-    }
+    std::vector<DownstreamNode> nodes; // todo make private.
 
     /**
      * add a node with meta data to downstream nodes vector @var downstreamNodes.

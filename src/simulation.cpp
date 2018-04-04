@@ -37,6 +37,7 @@ void Simulation::setupNodes() {
         for (const StreamMeta &meta:dnode.getDownstreamNodes()) {
             snode.downstream.putDownMetaStream(meta); // add downstream node.
         }
+        snode.notifyDataSetChanged();
         // add more information to SimulationNode.
         ctx->addSimulationNode(snode);
     }

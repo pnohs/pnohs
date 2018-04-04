@@ -5,8 +5,9 @@
 #include "upstream.h"
 
 bool Upstream::isReady() {
-    for (UpstreamNode &node:nodes) { // todo: refer to the node, not copy.
-        if (node.hasTask()) {
+    // if there is no upstreams (nodes.empty is true), then this simulation node can be returned.
+    for (UpstreamNode &node:nodes) {
+        if (!node.hasTask()) {
             return false;
         }
     }
