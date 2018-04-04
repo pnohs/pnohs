@@ -43,17 +43,17 @@ public:
     }
 
     /**
-    * Check whether this node is the river outlet.
-    * @return
-    */
+     * Check whether this node is the river outlet.
+     * @return
+     */
     inline const bool isRiverOutlet() {
         return _is_river_outlet;
     }
 
     /**
-    * Check whether this node is the river origin.
-    * @return
-    */
+     * Check whether this node is the river origin.
+     * @return
+     */
     inline const bool isRiverOrigin() {
         return _is_river_origin;
     }

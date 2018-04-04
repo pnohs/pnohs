@@ -46,7 +46,7 @@ set(SOURCE_FILES
         graph/upstream_node.cpp
         )
 
-set(MAIN_FILE main.cpp)
+set(MAIN_FILE main.cpp nodes_pool.cpp nodes_pool.h)
 
 
 # set binary path and lib storage path for compiling process.

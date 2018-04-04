@@ -6,24 +6,26 @@
 #include <utils/mpi_utils.h>
 #include "context.h"
 
-Context::Context(ConfigToml *pConfig) : simulationNodes() {
-    this->pConfig = pConfig;
+Context::Context(ConfigToml *pConfig) : pConfig(pConfig), curNode(nullptr) {
+    nodesPool = new NodesPool(pConfig->simulationTimeSteps);
 }
 
-// todo select strategy.
 bool Context::select() {
-    for (SimulationNode &sNode : simulationNodes) {
-        if (sNode._time_steps <= pConfig->simulationTimeSteps
-            && sNode.upstream.isReady()) {
-            curNode = &sNode;
-            return true;
-        }
+    if (nodesPool->allFinished()) { // all simulation nodes have finished their simulation.
+        return false;
     }
-    return false;
-}
 
-void Context::addSimulationNode(const SimulationNode &snode) {
-    simulationNodes.push_back(snode);
+    SELECT_AGAIN:
+    // select one node can be simulated.
+    SimulationNode *pickedNodes = nodesPool->pickRunnable();
+    if (pickedNodes != nullptr) {
+        curNode = pickedNodes;
+        return true;
+    } else {
+        // block thread, waiting for result.
+        // todo
+        goto SELECT_AGAIN;
+    }
 }
 
 void Context::abort(const std::string &reason, int code) {

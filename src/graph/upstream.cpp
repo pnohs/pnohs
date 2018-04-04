@@ -5,7 +5,7 @@
 #include "upstream.h"
 
 bool Upstream::isReady() {
-    // if there is no upstreams (nodes.empty is true), then this simulation node can be returned.
+    // if the node has no upstreams (nodes.empty is true), then this simulation node can be returned directly.
     for (UpstreamNode &node:nodes) {
         if (!node.hasTask()) {
             return false;

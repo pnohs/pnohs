@@ -7,10 +7,14 @@
 
 #include "simulation_node.h"
 #include "config_toml.h"
+#include "nodes_pool.h"
 
 class Context {
 public:
     SimulationNode *curNode = nullptr;
+
+    // it is not empty at runtime.
+    NodesPool *nodesPool; // all nodes
 
     Context(ConfigToml *pConfig);
 
@@ -22,11 +26,6 @@ public:
     bool select();
 
     /**
-     * add a simulation node to vector @var simulationNodes,
-     */
-    void addSimulationNode(const SimulationNode &snode);
-
-    /**
      *  abort all processors with exit code specified by {@var code}
      * @param reason the error message wil print.
      * @param code exit code
@@ -35,7 +34,6 @@ public:
 
 private:
     ConfigToml *pConfig;
-    std::vector<SimulationNode> simulationNodes;
 };
 
 #endif //PNOHS_CONTROLLER_H
