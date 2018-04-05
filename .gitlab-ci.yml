@@ -1,0 +1,19 @@
+#image: ruby:2.1
+#services:
+#  - postgres
+
+#before_script: net-login, pkg install
+#after_script:
+#  - rm secrets
+
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  script:
+  - mkdir cmake-build
+  - cd cmake-build
+  - cmake ../
