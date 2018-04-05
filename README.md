@@ -1,6 +1,9 @@
 # pnohs
 pnohs is Not Only Hydrological Simulation.
 
+[![pipeline status](https://git.gensh.me/HPCer/hydrology/pnohs/badges/master/pipeline.svg)](https://git.gensh.me/HPCer/hydrology/pnohs/commits/master)
+[![coverage report](https://git.gensh.me/HPCer/hydrology/pnohs/badges/develop/coverage.svg)](https://git.gensh.me/HPCer/hydrology/pnohs/commits/develop)
+
 ## Setup
 ```bash
 $ cd pnohs
