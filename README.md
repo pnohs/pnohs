@@ -15,9 +15,9 @@ $ cd build
 $ cmake ../  \
  -DOpenMP_ENABLE_FLAG=OFF \
  -DMPI_ENABLE_FLAG=ON \
- -DMPI_ENABLE_FLAG=ON \
- -DTEST_ENABLE_FLAG=ON \    # enable unit tests
- -DTEST_MPI_ENABLE_FLAG=ON
+ -DTEST_BUILD_ENABLE_FLAG=ON \    # enable unit tests build.
+ -DTEST_MPI_ENABLE_FLAG=ON \
+ -DTEST_BUILD_ENABLE_FLAG=ON     # enable tools build.
 $ make
 $ ./bin/pnohs   # run your application, you can change it to another name in file src/CMakeLists.txt
 $ ./bin/unit-test   # run unit tests if you set TEST_ENABLE_FLAG to true.
