@@ -10,6 +10,7 @@ set(EXTRA_LIBS kiwi ${EXTRA_LIBS})
 set(HEADER_FILES
         config_toml.h
         context.h
+        nodes_pool.h
         pnohs.h
         route.h
         simulation.h
@@ -30,6 +31,7 @@ set(HEADER_FILES
 set(SOURCE_FILES
         config_toml.cpp
         context.cpp
+        nodes_pool.cpp
         pnohs.cpp
         route.cpp
         simulation.cpp
@@ -46,7 +48,7 @@ set(SOURCE_FILES
         graph/upstream_node.cpp
         )
 
-set(MAIN_FILE main.cpp nodes_pool.cpp nodes_pool.h)
+set(MAIN_FILE main.cpp)
 
 
 # set binary path and lib storage path for compiling process.

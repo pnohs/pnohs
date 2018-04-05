@@ -34,9 +34,17 @@ if (MPI_ENABLE_FLAG)
 
     include_directories(${MPI_INCLUDE_PATH})
 
-    set(EXTRA_LIBS ${MPI_LIBRARIES} ${EXTRA_LIBS}) #add mpi lib
+    set(EXTRA_LIBS ${EXTRA_LIBS} ${MPI_LIBRARIES}) #add mpi lib
 endif ()
 ##### mpi and openmp end
+
+################################
+##### pthread lib
+################################
+find_package (Threads REQUIRED)
+set(EXTRA_LIBS ${EXTRA_LIBS} ${CMAKE_THREAD_LIBS_INIT})
+MESSAGE(STATUS "pthread is used.")
+## pthread end
 
 add_subdirectory(src)
 
@@ -45,9 +53,9 @@ if (TOOLS_BUILD_ENABLE_FLAG)
     add_subdirectory(tools)
 endif ()
 
-##############################
+################################
 ## test configure
-##############################
+################################
 if (TEST_ENABLE_FLAG)
     MESSAGE(STATUS "TEST is enabled")
     add_subdirectory(test)

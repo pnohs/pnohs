@@ -10,21 +10,26 @@ Context::Context(ConfigToml *pConfig) : pConfig(pConfig), curNode(nullptr) {
     nodesPool = new NodesPool(pConfig->simulationTimeSteps);
 }
 
+Context::~Context() {
+    delete nodesPool; // todo remove all nodes.
+}
+
 bool Context::select() {
     if (nodesPool->allFinished()) { // all simulation nodes have finished their simulation.
         return false;
     }
 
-    SELECT_AGAIN:
     // select one node can be simulated.
-    SimulationNode *pickedNodes = nodesPool->pickRunnable();
-    if (pickedNodes != nullptr) {
-        curNode = pickedNodes;
-        return true;
-    } else {
-        // block thread, waiting for result.
-        // todo
-        goto SELECT_AGAIN;
+    SimulationNode *pickedNode = nullptr;
+    while (1) {
+        pickedNode = nodesPool->pickRunnable();
+        if (pickedNode != nullptr) {
+            curNode = pickedNode;
+            return true;
+        } else {
+            // todo block thread, waiting for result.
+            continue;
+        }
     }
 }
 

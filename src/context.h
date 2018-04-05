@@ -18,6 +18,8 @@ public:
 
     Context(ConfigToml *pConfig);
 
+    ~ Context();
+
     /**
      * select method pick one node that can run (this node didn't finish simulation, and its all upstream is ready).
      * todo thread block in select.
