@@ -25,7 +25,11 @@ set(HEADER_FILES
         graph/upstream.h
         graph/upstream_node.h
         utils/typedef.h
-        )
+        models/interface_potential_evaporation_model.h
+        models/simple_potential_evaporation_model.h
+        models/models_config.h
+        models/type_model_data.h
+        models/simple_HBV_model.h)
 
 set(SOURCE_FILES
         config_toml.cpp
@@ -44,7 +48,9 @@ set(SOURCE_FILES
         graph/stream_meta.cpp
         graph/upstream.cpp
         graph/upstream_node.cpp
-        )
+        models/simple_potential_evaporation_model.cpp
+        models/type_model_data.cpp
+        models/simple_HBV_model.cpp)
 
 set(MAIN_FILE main.cpp nodes_pool.cpp nodes_pool.h)
 
