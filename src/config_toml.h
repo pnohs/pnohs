@@ -16,11 +16,13 @@ public:
 
     ConfigToml();
 
-    // a simple single mode example.
-    // make a instance without resolving config file.
-    static ConfigToml *newInstance();
+    // A simple single mode.
+    // Make a instance without resolving config file.
+    // If the config instance exists, just return the pointer of the instance.
+    static ConfigToml *getInstance();
 
-    // make instance and resolve config file.
+    // Make instance and resolve config file.
+    // If instance exists, return the pointer of the instance.
     static ConfigToml *newInstance(const std::string &configureFilePath);
 
 private:

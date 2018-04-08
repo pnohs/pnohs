@@ -4,12 +4,12 @@ include_directories(${PROJECT_SOURCE_DIR}/vendor/pkg/include)
 # include kiwi framework. # todo if has lib.
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/src/kiwi ${PROJECT_BINARY_DIR}/vendor/kiwi)
 include_directories(${KIWI_EXPORT_INCLUDE_PATH})
-
 set(EXTRA_LIBS kiwi ${EXTRA_LIBS})
 
 set(HEADER_FILES
         config_toml.h
         context.h
+        nodes_pool.h
         pnohs.h
         route.h
         simulation.h
@@ -34,6 +34,7 @@ set(HEADER_FILES
 set(SOURCE_FILES
         config_toml.cpp
         context.cpp
+        nodes_pool.cpp
         pnohs.cpp
         route.cpp
         simulation.cpp
@@ -52,7 +53,7 @@ set(SOURCE_FILES
         models/type_model_data.cpp
         models/simple_HBV_model.cpp)
 
-set(MAIN_FILE main.cpp nodes_pool.cpp nodes_pool.h)
+set(MAIN_FILE main.cpp message/looper.cpp message/looper.h message/stream_routing_message_runner.cpp message/stream_routing_message_runner.h)
 
 
 # set binary path and lib storage path for compiling process.

@@ -19,14 +19,20 @@ public:
     // by reading from dispatch result files.
     void setupNodes();
 
+    /**
+     * start real simulation. simulate all nodes, simulate all time-steps.
+     */
     void simulate();
+
+    /**
+     * start message listen.
+     * e.g. upstream simulation result message from other processor through mpi communication.
+     */
+    void startMessageLooper();
 
 private:
     ConfigToml *pConfig; // config pointer.
-    Context *ctx;
-
-    // deliver simulation result to its downstream.
-    void deliver();
+    Context *ctx; // context
 };
 
 

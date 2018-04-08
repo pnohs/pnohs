@@ -63,7 +63,7 @@ void pnohs::onCreate() {
         }
     } else {
         // just initial a empty config Obj.
-        pConfig = ConfigToml::newInstance();
+        pConfig = ConfigToml::getInstance();
     }
     pConfig->sync(); // sync config data to other processors from master processor.
 
@@ -76,6 +76,7 @@ bool pnohs::prepare() {
     mSimulation->setupNodes();
 //  todo  loadData(nodes);     // 根据结点加载模拟需要的数据(如地理信息数据、河段数据等)
 //  todo  loadModuleWithParams(); //加载水文模型及模型参数，或者模型和参数分开加载
+    mSimulation->startMessageLooper(); // start mpi message (e.g. upstream simulation result) listening
     return true;
 }
 

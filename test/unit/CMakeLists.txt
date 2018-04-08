@@ -21,7 +21,8 @@ set(TEST_SOURCE_FILES
         app_test.cpp
         dispatch/dispatch_parse_test.cpp
         graph/node_test.cpp
-        model/test_model.cpp)
+        model/test_model.cpp
+        )
 
 # set binary path and lib storage path wile compiling process.
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
