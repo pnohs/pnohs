@@ -7,9 +7,8 @@
 #include "simulation.h"
 #include "dispatch/dispatch_parse.h"
 
-
 Simulation::Simulation() {
-    pConfig = ConfigToml::newInstance();
+    pConfig = ConfigToml::getInstance();
     ctx = new Context(pConfig); // todo delete
 }
 
@@ -42,6 +41,10 @@ void Simulation::setupNodes() {
         ctx->nodesPool->addNode(snode);
     }
     fs.close();
+}
+
+void Simulation::startMessageLooper() {
+    ctx->newMessageLoop();
 }
 
 void Simulation::simulate() {

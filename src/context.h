@@ -21,8 +21,13 @@ public:
     ~ Context();
 
     /**
+     * New message loop for listening message from other processors.
+     */
+    void newMessageLoop();
+
+    /**
      * select method pick one node that can run (this node didn't finish simulation, and its all upstream is ready).
-     * todo thread block in select.
+     * If there is no node available, the thread will get blocked, until there is at least one node available.
      * @return true for no more available node
      */
     bool select();
@@ -36,6 +41,12 @@ public:
 
 private:
     ConfigToml *pConfig;
+
+    // pthread variable
+    int _t_waiting = 0;
+    pthread_mutex_t _t_mu;
+    pthread_cond_t _t_cond;
+
 };
 
 #endif //PNOHS_CONTROLLER_H

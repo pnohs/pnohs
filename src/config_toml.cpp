@@ -12,7 +12,7 @@ ConfigToml::ConfigToml() : kiwi::config::config() {
 
 }
 
-ConfigToml *ConfigToml::newInstance() {
+ConfigToml *ConfigToml::getInstance() {
     if (pConfigInstance == nullptr) {
         pConfigInstance = new ConfigToml();
     }

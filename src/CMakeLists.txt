@@ -47,7 +47,7 @@ set(SOURCE_FILES
         graph/upstream_node.cpp
         )
 
-set(MAIN_FILE main.cpp)
+set(MAIN_FILE main.cpp message/looper.cpp message/looper.h message/stream_routing_message_runner.cpp message/stream_routing_message_runner.h)
 
 
 # set binary path and lib storage path for compiling process.
