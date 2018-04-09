@@ -53,7 +53,7 @@ set(SOURCE_FILES
         models/type_model_data.cpp
         models/simple_HBV_model.cpp)
 
-set(MAIN_FILE main.cpp message/looper.cpp message/looper.h message/stream_routing_message_runner.cpp message/stream_routing_message_runner.h)
+set(MAIN_FILE main.cpp message/looper.cpp message/looper.h message/stream_routing_message_runner.cpp message/stream_routing_message_runner.h scheduler.cpp scheduler.h)
 
 
 # set binary path and lib storage path for compiling process.

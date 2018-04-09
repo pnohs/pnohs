@@ -14,21 +14,14 @@
 class NodesPool {
 public:
 
-    friend class Context;
+    friend class Scheduler;
 
-    NodesPool(const unsigned long totalSteps);
+    NodesPool();
 
     /**
      * add a simulation node to vector @var simulationNodes,
      */
-    void addNode(const SimulationNode &snode);
-
-    /**
-     * check if all nodes on this processor has finished their simulation.
-     * In fact, just check if all simulation nodes have reached its totalSteps.
-     * @return
-     */
-    bool allFinished();
+    void appendNode(const SimulationNode &snode);
 
     /**
      * checkout whether there is a node whose id is the given id,
@@ -50,19 +43,10 @@ public:
 
 private:
 
-    unsigned long totalSteps;
-
     /**
      * all nodes on this processor.
      */
     std::vector<SimulationNode> simulationNodes;
-
-    /**
-     * select an runnable node (its all upstream task queue are not empty).
-     * @param argTotalSteps the total simulation time steps.
-     * @return  returns an simulation node if there is at least node fit the condition, otherwise returns nullptr.
-     */
-    SimulationNode *pickRunnable();
 
     /**
      * Deliver simulation result to node on the same processor directly.

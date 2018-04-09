@@ -5,30 +5,10 @@
 #include <utils/mpi_utils.h>
 #include "nodes_pool.h"
 
+NodesPool::NodesPool() : simulationNodes() {}
 
-NodesPool::NodesPool(const unsigned long totalSteps) : totalSteps(totalSteps), simulationNodes() {}
-
-void NodesPool::addNode(const SimulationNode &snode) {
+void NodesPool::appendNode(const SimulationNode &snode) { // todo remove all nodes.
     simulationNodes.push_back(snode);
-}
-
-// todo milestone: better pick strategy.
-SimulationNode *NodesPool::pickRunnable() {
-    for (SimulationNode &sNode : simulationNodes) {
-        if (sNode._time_steps <= totalSteps && sNode.upstream.isReady()) {
-            return &sNode;
-        }
-    }
-    return nullptr;
-}
-
-bool NodesPool::allFinished() {
-    for (SimulationNode &sNode : simulationNodes) {
-        if (sNode._time_steps <= totalSteps) {
-            return false;
-        }
-    }
-    return true;
 }
 
 SimulationNode *NodesPool::findNodeById(const _type_node_id node_id) {
