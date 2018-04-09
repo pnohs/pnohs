@@ -10,7 +10,7 @@
 
 Simulation::Simulation() {
     pConfig = ConfigToml::getInstance();
-    ctx = new Context(pConfig); // todo delete
+    ctx = new Context(pConfig); // todo release memory
     scheduler = new Scheduler(*ctx, pConfig->simulationTimeSteps); // todo delete.
 }
 
@@ -57,8 +57,8 @@ void Simulation::simulate() {
     while (scheduler->select()) {
         scheduler->curNode->riverRouting();
         scheduler->curNode->runoff();
-        // deliver simulation result of this node to its downstream node(s).
-        scheduler->nodesPool->deliver(*(scheduler->curNode));
+        // deliver simulation results.
+        scheduler->nodesPool->deliver(scheduler->curNode);
         // todo write results of this time-step of this node to I/O.
     }
     // To here, it has finished all simulation time steps.

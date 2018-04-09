@@ -7,7 +7,7 @@
 bool Upstream::isReady() {
     // if the node has no upstreams (nodes.empty is true), then this simulation node can be returned directly.
     for (UpstreamNode &node:nodes) {
-        if (!node.hasTask()) {
+        if (!node.hasTask()) { // todo lock
             return false;
         }
     }
@@ -30,4 +30,26 @@ void Upstream::putUpMetaStream(const StreamMeta &meta) {
     up_node.location = meta.location;
     // todo set value in vector.
     nodes.push_back(up_node);
+}
+
+void Upstream::appendUpstreamRouting(_type_node_id upstream_node_id, TypeRouting &data) {
+// todo enqueue using std::mutex or pthread mutex.
+    // find upstream,
+    // mutex.lock();
+    //   append to task queue.
+    // mutex.unlock();
+}
+
+std::list<TypeRouting> Upstream::deQueue() {
+    // todo using std::mutex or pthread mutex.
+    /**
+     * var list = std::list();
+     * mutex.lock();
+     * for var node : nodes{
+     *   var routing = node.taskqueue.dequeue();
+     *   list.push_back(routing);
+     * }
+     * mutex.unlock();
+     */
+    return std::list<TypeRouting>();
 }

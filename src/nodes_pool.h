@@ -6,6 +6,7 @@
 #define PNOHS_NODES_POOL_H
 
 #include "simulation_node.h"
+#include "context.h"
 
 /**
  * NodePool is a collection of all simulation nodes on this processor.
@@ -39,7 +40,7 @@ public:
      * Otherwise, send result to the downstream on other processor by communicating.
      * @param node_id the target simulation node id.
      */
-    void deliver(SimulationNode &current_node);
+    void deliver(SimulationNode *current_node);
 
 private:
 
@@ -52,7 +53,7 @@ private:
      * Deliver simulation result to node on the same processor directly.
      * @param node_id the target simulation node id.
      */
-    void straightforwardDeliver(const _type_node_id node_id);
+    void straightforwardDeliver(_type_node_id current_node_id, _type_node_id downstream_node_id);
 
 };
 

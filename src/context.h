@@ -24,7 +24,7 @@ public:
     void abort(const std::string &reason, int code);
 
     // pthread variable
-    int _t_waiting = 0;
+    int _t_waiting = 0; // todo add comments here.
     pthread_mutex_t _t_mu;
     pthread_cond_t _t_cond;
 

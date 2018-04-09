@@ -11,7 +11,7 @@ set(HEADER_FILES
         context.h
         nodes_pool.h
         pnohs.h
-        route.h
+        routing/route.h
         simulation.h
         simulation_node.h
         dispatch/dispatch_parse.h
@@ -36,7 +36,7 @@ set(SOURCE_FILES
         context.cpp
         nodes_pool.cpp
         pnohs.cpp
-        route.cpp
+        routing/route.cpp
         simulation.cpp
         simulation_node.cpp
         dispatch/dnode.hpp
@@ -53,7 +53,7 @@ set(SOURCE_FILES
         models/type_model_data.cpp
         models/simple_HBV_model.cpp)
 
-set(MAIN_FILE main.cpp message/looper.cpp message/looper.h message/stream_routing_message_runner.cpp message/stream_routing_message_runner.h scheduler.cpp scheduler.h)
+set(MAIN_FILE main.cpp message/looper.cpp message/looper.h message/stream_routing_message_runner.cpp message/stream_routing_message_runner.h scheduler.cpp scheduler.h routing/type_routing.cpp routing/type_routing.h)
 
 
 # set binary path and lib storage path for compiling process.

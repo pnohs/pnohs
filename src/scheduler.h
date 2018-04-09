@@ -2,8 +2,8 @@
 // Created by genshen on 4/9/18.
 //
 
-#ifndef PNOHS_NODE_SCHEDULER_H
-#define PNOHS_NODE_SCHEDULER_H
+#ifndef PNOHS_SCHEDULER_H
+#define PNOHS_SCHEDULER_H
 
 #include "nodes_pool.h"
 #include "context.h"
@@ -57,4 +57,4 @@ private:
 };
 
 
-#endif //PNOHS_NODE_SCHEDULER_H
+#endif //PNOHS_SCHEDULER_H

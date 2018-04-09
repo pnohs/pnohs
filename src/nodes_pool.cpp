@@ -4,6 +4,7 @@
 
 #include <utils/mpi_utils.h>
 #include "nodes_pool.h"
+#include "routing/type_routing.h"
 
 NodesPool::NodesPool() : simulationNodes() {}
 
@@ -21,23 +22,26 @@ SimulationNode *NodesPool::findNodeById(const _type_node_id node_id) {
     return nullptr;
 }
 
-void NodesPool::deliver(SimulationNode &current_node) {
-    if (current_node.isRiverOutlet()) {
+void NodesPool::deliver(SimulationNode *current_node) {
+    if (current_node->isRiverOutlet()) {
         // if its outlet of this river.
         // todo out put to letout
     } else {
         // if its downstream is on this processor, just do data copy in memory.
-        if (kiwi::mpiUtils::ownRank == current_node.downstream.nodes[0].location) {
-            straightforwardDeliver(current_node.downstream.nodes[0].id);
+        if (kiwi::mpiUtils::ownRank == current_node->downstream.nodes[0].location) {
+            straightforwardDeliver(current_node->id, current_node->downstream.nodes[0].id);
         } else {
-            _type_node_id streamId = current_node.downstream.nodes[0].id; // todo mpi communication.
+            _type_node_id streamId = current_node->downstream.nodes[0].id; // todo mpi communication.
         }
     }
 }
 
-void NodesPool::straightforwardDeliver(const _type_node_id node_id) {
-    if (findNodeById(node_id) != nullptr) {
-
+void NodesPool::straightforwardDeliver(_type_node_id current_node_id, _type_node_id downstream_node_id) {
+    SimulationNode *downstreamNode = findNodeById(downstream_node_id);
+    if (downstreamNode != nullptr) {
+        // append to upstream task list directly.
+        TypeRouting data = TypeRouting();// todo example;
+        downstreamNode->upstream.appendUpstreamRouting(current_node_id, data);
     } else {
         // todo fault error, downstream not found on processor xxx.
     }

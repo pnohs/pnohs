@@ -4,7 +4,9 @@
 
 #include "scheduler.h"
 
-Scheduler::Scheduler(Context &ctx, unsigned long total_steps) : ctx(ctx), _total_steps() {}
+Scheduler::Scheduler(Context &ctx, unsigned long total_steps) : ctx(ctx), _total_steps(total_steps) {
+    nodesPool = new NodesPool();
+}
 
 Scheduler::~Scheduler() {
     // delete nodesPool; // todo remove all nodes.
