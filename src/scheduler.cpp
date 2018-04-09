@@ -5,15 +5,15 @@
 #include "scheduler.h"
 
 Scheduler::Scheduler(Context &ctx, unsigned long total_steps) : ctx(ctx), _total_steps(total_steps) {
-    nodesPool = new NodesPool();
+    pNodesPool = new NodesPool();
 }
 
 Scheduler::~Scheduler() {
-    // delete nodesPool; // todo remove all nodes.
+    // delete pNodesPool; // todo remove all nodes.
 }
 
 bool Scheduler::select() {
-    if (allFinished()) { // all simulation nodes have finished their simulation.
+    if (pNodesPool->allFinished()) { // all simulation nodes have finished their simulation.
         return false;
     }
 
@@ -39,7 +39,7 @@ bool Scheduler::select() {
 
 // todo milestone: better pick strategy.
 SimulationNode *Scheduler::pickRunnable() {
-    for (SimulationNode &sNode : nodesPool->simulationNodes) {
+    for (SimulationNode &sNode : pNodesPool->simulationNodes) {
         if (sNode._time_steps <= _total_steps && sNode.upstream.isReady()) {
             return &sNode;
         }
@@ -47,11 +47,7 @@ SimulationNode *Scheduler::pickRunnable() {
     return nullptr;
 }
 
-bool Scheduler::allFinished() {
-    for (SimulationNode &sNode : nodesPool->simulationNodes) {
-        if (sNode._time_steps <= _total_steps) {
-            return false;
-        }
-    }
-    return true;
+void Scheduler::postStep() {
+    curNode->_time_steps++;
+    pNodesPool->updateStatus(_total_steps); // update
 }

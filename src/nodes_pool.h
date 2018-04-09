@@ -6,7 +6,6 @@
 #define PNOHS_NODES_POOL_H
 
 #include "simulation_node.h"
-#include "context.h"
 
 /**
  * NodePool is a collection of all simulation nodes on this processor.
@@ -42,7 +41,33 @@ public:
      */
     void deliver(SimulationNode *current_node);
 
+    /**
+     * check the status of unreached tasks.
+     * If we don't need any more routing results from upstream nodes for any node,
+     * we can still finish the whole simulation on this node. False will be returned.
+     * If some node(s) have to wait the routing results from upstream node(s) in later time,True will be returned.
+     * @return True for some node(s) have to wait the routing results(task) from its/their upstream node(s). False for otherwise.
+     */
+    bool hasMoreUnreachedTasks();
+
+    // todo
+    /**
+     * Check if all nodes on this processor has finished their simulation.
+     * In fact, just check if each simulation nodes has reached its totalSteps.
+     * @return true for all simulation finished (the whole simulation will end later), false for otherwise.
+     */
+    bool allFinished();
+
+    /**
+     * After finishing the simulation of each time step of each node,
+     * this function will be called to update some status variable.
+     * @param total_steps
+     */
+    void updateStatus(const unsigned long total_steps);
+
 private:
+
+    bool status_all_tasks_finished = false, status_has_more_unreached_tasks = false;
 
     /**
      * all nodes on this processor.

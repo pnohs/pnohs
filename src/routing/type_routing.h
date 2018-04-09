@@ -12,8 +12,16 @@
  */
 struct TypeRouting {
 //    kiwi::RID ird;
-    _type_node_id nodeid;
-    _type_node_id downstream_nodeid;
+    /**
+     * Considering deliver routing results to its downstream node, denoted as D,
+     * the source_id is the id of the upstream node of D.
+     */
+    _type_node_id source_id;
+
+    /**
+     * destination_id is the id of downstream node D.
+     */
+    _type_node_id destination_id;
     double routing_data; // just an example of stream routing data.
 
 };

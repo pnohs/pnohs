@@ -11,7 +11,7 @@ set(HEADER_FILES
         context.h
         nodes_pool.h
         pnohs.h
-        routing/route.h
+        scheduler.h
         simulation.h
         simulation_node.h
         dispatch/dispatch_parse.h
@@ -24,19 +24,24 @@ set(HEADER_FILES
         graph/stream_meta.h
         graph/upstream.h
         graph/upstream_node.h
-        utils/typedef.h
+        message/looper.h
+        message/stream_routing_message_runner.h
         models/interface_potential_evaporation_model.h
         models/simple_potential_evaporation_model.h
         models/models_config.h
         models/type_model_data.h
-        models/simple_HBV_model.h)
+        models/simple_HBV_model.h
+        routing/route.h
+        routing/type_routing.h
+        utils/typedef.h
+        )
 
 set(SOURCE_FILES
         config_toml.cpp
         context.cpp
         nodes_pool.cpp
         pnohs.cpp
-        routing/route.cpp
+        scheduler.cpp
         simulation.cpp
         simulation_node.cpp
         dispatch/dnode.hpp
@@ -49,11 +54,17 @@ set(SOURCE_FILES
         graph/stream_meta.cpp
         graph/upstream.cpp
         graph/upstream_node.cpp
+        message/looper.cpp
+        message/stream_routing_message_runner.cpp
         models/simple_potential_evaporation_model.cpp
         models/type_model_data.cpp
-        models/simple_HBV_model.cpp)
+        models/simple_HBV_model.cpp
+        routing/route.cpp
+        routing/type_routing.cpp
+        )
 
-set(MAIN_FILE main.cpp message/looper.cpp message/looper.h message/stream_routing_message_runner.cpp message/stream_routing_message_runner.h scheduler.cpp scheduler.h routing/type_routing.cpp routing/type_routing.h)
+set(MAIN_FILE main.cpp
+        )
 
 
 # set binary path and lib storage path for compiling process.

@@ -18,13 +18,23 @@ public:
     // node id of upstream nodes. Null or empty indicates that there is no upstream node.
     std::vector<UpstreamNode> nodes; // nodes meta information // todo make private.
 
-    // count of upstream nodes of this node.
+    /**
+     * initial read-write lock for nodes task-queue.
+     */
+    Upstream();
+
+    /**
+     *  count of upstream nodes of this node.
+     * @return the count of upstream nodes.
+     */
     inline const unsigned long count() {
         return nodes.size(); // todo
     }
 
-    // whether the upstream nodes of this node is ready to start a new time-step simulation.
-    // That is the task queues of each upstream nodes are all not empty.
+    /**
+     * Whether the upstream nodes of this node is ready to start a new time-step simulation.
+     * @return if the task queues of each upstream nodes are all not empty, true will be returned, and false for otherwise.
+     */
     bool isReady();
 
     /**
@@ -48,9 +58,10 @@ public:
      * then this node will append the result to task queue of
      * the corresponding upstream node (in {@var std::vector<UpstreamNode>  nodes}) of this node.
      * @param upstream_node_id the node id of upstream node.
-     * @param data the routing result data to be added to task queue.
+     * @param task the routing result data to be added to task queue.
+     * @return true for append successed, false for append failed (e.g. upstream node is not found).
      */
-    void appendUpstreamRouting(_type_node_id upstream_node_id, TypeRouting &data);
+    bool appendUpstreamRouting(_type_node_id upstream_node_id, TypeRouting &task);
 
     /**
      * Dequeue an routing results of task queue from each upstream nodes.
@@ -63,6 +74,10 @@ public:
      * @return list od dequeued routing results.
      */
     std::list<TypeRouting> deQueue(); // todo std:: array or list? // todo function name.
+private:
+
+    // read-write lock for taskqueue.
+    pthread_rwlock_t _task_queue_rwlock;
 };
 
 #endif //PNOHS_UPSTREAM_H

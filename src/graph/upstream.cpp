@@ -4,13 +4,20 @@
 
 #include "upstream.h"
 
+Upstream::Upstream() {
+    pthread_rwlock_init(&_task_queue_rwlock, nullptr);
+}
+
 bool Upstream::isReady() {
     // if the node has no upstreams (nodes.empty is true), then this simulation node can be returned directly.
+    pthread_rwlock_rdlock(&_task_queue_rwlock);
     for (UpstreamNode &node:nodes) {
-        if (!node.hasTask()) { // todo lock
+        if (!node.hasTask()) {
+            pthread_rwlock_unlock(&_task_queue_rwlock);
             return false;
         }
     }
+    pthread_rwlock_unlock(&_task_queue_rwlock);
     return true;
 }
 
@@ -32,12 +39,17 @@ void Upstream::putUpMetaStream(const StreamMeta &meta) {
     nodes.push_back(up_node);
 }
 
-void Upstream::appendUpstreamRouting(_type_node_id upstream_node_id, TypeRouting &data) {
-// todo enqueue using std::mutex or pthread mutex.
-    // find upstream,
-    // mutex.lock();
-    //   append to task queue.
-    // mutex.unlock();
+bool Upstream::appendUpstreamRouting(_type_node_id upstream_node_id, TypeRouting &task) {
+    UpstreamNode *up_node = findUpstreamNodeById(upstream_node_id);
+    if (up_node == nullptr) {
+        return false; // normally, this branch should not be reached.
+    }
+
+    // write task to task queue.
+    pthread_rwlock_wrlock(&_task_queue_rwlock);
+    up_node->addTask(task);
+    pthread_rwlock_unlock(&_task_queue_rwlock);
+    return true;
 }
 
 std::list<TypeRouting> Upstream::deQueue() {

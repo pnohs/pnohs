@@ -4,9 +4,17 @@
 
 #include "upstream_node.h"
 
-UpstreamNode::UpstreamNode() : StreamMeta(), taskQueue() {
+UpstreamNode::UpstreamNode() : StreamMeta(), task_queue() {
 }
 
-bool UpstreamNode::hasTask() { // todo
-    return !taskQueue.empty();
+bool UpstreamNode::hasTask() {
+    return !task_queue.empty();
+}
+
+unsigned long UpstreamNode::taskCount() {
+    return task_queue.size();
+}
+
+void UpstreamNode::addTask(TypeRouting &routing_task) {
+    task_queue.push_back(routing_task);
 }

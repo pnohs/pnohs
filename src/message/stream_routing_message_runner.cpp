@@ -4,12 +4,15 @@
 
 #include "stream_routing_message_runner.h"
 
+// initial context for thread here.
+StreamRoutingMessageRunner::StreamRoutingMessageRunner(Context &ctx, NodesPool *pPool) : ctx(ctx), pNodesPool(pPool) {}
+
 bool StreamRoutingMessageRunner::shouldDetach() const {
-    return MessageRunner::shouldDetach();  // todo
+    return !(pNodesPool->hasMoreUnreachedTasks());
 }
 
 bool StreamRoutingMessageRunner::filter(MPI_Status *pStatus) {
-    return false; // todo
+    return pStatus->MPI_TAG == TagStreamRoutingMessage; // only receive stream routing message.
 }
 
 void StreamRoutingMessageRunner::onMessage(MPI_Status *pStatus) {
@@ -23,4 +26,6 @@ void StreamRoutingMessageRunner::onMessage(MPI_Status *pStatus) {
 //    }
 //    pthread_mutex_unlock(&_t_mu);
 // }
+    // wake up the blocked main thread if necessary.
+
 }

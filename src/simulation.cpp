@@ -4,9 +4,11 @@
 
 #include <utils/mpi_utils.h>
 #include <iostream>
+#include <event/message_looper.h>
 #include "simulation.h"
 #include "dispatch/dispatch_parse.h"
 #include "message/looper.h"
+#include "message/stream_routing_message_runner.h"
 
 Simulation::Simulation() {
     pConfig = ConfigToml::getInstance();
@@ -40,12 +42,13 @@ void Simulation::setupNodes() {
         }
         snode.notifyDataSetChanged();
         // add more information to SimulationNode.
-        scheduler->nodesPool->appendNode(snode);
+        scheduler->pNodesPool->appendNode(snode);
     }
     fs.close();
 }
 
 void Simulation::startMessageLooper() {
+    kiwi::MessageLooper::registerRunner(new StreamRoutingMessageRunner(*ctx, scheduler->pNodesPool));
     // New message loop for listening message from other processors.
     Looper *loop = Looper::NewMessageLooper(); // todo delete
     if (loop == nullptr) {
@@ -58,7 +61,8 @@ void Simulation::simulate() {
         scheduler->curNode->riverRouting();
         scheduler->curNode->runoff();
         // deliver simulation results.
-        scheduler->nodesPool->deliver(scheduler->curNode);
+        scheduler->pNodesPool->deliver(scheduler->curNode);
+        scheduler->postStep(); // update simulation variable after finishing a step of simulation.
         // todo write results of this time-step of this node to I/O.
     }
     // To here, it has finished all simulation time steps.

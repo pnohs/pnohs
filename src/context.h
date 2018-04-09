@@ -5,9 +5,7 @@
 #ifndef PNOHS_CONTROLLER_H
 #define PNOHS_CONTROLLER_H
 
-#include "simulation_node.h"
 #include "config_toml.h"
-#include "nodes_pool.h"
 
 class Context {
 public:

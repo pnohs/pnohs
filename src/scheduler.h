@@ -17,7 +17,7 @@ public:
     SimulationNode *curNode = nullptr;
 
     // it is not empty at runtime.
-    NodesPool *nodesPool; // all nodes
+    NodesPool *pNodesPool; // all nodes
 
     /**
      * new scheduler with context and total simulation steps.
@@ -26,7 +26,7 @@ public:
      */
     Scheduler(Context &ctx, unsigned long total_steps);
 
-    ~Scheduler(); // remove all nodes in nodesPool.
+    ~Scheduler(); // remove all nodes in pNodesPool.
 
     /**
      * select method pick one node that can run (this node didn't finish simulation, and its all upstream is ready).
@@ -34,6 +34,8 @@ public:
      * @return true for no more available node
      */
     bool select();
+
+    void postStep();
 
 private:
     const unsigned long _total_steps;
@@ -46,13 +48,6 @@ private:
     * @return  returns an simulation node if there is at least node fit the condition, otherwise returns nullptr.
     */
     SimulationNode *pickRunnable();
-
-    /**
-     * check if all nodes on this processor has finished their simulation.
-     * In fact, just check if all simulation nodes have reached its totalSteps.
-     * @return
-     */
-    bool allFinished();
 
 };
 
