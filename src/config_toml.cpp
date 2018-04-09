@@ -14,14 +14,14 @@ ConfigToml::ConfigToml() : kiwi::config::config() {
 
 ConfigToml *ConfigToml::getInstance() {
     if (pConfigInstance == nullptr) {
-        pConfigInstance = new ConfigToml();
+        pConfigInstance = new ConfigToml(); // todo delete after not usable.
     }
     return pConfigInstance; // make sure there is a configure instance.
 }
 
 ConfigToml *ConfigToml::newInstance(const std::string &configureFilePath) {
     if (pConfigInstance == nullptr) {
-        pConfigInstance = new ConfigToml();
+        pConfigInstance = new ConfigToml(); // todo delete.
         pConfigInstance->resolve(configureFilePath);
     }
     return pConfigInstance;

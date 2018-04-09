@@ -71,7 +71,7 @@ void pnohs::onCreate() {
 
 bool pnohs::prepare() {
     // new simulation instance.
-    mSimulation = new Simulation();
+    mSimulation = new Simulation(); // todo delete
     // initial river nodes and their upstream/downstream (up/down stream nodes ids and MPI rank id).
     mSimulation->setupNodes();
 //  todo  loadData(nodes);     // 根据结点加载模拟需要的数据(如地理信息数据、河段数据等)

@@ -6,10 +6,12 @@
 #include <iostream>
 #include "simulation.h"
 #include "dispatch/dispatch_parse.h"
+#include "message/looper.h"
 
 Simulation::Simulation() {
     pConfig = ConfigToml::getInstance();
     ctx = new Context(pConfig); // todo delete
+    scheduler = new Scheduler(*ctx, pConfig->simulationTimeSteps); // todo delete.
 }
 
 void Simulation::setupNodes() {
@@ -38,20 +40,25 @@ void Simulation::setupNodes() {
         }
         snode.notifyDataSetChanged();
         // add more information to SimulationNode.
-        ctx->nodesPool->addNode(snode);
+        scheduler->nodesPool->appendNode(snode);
     }
     fs.close();
 }
 
 void Simulation::startMessageLooper() {
-    ctx->newMessageLoop();
+    // New message loop for listening message from other processors.
+    Looper *loop = Looper::NewMessageLooper(); // todo delete
+    if (loop == nullptr) {
+        ctx->abort("Error: pthread_create() failed.", 1);
+    }
 }
 
 void Simulation::simulate() {
-    while (ctx->select()) {
-        ctx->curNode->riverRouting();
-        ctx->curNode->runoff();
-        ctx->nodesPool->deliver(*(ctx->curNode)); // deliver simulation result of this node to its downstream node(s).
+    while (scheduler->select()) {
+        scheduler->curNode->riverRouting();
+        scheduler->curNode->runoff();
+        // deliver simulation result of this node to its downstream node(s).
+        scheduler->nodesPool->deliver(*(scheduler->curNode));
         // todo write results of this time-step of this node to I/O.
     }
     // To here, it has finished all simulation time steps.

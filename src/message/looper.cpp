@@ -21,12 +21,12 @@ Looper *Looper::NewMessageLooper() {
     return looperInstance;
 }
 
-// those runs in a new thread.
+// those codes run in a new thread.
 void *Looper::messageLoopNewThread(void *object) {
 //    Looper *looperInstance = reinterpret_cast<Looper *>(object);
 
     kiwi::MessageLooper::registerRunner(new StreamRoutingMessageRunner());
-    // a dead loop to listen and dispatch messages.
+    // Start a dead loop to listen and dispatch messages.
     // And runners in message loop will be unregistered automatically before loop finished.
     kiwi::MessageLooper::start();
     pthread_exit(nullptr);

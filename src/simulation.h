@@ -9,6 +9,7 @@
 #include "config_toml.h"
 #include "simulation_node.h"
 #include "context.h"
+#include "scheduler.h"
 
 class Simulation {
 public:
@@ -33,6 +34,7 @@ public:
 private:
     ConfigToml *pConfig; // config pointer.
     Context *ctx; // context
+    Scheduler *scheduler;
 };
 
 
