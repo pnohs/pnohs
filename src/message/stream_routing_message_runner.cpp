@@ -8,7 +8,7 @@
 StreamRoutingMessageRunner::StreamRoutingMessageRunner(Context &ctx, NodesPool *pPool) : ctx(ctx), pNodesPool(pPool) {}
 
 bool StreamRoutingMessageRunner::shouldDetach() const {
-    return !(pNodesPool->hasMoreUnreachedTasks());
+    return !(pNodesPool->potentiallyCompleted());
 }
 
 bool StreamRoutingMessageRunner::filter(MPI_Status *pStatus) {

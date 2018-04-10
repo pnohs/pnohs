@@ -42,21 +42,23 @@ public:
     void deliver(SimulationNode *current_node);
 
     /**
-     * check the status of unreached tasks.
+     * check the status of potential tasks.
      * If we don't need any more routing results from upstream nodes for any node,
-     * we can still finish the whole simulation on this node. False will be returned.
-     * If some node(s) have to wait the routing results from upstream node(s) in later time,True will be returned.
-     * @return True for some node(s) have to wait the routing results(task) from its/their upstream node(s). False for otherwise.
+     * we can still finish the whole simulation on those node, true will be returned.
+     * If some node(s) have to wait the routing results from upstream node(s) in later time, false will be returned.
+     *
+     * In other words, for all nodes, if the data in task queue is enough to finish the whole simulation
+     * (no more data from upstream nodes), this status is called potentially completed.
+     * @return False for some node(s) have to wait the routing results(task) from its/their upstream node(s) soon after. True for otherwise.
      */
-    bool hasMoreUnreachedTasks();
+    bool potentiallyCompleted();
 
-    // todo
     /**
-     * Check if all nodes on this processor has finished their simulation.
+     * Check if all nodes on this processor has completed their simulation.
      * In fact, just check if each simulation nodes has reached its totalSteps.
      * @return true for all simulation finished (the whole simulation will end later), false for otherwise.
      */
-    bool allFinished();
+    bool allCompleted();
 
     /**
      * After finishing the simulation of each time step of each node,
@@ -67,7 +69,7 @@ public:
 
 private:
 
-    bool status_all_tasks_finished = false, status_has_more_unreached_tasks = false;
+    bool status_all_tasks_completed = false, status_tasks_potentially_completed = false;
 
     /**
      * all nodes on this processor.

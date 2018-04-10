@@ -21,6 +21,10 @@ bool Upstream::isReady() {
     return true;
 }
 
+unsigned long Upstream::minQueSize() {
+    return 0; // todo
+}
+
 UpstreamNode *Upstream::findUpstreamNodeById(_type_node_id id) {
     for (UpstreamNode &node:nodes) {
         if (node.id == id) {

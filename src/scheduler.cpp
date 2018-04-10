@@ -13,7 +13,7 @@ Scheduler::~Scheduler() {
 }
 
 bool Scheduler::select() {
-    if (pNodesPool->allFinished()) { // all simulation nodes have finished their simulation.
+    if (pNodesPool->allCompleted()) { // all simulation nodes have finished their simulation.
         return false;
     }
 

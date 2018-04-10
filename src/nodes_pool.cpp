@@ -55,31 +55,34 @@ void NodesPool::straightforwardDeliver(_type_node_id current_node_id, _type_node
     }
 }
 
-bool NodesPool::hasMoreUnreachedTasks() {
-    return status_has_more_unreached_tasks;
+bool NodesPool::potentiallyCompleted() {
+    return status_tasks_potentially_completed;
 }
 
-bool NodesPool::allFinished() {
-    return status_all_tasks_finished;
+bool NodesPool::allCompleted() {
+    return status_all_tasks_completed;
 }
 
-// update variable @var status_has_more_unreached_tasks and @var status_all_tasks_finished.
+// update variable @var status_tasks_potentially_completed and @var status_all_tasks_completed.
 void NodesPool::updateStatus(const unsigned long total_steps) {
-    bool status = true;
+    bool finish_status = true;
+    // update status_all_tasks_completed
     for (SimulationNode &sNode : simulationNodes) {
-        if (sNode._time_steps <= total_steps) {
-            status = false;
+        if (sNode._time_steps < total_steps) { // the node does not finish its simulation.
+            finish_status = false;
+            break;
         }
     }
-    status_all_tasks_finished = status;
+    status_all_tasks_completed = finish_status;
 
-    status = true;
-    // todo update status_has_more_unreached_tasks.
+    bool potential_status = true;
+    // update status_tasks_potentially_completed.
     for (SimulationNode &sNode : simulationNodes) {
-//        for(each upstream node of sNode){
-//        if (sNode._time_steps+sNode.taskCount() <= total_steps) {
-//            status = false;
-//        }
-//    }
+        // nodes completed plus routing data in task queue.
+        if (sNode._time_steps + sNode.upstream.minQueSize() < total_steps) {
+            potential_status = false;
+            break;
+        }
     }
+    status_tasks_potentially_completed = potential_status;
 }

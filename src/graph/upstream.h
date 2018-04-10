@@ -28,7 +28,7 @@ public:
      * @return the count of upstream nodes.
      */
     inline const unsigned long count() {
-        return nodes.size(); // todo
+        return nodes.size();
     }
 
     /**
@@ -36,6 +36,15 @@ public:
      * @return if the task queues of each upstream nodes are all not empty, true will be returned, and false for otherwise.
      */
     bool isReady();
+
+    /**
+     * Get the minimal size of all task queue on this node.
+     *
+     * For example, this node have 4 upstream nodes (4 corresponding task queues),
+     * and the size of 4 task queue are 4,5,9,1. Then 1 will be returned.
+     * @return the minimal size of all task queue on this node.
+     */
+    unsigned long minQueSize();
 
     /**
      * checkout whether there is a upstream node whose id is the given id,
