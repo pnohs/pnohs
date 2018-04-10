@@ -2,6 +2,7 @@
 // Created by genshen on 4/9/18.
 //
 
+#include <utils/mpi_utils.h>
 #include "scheduler.h"
 
 Scheduler::Scheduler(Context &ctx, unsigned long total_steps) : ctx(ctx), _total_steps(total_steps) {

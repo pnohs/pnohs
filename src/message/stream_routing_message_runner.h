@@ -11,8 +11,6 @@
 #include "../nodes_pool.h"
 #include "../context.h"
 
-const int TagStreamRoutingMessage = 0x101;
-
 /**
  * In our implementation,
  * the all callback functions below will runs in a new thread.

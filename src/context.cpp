@@ -7,7 +7,13 @@
 #include "context.h"
 #include "message/looper.h"
 
-Context::Context(ConfigToml *pConfig) : pConfig(pConfig) {}
+Context::Context(ConfigToml *pConfig) : pConfig(pConfig) {
+    // todo use pthread_once: https://linux.die.net/man/3/pthread_mutex_init
+    // todo destroy
+    // initialize pthread mutex and cond
+    pthread_mutex_init(&_t_mu, nullptr); // or use static initialize.
+    pthread_cond_init(&_t_cond, nullptr);
+}
 
 Context::~Context() { // todo delete context.
 

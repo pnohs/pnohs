@@ -6,7 +6,7 @@
 #define PNOHS_STREAM_META_H
 
 #include <utils/data_def.h>
-#include "../utils/typedef.h"
+#include "../utils/predefine.h"
 
 /**
  * meat data of upstream and downstream of node {@link node.h#node}.

@@ -8,7 +8,7 @@
 #include <string>
 #include <fstream>
 #include <utils/data_def.h>
-#include "../utils/typedef.h"
+#include "../utils/predefine.h"
 #include "dispatch_type.h"
 #include "node_parse.h"
 

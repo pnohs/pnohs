@@ -3,6 +3,7 @@
 //
 
 #include <utils/mpi_utils.h>
+#include <iostream>
 #include "nodes_pool.h"
 #include "routing/type_routing.h"
 
@@ -31,9 +32,20 @@ void NodesPool::deliver(SimulationNode *current_node) {
         if (kiwi::mpiUtils::ownRank == current_node->downstream.nodes[0].location) {
             straightforwardDeliver(current_node->id, current_node->downstream.nodes[0].id);
         } else {
-            _type_node_id stream_id = current_node->downstream.nodes[0].id; // todo mpi communication.
+            remoteDeliver(current_node->id,
+                          current_node->downstream.nodes[0]); // deliver to the node on other processor.
         }
     }
+}
+
+void NodesPool::remoteDeliver(_type_node_id current_node_id, const DownstreamNode &downstream_node) {
+    TypeRouting data = TypeRouting(); // todo example
+    data.routing_data = 3.14;
+    data.source_id = current_node_id;
+    data.destination_id = downstream_node.id;
+
+    MPI_Send(&data, sizeof(TypeRouting), MPI_BYTE,
+             downstream_node.location, TagStreamRoutingMessage, MPI_COMM_WORLD);
 }
 
 void NodesPool::straightforwardDeliver(_type_node_id current_node_id, _type_node_id downstream_node_id) {

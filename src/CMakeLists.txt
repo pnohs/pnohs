@@ -33,7 +33,7 @@ set(HEADER_FILES
         models/simple_HBV_model.h
         routing/route.h
         routing/type_routing.h
-        utils/typedef.h
+        utils/predefine.h
         )
 
 set(SOURCE_FILES

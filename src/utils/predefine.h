@@ -10,4 +10,7 @@ typedef unsigned long _type_node_id;
 typedef unsigned long _type_node_index; // node index type.
 typedef _type_node_index _type_nodes_count; // node count type.
 
+// mpi message
+static const int TagStreamRoutingMessage = 0x101;
+
 #endif //PNOHS_TYPEDEF_H

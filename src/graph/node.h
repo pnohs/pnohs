@@ -9,7 +9,7 @@
 #include "stream_meta.h"
 #include "upstream.h"
 #include "downstream.h"
-#include "../utils/typedef.h"
+#include "../utils/predefine.h"
 
 /**
  * Node in river-routing relationship graph.

@@ -5,7 +5,7 @@
 #ifndef PNOHS_TYPE_ROUTING_H
 #define PNOHS_TYPE_ROUTING_H
 
-#include "../utils/typedef.h"
+#include "../utils/predefine.h"
 
 /**
  * basic data type for river/stream routing communication among processors.

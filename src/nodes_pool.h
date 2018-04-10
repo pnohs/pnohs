@@ -78,10 +78,17 @@ private:
 
     /**
      * Deliver simulation result to node on the same processor directly.
-     * @param node_id the target simulation node id.
+     * @param current_node_id the target simulation node id.
+     * @param downstream_node_id // todo document
      */
     void straightforwardDeliver(_type_node_id current_node_id, _type_node_id downstream_node_id);
 
+    /**
+     * deliver stream routing data to the downstream node on the remote processor.
+     * @param current_node_id // todo document
+     * @param downstream_node
+     */
+    void remoteDeliver(_type_node_id current_node_id,const DownstreamNode &downstream_node);
 };
 
 

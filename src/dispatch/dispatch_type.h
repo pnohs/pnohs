@@ -5,7 +5,7 @@
 #ifndef PNOHS_DISPATCH_TYPE_H
 #define PNOHS_DISPATCH_TYPE_H
 
-#include "../utils/typedef.h"
+#include "../utils/predefine.h"
 
 //Custom types used in reading subbasion info for improving maintainability
 
