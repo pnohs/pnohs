@@ -16,8 +16,8 @@ class UpstreamNode : public StreamMeta {
 public:
 
     /**
-     * initial a UpstreamNode and whit its task queue.
-     * And initial pthread read-write lock here.
+     * Initialize a UpstreamNode and whit its task queue.
+     * And initialize pthread read-write lock here.
      */
     UpstreamNode();
 

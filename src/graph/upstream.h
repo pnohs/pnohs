@@ -19,7 +19,7 @@ public:
     std::vector<UpstreamNode> nodes; // nodes meta information // todo make private.
 
     /**
-     * initial read-write lock for nodes task-queue.
+     * Initializes read-write lock for nodes task-queue.
      */
     Upstream();
 

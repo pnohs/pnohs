@@ -16,7 +16,7 @@
  */
 class DispatchWriter {
 public:
-    /** initial writer.
+    /** Initialize writer.
      * @param fs file stream for writer
      * @param offset_cursor writer data starting from this offset.
      */
@@ -24,14 +24,14 @@ public:
 
     /**
      * todo rename function name
-     * stat write rank_count to stream header, and initial offset_course pointed to the first rank's dispatch data offset.
+     * stat writes rank_count to stream header, and initializes offset_course pointed to the first rank's dispatch data offset.
      * @param rank_count all ranks/processors.
-     * @return file pointer, initialed absolute offset cursor
+     * @return file pointer, the cursor of initialized absolute offset.
      */
     static _type_dispatch_file_offset stat(const _type_dispatch_rank_id rank_count);
 
     /**
-     * locate write node count to file stream and initial variable offset_in_rank.
+     * locate write node count to file stream and initialize @var offset_in_rank.
      * @param nodes_count
      */
     void locate(_type_dispatch_nodes_count nodes_count);

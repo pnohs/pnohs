@@ -2,7 +2,6 @@
 // Created by genshen on 4/6/18.
 //
 
-#include <iostream>
 #include <pthread.h>
 #include <utils/mpi_utils.h>
 #include <event/message_looper.h>
@@ -30,4 +29,3 @@ void *Looper::messageLoopNewThread(void *object) {
     kiwi::MessageLooper::start();
     pthread_exit(nullptr);
 }
-
