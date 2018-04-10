@@ -3,7 +3,6 @@
 //
 
 #include <utils/mpi_utils.h>
-#include <iostream>
 #include "nodes_pool.h"
 #include "routing/type_routing.h"
 

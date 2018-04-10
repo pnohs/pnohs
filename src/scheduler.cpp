@@ -41,7 +41,7 @@ bool Scheduler::select() {
 // todo milestone: better pick strategy.
 SimulationNode *Scheduler::pickRunnable() {
     for (SimulationNode &sNode : pNodesPool->simulationNodes) {
-        if (sNode._time_steps <= _total_steps && sNode.upstream.isReady()) {
+        if (sNode._time_steps < _total_steps && sNode.upstream.isReady()) {
             return &sNode;
         }
     }
