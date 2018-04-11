@@ -18,3 +18,9 @@ unsigned long UpstreamNode::taskCount() {
 void UpstreamNode::addTask(TypeRouting &routing_task) {
     task_queue.push_back(routing_task);
 }
+
+TypeRouting UpstreamNode::popTaskNoEmpty() {
+    TypeRouting frontest = task_queue.front();
+    task_queue.pop_front();
+    return frontest;
+}

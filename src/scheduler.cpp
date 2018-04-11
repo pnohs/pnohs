@@ -31,7 +31,15 @@ bool Scheduler::select() {
             continue;
         } else {
             curNode = pickedNode;
-            // todo Dequeue upstreams // write queue
+            if(curNode->upstream.minQueSize() <= 0) {
+               // one of this node's upstream taskqueue is empty
+                pthread_mutex_unlock(&(ctx._t_mu)); // lock
+                continue;
+            }
+            // Dequeue upstreams // write queue
+            std::list<TypeRouting> routingDatas;
+            routingDatas = curNode->upstream.deQueue();
+
             pthread_mutex_unlock(&(ctx._t_mu)); // lock
             return true;
         }

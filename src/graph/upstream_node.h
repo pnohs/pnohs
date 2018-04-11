@@ -41,6 +41,14 @@ public:
      */
     void addTask(TypeRouting &routing);
 
+    /**
+     * pop a task from task queue.
+     * This function is called when the downstream node of this node is into simulation.
+     * when this function be called, the taskCount >= 1
+     * @return routing stream routing data.
+     */
+    TypeRouting popTaskNoEmpty();
+
 private:
     // this is a shared variable, when it is modified by multiple thread, make sure to be thread-safe.
 //    moodycamel::ConcurrentQueue<TypeRouting> task_queue;

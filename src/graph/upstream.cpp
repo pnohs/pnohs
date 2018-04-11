@@ -2,6 +2,7 @@
 // Created by genshen on 2018-03-26.
 //
 
+#include <mutex>
 #include "upstream.h"
 
 Upstream::Upstream() {
@@ -22,7 +23,16 @@ bool Upstream::isReady() {
 }
 
 unsigned long Upstream::minQueSize() {
-    return 0; // todo
+
+    unsigned long minQueSize = 0;
+    pthread_rwlock_rdlock(&_task_queue_rwlock);
+    for (UpstreamNode &node:nodes) {
+        if(node.taskCount() < minQueSize) {
+            minQueSize = node.taskCount();
+        }
+    }
+    pthread_rwlock_unlock(&_task_queue_rwlock);
+    return minQueSize; // todo
 }
 
 UpstreamNode *Upstream::findUpstreamNodeById(_type_node_id id) {
@@ -57,15 +67,13 @@ bool Upstream::appendUpstreamRouting(_type_node_id upstream_node_id, TypeRouting
 }
 
 std::list<TypeRouting> Upstream::deQueue() {
-    // todo using std::mutex or pthread mutex.
-    /**
-     * var list = std::list();
-     * mutex.lock();
-     * for var node : nodes{
-     *   var routing = node.taskqueue.dequeue();
-     *   list.push_back(routing);
-     * }
-     * mutex.unlock();
-     */
-    return std::list<TypeRouting>();
+    // if one upstream's taskqueue is empty!!!!! 责任单一原则：调用本函数之前进行判断（node.minQueSize() <= 0）
+    std::list<TypeRouting> routingDatas;
+
+    pthread_rwlock_wrlock(&_task_queue_rwlock);
+    for (UpstreamNode &node:nodes) {
+        routingDatas.push_back(node.popTaskNoEmpty());
+    }
+    pthread_rwlock_unlock(&_task_queue_rwlock);
+    return routingDatas;
 }
