@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "type_model_data.h"
-
+#include <typeinfo>
 
 void ModelDatas::addData(std::string key, double value) {
     this->dDatas["key"] = value;
