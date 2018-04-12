@@ -6,6 +6,8 @@
 #define PNOHS_NODES_POOL_H
 
 #include "simulation_node.h"
+#include "context.h"
+#include "message/stream_routing_message_runner.h"
 
 /**
  * NodePool is a collection of all simulation nodes on this processor.
@@ -15,6 +17,8 @@ class NodesPool {
 public:
 
     friend class Scheduler;
+
+    friend void StreamRoutingMessageRunner::onAttach();
 
     NodesPool();
 
@@ -42,34 +46,54 @@ public:
     void deliver(SimulationNode *current_node);
 
     /**
-     * check the status of potential tasks.
-     * If we don't need any more routing results from upstream nodes for any node,
+     * Return status of whether all tasks is potentially completed.
+     * For all nodes, if we don't need any more routing results from upstream nodes,
      * we can still finish the whole simulation on those node, true will be returned.
-     * If some node(s) have to wait the routing results from upstream node(s) in later time, false will be returned.
      *
-     * In other words, for all nodes, if the data in task queue is enough to finish the whole simulation
-     * (no more data from upstream nodes), this status is called potentially completed.
-     * @return False for some node(s) have to wait the routing results(task) from its/their upstream node(s) soon after. True for otherwise.
+     * @return If some node(s) have to wait the routing results from upstream node(s) in later time, false will be returned. True for otherwise.
      */
-    bool potentiallyCompleted();
+//    bool potentiallyCompleted();
 
     /**
-     * Check if all nodes on this processor has completed their simulation.
-     * In fact, just check if each simulation nodes has reached its totalSteps.
+     * Return status of if all nodes has completed their simulation.
      * @return true for all simulation finished (the whole simulation will end later), false for otherwise.
      */
     bool allCompleted();
 
     /**
-     * After finishing the simulation of each time step of each node,
-     * this function will be called to update some status variable.
-     * @param total_steps
+     * Update status {@var status_tasks_potentially_completed}.
+     * This status is updated after a stream routing message is added to task queue,
+     * which includes remote message(MPI routing message from other processors, corresponding upstream is on the other processor),
+     * and straightforward routing message (corresponding upstream is on the same processor).
+     *
+     * This update may involves multiple threads (message loop thread and main thread), so mutex is necessary.
+     * @param total_steps the total time steps of whole simulation.
      */
-    void updateStatus(const unsigned long total_steps);
+//    void updateStatusPotentiallyCompleted(Context *ctx, const unsigned long total_steps);
+
+//    void updatePotentiallyCompletedStatus(Context *ctx);
+
+    /**
+     * After finishing the simulation of each time step of each node,
+     * this function will be called to update some status flag of {@var status_all_tasks_completed}.
+     * In fact, just check if each simulation nodes has reached its totalSteps.
+     * @param total_steps the total time steps of whole simulation.
+     */
+    void updateStatusAllCompleted(const unsigned long total_steps);
 
 private:
 
-    bool status_all_tasks_completed = false, status_tasks_potentially_completed = false;
+    /**
+     * Status of whether all nodes on this processor has finished all their simulation.
+     */
+    bool status_all_tasks_completed = false;
+
+    /**
+     * For all nodes, if the data in task queue is enough to finish the whole simulation
+     * (no more data is required from upstream nodes), this status is called potentially completed.
+     * This status is updated by updatePotentiallyCompletedStatus after receiving a stream routing message.
+     */
+//    bool status_tasks_potentially_completed = false;
 
     /**
      * all nodes on this processor.
@@ -88,7 +112,7 @@ private:
      * @param current_node_id // todo document
      * @param downstream_node
      */
-    void remoteDeliver(_type_node_id current_node_id,const DownstreamNode &downstream_node);
+    void remoteDeliver(_type_node_id current_node_id, const DownstreamNode &downstream_node);
 };
 
 

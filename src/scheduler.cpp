@@ -50,5 +50,5 @@ SimulationNode *Scheduler::pickRunnable() {
 
 void Scheduler::postStep() {
     curNode->_time_steps++;
-    pNodesPool->updateStatus(_total_steps); // update
+    pNodesPool->updateStatusAllCompleted(_total_steps); // update
 }

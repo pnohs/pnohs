@@ -48,7 +48,8 @@ void Simulation::setupNodes() {
 }
 
 void Simulation::startMessageLooper() {
-    kiwi::MessageLooper::registerRunner(new StreamRoutingMessageRunner(*ctx, scheduler->pNodesPool));
+    kiwi::MessageLooper::registerRunner(
+            new StreamRoutingMessageRunner(*ctx, scheduler->pNodesPool, pConfig->simulationTimeSteps));
     // New message loop for listening message from other processors.
     Looper *loop = Looper::NewMessageLooper(); // todo delete
     if (loop == nullptr) {

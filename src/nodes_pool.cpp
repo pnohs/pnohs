@@ -47,6 +47,7 @@ void NodesPool::remoteDeliver(_type_node_id current_node_id, const DownstreamNod
              downstream_node.location, TagStreamRoutingMessage, MPI_COMM_WORLD);
 }
 
+// todo usr event message.
 void NodesPool::straightforwardDeliver(_type_node_id current_node_id, _type_node_id downstream_node_id) {
     SimulationNode *downstreamNode = findNodeById(downstream_node_id);
     if (downstreamNode != nullptr) {
@@ -56,26 +57,28 @@ void NodesPool::straightforwardDeliver(_type_node_id current_node_id, _type_node
         data.source_id = current_node_id;
         data.destination_id = downstream_node_id;
         bool append_status = downstreamNode->upstream.appendUpstreamRouting(current_node_id, data);
-        // New task is append to the task queue, but there is no need to wake up the blocked main thread.
+        // New task will be append to the task queue, but there is no need to wake up the blocked main thread.
         // because the main thread is running here.
         if (!append_status) {
             // todo log warning.
+        } else {
+//            updatePotentiallyCompletedStatus(); // todo
         }
     } else {
         // todo fault error, downstream not found on processor xxx.
     }
 }
 
-bool NodesPool::potentiallyCompleted() {
-    return status_tasks_potentially_completed;
-}
+//bool NodesPool::potentiallyCompleted() {
+//    return status_tasks_potentially_completed;
+//}
 
 bool NodesPool::allCompleted() {
     return status_all_tasks_completed;
 }
 
 // update variable @var status_tasks_potentially_completed and @var status_all_tasks_completed.
-void NodesPool::updateStatus(const unsigned long total_steps) {
+void NodesPool::updateStatusAllCompleted(const unsigned long total_steps) {
     bool finish_status = true;
     // update status_all_tasks_completed
     for (SimulationNode &sNode : simulationNodes) {
@@ -85,15 +88,21 @@ void NodesPool::updateStatus(const unsigned long total_steps) {
         }
     }
     status_all_tasks_completed = finish_status;
-
-    bool potential_status = true;
-    // update status_tasks_potentially_completed.
-    for (SimulationNode &sNode : simulationNodes) {
-        // nodes completed plus routing data in task queue.
-        if (sNode._time_steps + sNode.upstream.minQueSize() < total_steps) {
-            potential_status = false;
-            break;
-        }
-    }
-    status_tasks_potentially_completed = potential_status;
 }
+//
+//void NodesPool::updatePotentiallyCompletedStatus(Context *ctx) {
+////    updateStatusPotentiallyCompleted(ctx, ctx->pConfig->simulationTimeSteps);
+//}
+//
+//void NodesPool::updateStatusPotentiallyCompleted(Context *ctx, const unsigned long total_steps) {
+//    bool potential_status = true;
+//    // update status_tasks_potentially_completed.
+//    for (SimulationNode &sNode : simulationNodes) {
+//        // nodes completed plus routing data in task queue.
+//        if (sNode._time_steps + sNode.upstream.minQueSize() < total_steps) {
+//            potential_status = false;
+//            break;
+//        }
+//    }
+//    status_tasks_potentially_completed = potential_status;
+//}

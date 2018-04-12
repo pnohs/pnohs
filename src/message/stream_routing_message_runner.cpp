@@ -3,12 +3,34 @@
 //
 
 #include "stream_routing_message_runner.h"
+#include "../simulation_node.h"
+#include "../nodes_pool.h"
 
 // initial context for thread here.
-StreamRoutingMessageRunner::StreamRoutingMessageRunner(Context &ctx, NodesPool *pPool) : ctx(ctx), pNodesPool(pPool) {}
+StreamRoutingMessageRunner::StreamRoutingMessageRunner(Context &ctx, NodesPool *pPool, const unsigned long totalSteps) :
+        total_steps(totalSteps), _msg_upper_bound(0), _msg_accumulator(0),
+        ctx(ctx), pNodesPool(pPool) {}
+
+void StreamRoutingMessageRunner::onAttach() {
+    // initialize _msg_upper_bound here
+    for (SimulationNode &sNode : pNodesPool->simulationNodes) {
+        // exclude the nodes which is the origin of river.
+        if (sNode.isRiverOrigin()) {
+            continue;
+        }
+        for (UpstreamNode &upnode:sNode.upstream.nodes) {
+            // exclude the upstream nodes which is located on the this processor.
+            if (upnode.location == kiwi::mpiUtils::ownRank) {
+                continue;
+            }
+            _msg_upper_bound++;
+        }
+    }
+    _msg_upper_bound *= total_steps; // each task queue of upstream node will receive {@var total_steps} messages.
+}
 
 bool StreamRoutingMessageRunner::shouldDetach() const {
-    return pNodesPool->potentiallyCompleted();
+    return _msg_accumulator >= _msg_upper_bound;
 }
 
 bool StreamRoutingMessageRunner::filter(MPI_Status *pStatus) {
@@ -30,4 +52,7 @@ void StreamRoutingMessageRunner::onMessage(MPI_Status *pStatus) {
         pthread_cond_signal(&(ctx._t_cond));
     }
     pthread_mutex_unlock(&(ctx._t_mu));
+    _msg_accumulator++;
 }
+
+void StreamRoutingMessageRunner::onDetach() {}
