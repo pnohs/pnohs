@@ -25,7 +25,7 @@
     },
     "files": {
       "agrs": {
-        "path": "https://raw.githubusercontent.com/Taywee/args/6.2.0",
+        "path": "https://raw.githubusercontent.com/Taywee/args/master",
         "files": {
           "args.hxx": "args.hpp"
         },
@@ -34,7 +34,7 @@
         ]
       },
       "nlohmann": {
-        "path": "https://raw.githubusercontent.com/nlohmann/json/v3.1.2/include/nlohmann",
+        "path": "https://github.com/nlohmann/json/raw/v3.1.2/single_include/nlohmann",
         "files": {
           "json.hpp": "json.hpp"
         },
