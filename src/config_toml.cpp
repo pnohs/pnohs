@@ -42,10 +42,12 @@ void ConfigToml::resolveConfig(std::shared_ptr<cpptoml::table> config) {
 // @override
 void ConfigToml::putConfigData(kiwi::Bundle &bundle) {
     bundle.put(MPI_COMM_WORLD, dispatchFilePath);
+    bundle.put(MPI_COMM_WORLD, simulationTimeSteps);
 }
 
 // @override
 void ConfigToml::getConfigData(kiwi::Bundle &bundle) {
     int cursor = 0;
     bundle.get(MPI_COMM_WORLD, cursor, dispatchFilePath);
+    bundle.get(MPI_COMM_WORLD, cursor, simulationTimeSteps);
 }

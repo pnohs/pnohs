@@ -4,13 +4,15 @@
 
 #include <utils/mpi_utils.h>
 #include <iostream>
+#include <event/message_looper.h>
 #include "simulation.h"
 #include "dispatch/dispatch_parse.h"
 #include "message/looper.h"
+#include "message/stream_routing_message_runner.h"
 
 Simulation::Simulation() {
     pConfig = ConfigToml::getInstance();
-    ctx = new Context(pConfig); // todo delete
+    ctx = new Context(pConfig); // todo release memory
     scheduler = new Scheduler(*ctx, pConfig->simulationTimeSteps); // todo delete.
 }
 
@@ -40,12 +42,14 @@ void Simulation::setupNodes() {
         }
         snode.notifyDataSetChanged();
         // add more information to SimulationNode.
-        scheduler->nodesPool->appendNode(snode);
+        scheduler->pNodesPool->appendNode(snode);
     }
     fs.close();
 }
 
 void Simulation::startMessageLooper() {
+    kiwi::MessageLooper::registerRunner(
+            new StreamRoutingMessageRunner(*ctx, scheduler->pNodesPool, pConfig->simulationTimeSteps));
     // New message loop for listening message from other processors.
     Looper *loop = Looper::NewMessageLooper(); // todo delete
     if (loop == nullptr) {
@@ -57,8 +61,9 @@ void Simulation::simulate() {
     while (scheduler->select()) {
         scheduler->curNode->riverRouting();
         scheduler->curNode->runoff();
-        // deliver simulation result of this node to its downstream node(s).
-        scheduler->nodesPool->deliver(*(scheduler->curNode));
+        // deliver simulation results.
+        scheduler->pNodesPool->deliver(scheduler->curNode);
+        scheduler->postStep(); // update simulation variable after finishing a step of simulation.
         // todo write results of this time-step of this node to I/O.
     }
     // To here, it has finished all simulation time steps.

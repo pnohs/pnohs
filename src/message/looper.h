@@ -2,8 +2,8 @@
 // Created by genshen on 4/6/18.
 //
 
-#ifndef PNOHS_MESSAGE_LOOP_H
-#define PNOHS_MESSAGE_LOOP_H
+#ifndef PNOHS_LOOP_H
+#define PNOHS_LOOP_H
 
 
 class Looper {
@@ -26,4 +26,4 @@ private:
 };
 
 
-#endif //PNOHS_MESSAGE_LOOP_H
+#endif //PNOHS_LOOP_H

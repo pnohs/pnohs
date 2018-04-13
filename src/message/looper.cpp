@@ -2,7 +2,6 @@
 // Created by genshen on 4/6/18.
 //
 
-#include <iostream>
 #include <pthread.h>
 #include <utils/mpi_utils.h>
 #include <event/message_looper.h>
@@ -25,10 +24,8 @@ Looper *Looper::NewMessageLooper() {
 void *Looper::messageLoopNewThread(void *object) {
 //    Looper *looperInstance = reinterpret_cast<Looper *>(object);
 
-    kiwi::MessageLooper::registerRunner(new StreamRoutingMessageRunner());
     // Start a dead loop to listen and dispatch messages.
     // And runners in message loop will be unregistered automatically before loop finished.
     kiwi::MessageLooper::start();
     pthread_exit(nullptr);
 }
-

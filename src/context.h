@@ -5,9 +5,7 @@
 #ifndef PNOHS_CONTROLLER_H
 #define PNOHS_CONTROLLER_H
 
-#include "simulation_node.h"
 #include "config_toml.h"
-#include "nodes_pool.h"
 
 class Context {
 public:
@@ -24,7 +22,7 @@ public:
     void abort(const std::string &reason, int code);
 
     // pthread variable
-    int _t_waiting = 0;
+    int _t_waiting = 0; // todo add comments here.
     pthread_mutex_t _t_mu;
     pthread_cond_t _t_cond;
 

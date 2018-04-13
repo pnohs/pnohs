@@ -87,7 +87,7 @@ void pnohs::onStart() {
 void pnohs::onFinish() {
     // todo remove nodes here (release memory).
     // todo delete simulation context.
-    std::cout << "on finish" << std::endl;
+    std::cout << "on finish of " << kiwi::mpiUtils::ownRank << std::endl;
 }
 
 void pnohs::beforeDestroy() {

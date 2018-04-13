@@ -20,7 +20,7 @@
       },
       "kiwi": {
         "path": "https://git.gensh.me/genshen/kiwi.git",
-        "hash": "9ba8b66e5f01711547bde86f7d14c9912a607ebe"
+        "hash": "32385f185d4a5874ee9bef2618700a6ceab740b3"
       }
     },
     "files": {
@@ -34,7 +34,7 @@
         ]
       },
       "nlohmann": {
-        "path": "https://github.com/nlohmann/json/releases/download/v3.1.2",
+        "path": "https://github.com/nlohmann/json/raw/v3.1.2/single_include/nlohmann",
         "files": {
           "json.hpp": "json.hpp"
         },

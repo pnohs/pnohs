@@ -8,17 +8,43 @@
 
 #include <io/io_writer.h>
 #include <event/message_runner.h>
+#include "../context.h"
 
 /**
  * In our implementation,
  * the all callback functions below will runs in a new thread.
  */
+class NodesPool;
+
 class StreamRoutingMessageRunner : public kiwi::MessageRunner {
+public:
+    StreamRoutingMessageRunner(Context &ctx, NodesPool *pPool, const unsigned long totalSteps);
+
+    // this function runs in main thread.
+    // initialize @var _msg_upper_bound here.
+    void onAttach() override;
+
     bool shouldDetach() const override;
 
     bool filter(MPI_Status *pStatus) override;
 
     void onMessage(MPI_Status *pStatus) override;
+
+    void onDetach() override;
+
+private:
+    const unsigned long total_steps; // total simulation step of one node.
+
+    // total messages count need to be received for all nodes,
+    // the nodes which is origin of river or is located on this processor are excluded.
+    unsigned long _msg_upper_bound;
+
+    // messages count have received.
+    unsigned long _msg_accumulator;
+
+    Context &ctx;
+    NodesPool *pNodesPool;
+
 };
 
 

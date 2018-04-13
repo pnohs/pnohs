@@ -2,16 +2,19 @@
 // Created by genshen on 4/9/18.
 //
 
+#include <utils/mpi_utils.h>
 #include "scheduler.h"
 
-Scheduler::Scheduler(Context &ctx, unsigned long total_steps) : ctx(ctx), _total_steps() {}
+Scheduler::Scheduler(Context &ctx, unsigned long total_steps) : ctx(ctx), _total_steps(total_steps) {
+    pNodesPool = new NodesPool();
+}
 
 Scheduler::~Scheduler() {
-    // delete nodesPool; // todo remove all nodes.
+    // delete pNodesPool; // todo remove all nodes.
 }
 
 bool Scheduler::select() {
-    if (allFinished()) { // all simulation nodes have finished their simulation.
+    if (pNodesPool->allCompleted()) { // all simulation nodes have finished their simulation.
         return false;
     }
 
@@ -28,7 +31,15 @@ bool Scheduler::select() {
             continue;
         } else {
             curNode = pickedNode;
-            // todo Dequeue upstreams // write queue
+            if(curNode->upstream.minQueSize() <= 0) {
+               // one of this node's upstream taskqueue is empty
+                pthread_mutex_unlock(&(ctx._t_mu)); // lock
+                continue;
+            }
+            // Dequeue upstreams // write queue
+            std::list<TypeRouting> routingDatas;
+            routingDatas = curNode->upstream.deQueue();
+
             pthread_mutex_unlock(&(ctx._t_mu)); // lock
             return true;
         }
@@ -37,19 +48,15 @@ bool Scheduler::select() {
 
 // todo milestone: better pick strategy.
 SimulationNode *Scheduler::pickRunnable() {
-    for (SimulationNode &sNode : nodesPool->simulationNodes) {
-        if (sNode._time_steps <= _total_steps && sNode.upstream.isReady()) {
+    for (SimulationNode &sNode : pNodesPool->simulationNodes) {
+        if (sNode._time_steps < _total_steps && sNode.upstream.isReady()) {
             return &sNode;
         }
     }
     return nullptr;
 }
 
-bool Scheduler::allFinished() {
-    for (SimulationNode &sNode : nodesPool->simulationNodes) {
-        if (sNode._time_steps <= _total_steps) {
-            return false;
-        }
-    }
-    return true;
+void Scheduler::postStep() {
+    curNode->_time_steps++;
+    pNodesPool->updateStatusAllCompleted(_total_steps); // update
 }
