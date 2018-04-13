@@ -7,7 +7,7 @@
 
 DispatchWriter::DispatchWriter(std::fstream &fs, _type_dispatch_file_offset offset_cursor,
                                const _type_dispatch_rank_id rankId)
-        : ofs(fs), base_offset(offset_cursor), rankId(rankId) {
+        : rankId(rankId), base_offset(offset_cursor), ofs(fs) {
 }
 
 _type_dispatch_file_offset DispatchWriter::stat(const _type_dispatch_rank_id rank_count) {
