@@ -18,9 +18,9 @@ Simulation::Simulation() {
 
 void Simulation::setupNodes() {
     std::string dispatchFilePath = this->pConfig->dispatchFilePath;
-    std::fstream fs = std::fstream(dispatchFilePath, std::ios::in | std::ios::binary);
+    std::fstream fs(dispatchFilePath, std::ios::in | std::ios::binary);
     if (!fs.good()) { // file not exist, exit.
-        ctx->abort("file" + dispatchFilePath + "not exit", 1);
+        ctx->abort("[Error] open file " + dispatchFilePath + " error.", 1);
     }
 
     // parse dispatch file to get nodes for this processor.

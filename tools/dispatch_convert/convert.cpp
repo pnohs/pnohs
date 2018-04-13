@@ -6,13 +6,13 @@
 #include "convert.h"
 
 void convert::convertToJson(std::string disBinPath, std::string disTextPath) {
-    std::fstream fs = std::fstream(disBinPath, std::ios::binary | std::ios::in);
+    std::fstream fs(disBinPath, std::ios::binary | std::ios::in);
     if (!fs.good()) {
         std::cerr << "open file " << disBinPath << " failed!" << std::endl;
         return;
     }
 
-    std::fstream ofs = std::fstream(disTextPath, std::ios::out);
+    std::fstream ofs(disTextPath, std::ios::out);
     if (!ofs.good()) {
         std::cerr << "open file " << disTextPath << " failed!" << std::endl;
         return;

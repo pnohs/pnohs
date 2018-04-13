@@ -53,7 +53,7 @@ void generateDispatchBinFile() {
 // test node_id nad stream meta.
 TEST(dispatch_parse_test_1, dispatch_parse_test) {
     generateDispatchBinFile();
-    std::fstream fs = std::fstream(dispatch_bin_file, std::ios::in | std::ios::binary);
+    std::fstream fs(dispatch_bin_file, std::ios::in | std::ios::binary);
     if (!fs.good()) {
         FAIL();
     }
@@ -78,7 +78,7 @@ TEST(dispatch_parse_test_1, dispatch_parse_test) {
 // test node count, and up/down stream count.
 TEST(dispatch_parse_test_2, dispatch_parse_test) {
     generateDispatchBinFile();
-    std::fstream fs = std::fstream(dispatch_bin_file, std::ios::in | std::ios::binary);
+    std::fstream fs(dispatch_bin_file, std::ios::in | std::ios::binary);
     if (!fs.good()) {
         FAIL();
     }
@@ -103,7 +103,7 @@ TEST(dispatch_parse_test_2, dispatch_parse_test) {
 // test empty node.
 TEST(dispatch_parse_test_3, dispatch_parse_test) {
     generateDispatchBinFile();
-    std::fstream fs = std::fstream(dispatch_bin_file, std::ios::in | std::ios::binary);
+    std::fstream fs(dispatch_bin_file, std::ios::in | std::ios::binary);
     if (!fs.good()) {
         FAIL();
     }
