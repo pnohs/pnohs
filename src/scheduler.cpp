@@ -3,9 +3,10 @@
 //
 
 #include <utils/mpi_utils.h>
+#include <iostream>
 #include "scheduler.h"
 
-Scheduler::Scheduler(Context &ctx, unsigned long total_steps) : ctx(ctx), _total_steps(total_steps) {
+Scheduler::Scheduler(Context &ctx, unsigned long total_steps) : _total_steps(total_steps), ctx(ctx) {
     pNodesPool = new NodesPool();
 }
 
@@ -31,14 +32,18 @@ bool Scheduler::select() {
             continue;
         } else {
             curNode = pickedNode;
-            if(curNode->upstream.minQueSize() <= 0) {
-               // one of this node's upstream taskqueue is empty
-                pthread_mutex_unlock(&(ctx._t_mu)); // lock
-                continue;
-            }
+//            if(curNode->upstream.minQueSize() <= 0) {
+//               // one of this node's upstream taskqueue is empty
+//                pthread_mutex_unlock(&(ctx._t_mu)); // lock
+//                continue;
+//            }
+
             // Dequeue upstreams // write queue
-            std::list<TypeRouting> routingDatas;
-            routingDatas = curNode->upstream.deQueue();
+            // the task queue must have data (because pickRunnable returns non-null pointer).
+            // and the other thread only add data to task queue (don't remove data).
+            if (!pickedNode->isRiverOrigin()) {
+                std::list<TypeRouting> routingData = curNode->upstream.deQueue();
+            }
 
             pthread_mutex_unlock(&(ctx._t_mu)); // lock
             return true;
@@ -59,4 +64,12 @@ SimulationNode *Scheduler::pickRunnable() {
 void Scheduler::postStep() {
     curNode->_time_steps++;
     pNodesPool->updateStatusAllCompleted(_total_steps); // update
+    std::cout << ">>>>"
+              << " pro:" << kiwi::mpiUtils::ownRank
+              << " n-id:" << curNode->id
+              << " \tsteps: " << curNode->_time_steps << "/" << _total_steps
+              << " \tcom-status: " << pNodesPool->allCompleted()
+              //              << " \tpot-status: " << pNodesPool->potentiallyCompleted()
+              << " \tn count: " << pNodesPool->simulationNodes.size()
+              << std::endl;
 }

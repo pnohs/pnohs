@@ -7,7 +7,7 @@
 #include "node_parse.h"
 
 NodeParse::NodeParse(std::fstream &fs, long base_offset) :
-        fs(fs), base_offset(base_offset), DNode() {} // initial DNode by calling base class's constructor.
+        DNode(), base_offset(base_offset), fs(fs) {} // initial DNode by calling base class's constructor.
 
 void NodeParse::parse() {
     // seek from beginning of stream to position base_offset.

@@ -24,8 +24,9 @@ public:
     void parse();
 
 private:
-    std::fstream &fs;
     long base_offset; // absolute offset of this node from beginning of file, only used in parse.
+
+    std::fstream &fs;
 
     /**
     * calculate relative offset by the offset to data position of this processor.

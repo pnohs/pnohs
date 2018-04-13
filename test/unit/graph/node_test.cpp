@@ -24,8 +24,8 @@ TEST(node_upstream_add_test, grapg_node_test) {
     node.downstream.putDownMetaStream(meta); // add downstream node.
     EXPECT_EQ(node.isRiverOrigin(), false);
     EXPECT_EQ(node.isRiverOutlet(), true);
-    EXPECT_EQ(node.upstream.nodes[0].id, 1); // not change upstream node id
-    EXPECT_EQ(node.downstream.nodes[0].id, 2);
+    EXPECT_EQ(node.upstream.nodes[0].id, (_type_node_id) 1); // not change upstream node id
+    EXPECT_EQ(node.downstream.nodes[0].id, (_type_node_id) 2);
 
     node.notifyDataSetChanged();
     EXPECT_EQ(node.isRiverOrigin(), false);

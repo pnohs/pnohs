@@ -51,7 +51,7 @@ public:
 
 private:
     _type_dispatch_nodes_count node_i = 0;
-    _type_dispatch_rank_id rankId;
+    const _type_dispatch_rank_id rankId;
     // base offset in file, we then write nodes data of this rank from this offset.
     // we may modify this offset after finishing writing.
     const _type_dispatch_file_offset base_offset;

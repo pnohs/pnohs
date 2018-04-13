@@ -66,14 +66,15 @@ bool Upstream::appendUpstreamRouting(_type_node_id upstream_node_id, TypeRouting
     return true;
 }
 
+// make sure this node is noe river origin.
 std::list<TypeRouting> Upstream::deQueue() {
     // if one upstream's taskqueue is empty!!!!! 责任单一原则：调用本函数之前进行判断（node.minQueSize() <= 0）
-    std::list<TypeRouting> routingDatas;
+    std::list<TypeRouting> routingData;
 
     pthread_rwlock_wrlock(&_task_queue_rwlock);
     for (UpstreamNode &node:nodes) {
-        routingDatas.push_back(node.popTaskNoEmpty());
+        routingData.push_back(node.popTaskNoEmpty());
     }
     pthread_rwlock_unlock(&_task_queue_rwlock);
-    return routingDatas;
+    return routingData;
 }

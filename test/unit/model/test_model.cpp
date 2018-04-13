@@ -69,9 +69,9 @@ TEST(model_test, model_test_simple_hbv) {
     monthly_datas.close();
 
     // 构造模型
-    double  T_t = 0,    DD = 4.25,
+    double T_t = 0, DD = 4.25,
             FC = 177.1, Beta = 2.35,
-            C = 0.02,   PWP = 105.89,
+            C = 0.02, PWP = 105.89,
             K_0 = 0.05, K_1 = 0.03,
             K_2 = 0.02, K_p = 0.05,
             L = 4.87;
@@ -82,10 +82,10 @@ TEST(model_test, model_test_simple_hbv) {
     runoff_datas << "date" << "\t" << "runoff(mm/d)" << std::endl;
     double snow_prev = 0, soil_prev = 100, s1_prev = 3, s2_prev = 10;
     double runoff;
-    for(int i = 0; i < temps.size(); i++) {
+    for (unsigned long i = 0; i < temps.size(); i++) {
         runoff = hbvModel.run_model(temps[i], prevs[i],
-                           monthly_evaps[months[i]], monthly_temps[months[i]],
-                           snow_prev, soil_prev, s1_prev, s2_prev);
+                                    monthly_evaps[months[i]], monthly_temps[months[i]],
+                                    snow_prev, soil_prev, s1_prev, s2_prev);
         runoff_datas << dates[i] << "\t" << runoff << std::endl;
     }
     runoff_datas.close();

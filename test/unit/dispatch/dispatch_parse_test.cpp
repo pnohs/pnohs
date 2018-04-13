@@ -62,14 +62,14 @@ TEST(dispatch_parse_test_1, dispatch_parse_test) {
     pa->locate();
     DNode dn = pa->nextNode(); // but no boundary check.
 
-    EXPECT_EQ(dn.node_id, 16);
+    EXPECT_EQ(dn.node_id, (_type_dispatch_node_id) 16);
 
     auto up_nodes = dn.getUpstreamNodes(); // size = 4
-    EXPECT_EQ(up_nodes[0].id, 1000);
-    EXPECT_EQ(up_nodes[0].location, 2000);
+    EXPECT_EQ(up_nodes[0].id, (_type_dispatch_node_id) 1000);
+    EXPECT_EQ(up_nodes[0].location, (kiwi::RID) 2000);
 
-    EXPECT_EQ(up_nodes[3].id, 1003);
-    EXPECT_EQ(up_nodes[3].location, 2006);
+    EXPECT_EQ(up_nodes[3].id, (_type_dispatch_node_id) 1003);
+    EXPECT_EQ(up_nodes[3].location, (kiwi::RID) 2006);
 
     delete pa;
     fs.close();
@@ -87,12 +87,12 @@ TEST(dispatch_parse_test_2, dispatch_parse_test) {
     pa->locate();
 
     DNode dn_pre = pa->nextNode();
-    EXPECT_EQ(dn_pre.getUpstreamNodesCount(), 4);
-    EXPECT_EQ(dn_pre.getDownstreamNodesCount(), 1);
+    EXPECT_EQ(dn_pre.getUpstreamNodesCount(), (_type_dispatch_nodes_count) 4);
+    EXPECT_EQ(dn_pre.getDownstreamNodesCount(), (_type_dispatch_nodes_count) 1);
 
     DNode dn_next = pa->nextNode();
-    EXPECT_EQ(dn_next.getUpstreamNodesCount(), 0);
-    EXPECT_EQ(dn_next.getDownstreamNodesCount(), 1);
+    EXPECT_EQ(dn_next.getUpstreamNodesCount(), (_type_dispatch_nodes_count) 0);
+    EXPECT_EQ(dn_next.getDownstreamNodesCount(), (_type_dispatch_nodes_count) 1);
 
     EXPECT_FALSE(pa->isAfterLast()); // no more nodes
 
