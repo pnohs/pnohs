@@ -3,9 +3,7 @@
 //
 
 #include <iostream>
-#include <utils/mpi_utils.h>
 #include "context.h"
-#include "message/looper.h"
 
 Context::Context(ConfigToml *pConfig) : pConfig(pConfig) {
     // todo use pthread_once: https://linux.die.net/man/3/pthread_mutex_init
@@ -16,12 +14,9 @@ Context::Context(ConfigToml *pConfig) : pConfig(pConfig) {
 }
 
 Context::~Context() { // todo delete context.
-
 }
 
 void Context::abort(const std::string &reason, int code) {
-    if (kiwi::mpiUtils::ownRank == MASTER_PROCESSOR) {
-        std::cerr << reason << std::endl;
-    }
+    std::cerr << reason << std::endl;
     MPI_Abort(MPI_COMM_WORLD, code);
 }

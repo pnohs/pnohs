@@ -89,20 +89,3 @@ void NodesPool::updateStatusAllCompleted(const unsigned long total_steps) {
     }
     status_all_tasks_completed = finish_status;
 }
-//
-//void NodesPool::updatePotentiallyCompletedStatus(Context *ctx) {
-////    updateStatusPotentiallyCompleted(ctx, ctx->pConfig->simulationTimeSteps);
-//}
-//
-//void NodesPool::updateStatusPotentiallyCompleted(Context *ctx, const unsigned long total_steps) {
-//    bool potential_status = true;
-//    // update status_tasks_potentially_completed.
-//    for (SimulationNode &sNode : simulationNodes) {
-//        // nodes completed plus routing data in task queue.
-//        if (sNode._time_steps + sNode.upstream.minQueSize() < total_steps) {
-//            potential_status = false;
-//            break;
-//        }
-//    }
-//    status_tasks_potentially_completed = potential_status;
-//}

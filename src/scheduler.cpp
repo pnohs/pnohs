@@ -32,12 +32,6 @@ bool Scheduler::select() {
             continue;
         } else {
             curNode = pickedNode;
-//            if(curNode->upstream.minQueSize() <= 0) {
-//               // one of this node's upstream taskqueue is empty
-//                pthread_mutex_unlock(&(ctx._t_mu)); // lock
-//                continue;
-//            }
-
             // Dequeue upstreams // write queue
             // the task queue must have data (because pickRunnable returns non-null pointer).
             // and the other thread only add data to task queue (don't remove data).
