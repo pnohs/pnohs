@@ -16,7 +16,7 @@
 class NodeParse : public DNode {
 public:
 
-    // initial with fs for parsing.
+    // Initialize parser with fs for parsing.
     NodeParse(std::fstream &fs, long base_offset);
 
     // parse information about this node (including upstream and downstream metadata)
@@ -24,8 +24,9 @@ public:
     void parse();
 
 private:
-    std::fstream &fs;
     long base_offset; // absolute offset of this node from beginning of file, only used in parse.
+
+    std::fstream &fs;
 
     /**
     * calculate relative offset by the offset to data position of this processor.

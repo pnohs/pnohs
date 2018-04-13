@@ -3,42 +3,51 @@
 //
 
 #include <utils/mpi_utils.h>
-#include <argagg.hpp>
+#include <args.hpp>
 #include "pnohs.h"
 #include "iostream"
 
 bool pnohs::beforeCreate(int argc, char *argv[]) {
-    // parse arguments using lib args: https://github.com/vietjtnguyen/argagg.
-    argagg::parser argparser{{
-                                     {"help", {"-h", "--help"}, "shows this help message", 0},
-                                     {"version", {"-v", "--version"}, "show package version", 0},
-                                     {"config", {"-c", "--conf"}, "path of configure file", 1},
-                             }};
+    // parse arguments using lib args: https://github.com/Taywee/args.
+    args::ArgumentParser parser("pnohs: A Hydrological Simulation framework.",
+                                "Copyright (C) 2017-2018 USTB.");
+    args::HelpFlag help(parser, "help", "Display this help menu.", {'h', "help"});
+    args::Flag version(parser, "version", "Display version flag.", {'v', "version"});
+    args::ValueFlag<std::string> configPath(parser, "filepath", "The path of config file.", {'c', "conf"});
 
-    argagg::parser_results args;
     try {
-        args = argparser.parse(argc, argv);
-    } catch (const std::exception &e) {
+        parser.ParseCLI(argc, argv);
+    }
+    catch (args::Help) {
+        std::cout << parser;
+        return false;
+    }
+    catch (args::ParseError e) {
         std::cerr << e.what() << std::endl;
+        std::cerr << parser;
+        return false;
+    }
+    catch (args::ValidationError e) {
+        std::cerr << e.what() << std::endl;
+        std::cerr << parser;
         return false;
     }
 
-    if (args["help"]) {
-        argagg::fmt_ostream fmt(std::cerr);
-        fmt << "Usage: pnohs [options]" << std::endl // todo change program name.
-            << argparser;
+    // version
+    if (version) {
+        std::cerr << "version 0.1.0" << std::endl
+                  << "Copyright (C) 2017-2018 USTB" << std::endl;
         return false;
     }
 
-    if (args["version"]) {
-        argagg::fmt_ostream fmt(std::cerr);
-        fmt << "version 0.1.0" << std::endl
-            << "Copyright (C) 2017 USTB" << std::endl;
-        return false;
+    if (configPath) {
+        configFilePath = args::get(configPath);
+        return true;
     }
 
-    configFilePath = args["config"].as<std::string>("config.toml");
-    return true;
+    // if no args, print usage.
+    std::cerr << parser;
+    return false;
 };
 
 // mpi has been initialized here.
@@ -54,7 +63,7 @@ void pnohs::onCreate() {
         }
     } else {
         // just initial a empty config Obj.
-        pConfig = ConfigToml::newInstance();
+        pConfig = ConfigToml::getInstance();
     }
     pConfig->sync(); // sync config data to other processors from master processor.
 
@@ -62,11 +71,12 @@ void pnohs::onCreate() {
 
 bool pnohs::prepare() {
     // new simulation instance.
-    mSimulation = new Simulation();
+    mSimulation = new Simulation(); // todo delete
     // initial river nodes and their upstream/downstream (up/down stream nodes ids and MPI rank id).
     mSimulation->setupNodes();
 //  todo  loadData(nodes);     // 根据结点加载模拟需要的数据(如地理信息数据、河段数据等)
 //  todo  loadModuleWithParams(); //加载水文模型及模型参数，或者模型和参数分开加载
+    mSimulation->startMessageLooper(); // start mpi message (e.g. upstream simulation result) listening
     return true;
 }
 
@@ -77,7 +87,7 @@ void pnohs::onStart() {
 void pnohs::onFinish() {
     // todo remove nodes here (release memory).
     // todo delete simulation context.
-    std::cout << "on finish" << std::endl;
+    std::cout << "on finish of " << kiwi::mpiUtils::ownRank << std::endl;
 }
 
 void pnohs::beforeDestroy() {

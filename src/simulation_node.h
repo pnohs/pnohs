@@ -11,12 +11,15 @@ class SimulationNode : public Node {
 
 public:
     // time steps of this node.
-    unsigned long _time_steps = 0; // zero as initial vaule.
+    // if the total steps is 100, then the valid @var _time_step will be 0,1,...,99.
+    unsigned long _time_steps = 0; // zero as initial value.
+
     void runoff();
 
-    void deliver();
-
     void riverRouting();
+
+private:
+
 };
 
 

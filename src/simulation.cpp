@@ -4,20 +4,23 @@
 
 #include <utils/mpi_utils.h>
 #include <iostream>
+#include <event/message_looper.h>
 #include "simulation.h"
 #include "dispatch/dispatch_parse.h"
-
+#include "message/looper.h"
+#include "message/stream_routing_message_runner.h"
 
 Simulation::Simulation() {
-    pConfig = ConfigToml::newInstance();
-    ctx = new Context(pConfig); // todo delete
+    pConfig = ConfigToml::getInstance();
+    ctx = new Context(pConfig); // todo release memory
+    scheduler = new Scheduler(*ctx, pConfig->simulationTimeSteps); // todo delete.
 }
 
 void Simulation::setupNodes() {
     std::string dispatchFilePath = this->pConfig->dispatchFilePath;
-    std::fstream fs = std::fstream(dispatchFilePath, std::ios::in | std::ios::binary);
+    std::fstream fs(dispatchFilePath, std::ios::in | std::ios::binary);
     if (!fs.good()) { // file not exist, exit.
-        ctx->abort("file" + dispatchFilePath + "not exit", 1);
+        ctx->abort("[Error] open file " + dispatchFilePath + " error.", 1);
     }
 
     // parse dispatch file to get nodes for this processor.
@@ -37,17 +40,30 @@ void Simulation::setupNodes() {
         for (const StreamMeta &meta:dnode.getDownstreamNodes()) {
             snode.downstream.putDownMetaStream(meta); // add downstream node.
         }
+        snode.notifyDataSetChanged();
         // add more information to SimulationNode.
-        ctx->addSimulationNode(snode);
+        scheduler->pNodesPool->appendNode(snode);
     }
     fs.close();
 }
 
+void Simulation::startMessageLooper() {
+    kiwi::MessageLooper::registerRunner(
+            new StreamRoutingMessageRunner(*ctx, scheduler->pNodesPool, pConfig->simulationTimeSteps));
+    // New message loop for listening message from other processors.
+    Looper *loop = Looper::NewMessageLooper(); // todo delete
+    if (loop == nullptr) {
+        ctx->abort("Error: pthread_create() failed.", 1);
+    }
+}
+
 void Simulation::simulate() {
-    while (ctx->select()) {
-        ctx->curNode->riverRouting();
-        ctx->curNode->runoff();
-        ctx->curNode->deliver();
+    while (scheduler->select()) {
+        scheduler->curNode->riverRouting();
+        scheduler->curNode->runoff();
+        // deliver simulation results.
+        scheduler->pNodesPool->deliver(scheduler->curNode);
+        scheduler->postStep(); // update simulation variable after finishing a step of simulation.
         // todo write results of this time-step of this node to I/O.
     }
     // To here, it has finished all simulation time steps.

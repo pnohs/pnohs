@@ -20,6 +20,8 @@ set(TEST_SOURCE_FILES
         main.cpp
         app_test.cpp
         dispatch/dispatch_parse_test.cpp
+        graph/node_test.cpp
+        model/test_model.cpp
         )
 
 # set binary path and lib storage path wile compiling process.

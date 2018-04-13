@@ -54,8 +54,8 @@ protected:
     std::vector<StreamMeta> upstreamNodesMeta;
     std::vector<StreamMeta> downstreamNodesMeta;
 
-    _type_dispatch_nodes_count downstream_nodes_count; // usually equals to 0 or 1.
     _type_dispatch_nodes_count upstream_nodes_count;
+    _type_dispatch_nodes_count downstream_nodes_count; // usually equals to 0 or 1.
 };
 
 #endif //PNOHS_D_NODE_H
