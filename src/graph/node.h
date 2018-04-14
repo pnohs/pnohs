@@ -46,7 +46,7 @@ public:
      * Check whether this node is the river outlet.
      * @return
      */
-    inline const bool isRiverOutlet() {
+    inline bool isRiverOutlet() const {
         return _is_river_outlet;
     }
 

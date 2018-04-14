@@ -41,9 +41,9 @@ public:
      * Otherwise, deliver result to its downstream.
      * In this case, if the downstream is on this processor, just copy result to corresponding task queue.
      * Otherwise, send result to the downstream on other processor by communicating.
-     * @param node_id the target simulation node id.
+     * @param current_node reference of current simulation node.
      */
-    void deliver(SimulationNode *current_node);
+    void deliver(const SimulationNode &current_node);
 
     /**
      * Return status of whether all tasks is potentially completed.
@@ -102,17 +102,16 @@ private:
 
     /**
      * Deliver simulation result to node on the same processor directly.
-     * @param current_node_id the target simulation node id.
-     * @param downstream_node_id // todo document
+     * just do memory copy.
+     * @param current_node the current simulation node.
      */
-    void straightforwardDeliver(_type_node_id current_node_id, _type_node_id downstream_node_id);
+    void straightforwardDeliver(const SimulationNode &current_node);
 
     /**
      * deliver stream routing data to the downstream node on the remote processor.
-     * @param current_node_id // todo document
-     * @param downstream_node
+     * @param current_node the current simulation node.
      */
-    void remoteDeliver(_type_node_id current_node_id, const DownstreamNode &downstream_node);
+    void remoteDeliver(const SimulationNode &current_node);
 };
 
 

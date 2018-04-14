@@ -22,25 +22,25 @@ SimulationNode *NodesPool::findNodeById(const _type_node_id node_id) {
     return nullptr;
 }
 
-void NodesPool::deliver(SimulationNode *current_node) {
-    if (current_node->isRiverOutlet()) {
+void NodesPool::deliver(const SimulationNode &current_node) {
+    if (current_node.isRiverOutlet()) {
         // if its outlet of this river.
         // todo out put to letout
     } else {
         // if its downstream is on this processor, just do data copy in memory.
-        if (kiwi::mpiUtils::ownRank == current_node->downstream.nodes[0].location) {
-            straightforwardDeliver(current_node->id, current_node->downstream.nodes[0].id);
+        if (kiwi::mpiUtils::ownRank == current_node.downstream.nodes[0].location) {
+            straightforwardDeliver(current_node);
         } else {
-            remoteDeliver(current_node->id,
-                          current_node->downstream.nodes[0]); // deliver to the node on other processor.
+            remoteDeliver(current_node); // deliver to the node on other processor.
         }
     }
 }
 
-void NodesPool::remoteDeliver(_type_node_id current_node_id, const DownstreamNode &downstream_node) {
+void NodesPool::remoteDeliver(const SimulationNode &current_node) {
+    const DownstreamNode &downstream_node = current_node.downstream.nodes[0];
     TypeRouting data = TypeRouting(); // todo example
     data.routing_data = 3.14;
-    data.source_id = current_node_id;
+    data.source_id = current_node.id;
     data.destination_id = downstream_node.id;
 
     MPI_Send(&data, sizeof(TypeRouting), MPI_BYTE,
@@ -48,15 +48,16 @@ void NodesPool::remoteDeliver(_type_node_id current_node_id, const DownstreamNod
 }
 
 // todo usr event message.
-void NodesPool::straightforwardDeliver(_type_node_id current_node_id, _type_node_id downstream_node_id) {
+void NodesPool::straightforwardDeliver(const SimulationNode &current_node) {
+    _type_node_id downstream_node_id = current_node.downstream.nodes[0].id;
     SimulationNode *downstreamNode = findNodeById(downstream_node_id);
     if (downstreamNode != nullptr) {
         // append routing results to upstream task list directly.
         TypeRouting data = TypeRouting(); // todo just an example;
         data.routing_data = 3.14;
-        data.source_id = current_node_id;
+        data.source_id = current_node.id;
         data.destination_id = downstream_node_id;
-        bool append_status = downstreamNode->upstream.appendUpstreamRouting(current_node_id, data);
+        bool append_status = downstreamNode->upstream.appendUpstreamRouting(current_node.id, data);
         // New task will be append to the task queue, but there is no need to wake up the blocked main thread.
         // because the main thread is running here.
         if (!append_status) {

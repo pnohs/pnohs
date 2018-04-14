@@ -58,12 +58,4 @@ SimulationNode *Scheduler::pickRunnable() {
 void Scheduler::postStep() {
     curNode->_time_steps++;
     pNodesPool->updateStatusAllCompleted(_total_steps); // update
-    std::cout << ">>>>"
-              << " pro:" << kiwi::mpiUtils::ownRank
-              << " n-id:" << curNode->id
-              << " \tsteps: " << curNode->_time_steps << "/" << _total_steps
-              << " \tcom-status: " << pNodesPool->allCompleted()
-              //              << " \tpot-status: " << pNodesPool->potentiallyCompleted()
-              << " \tn count: " << pNodesPool->simulationNodes.size()
-              << std::endl;
 }

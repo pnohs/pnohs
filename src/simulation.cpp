@@ -62,7 +62,7 @@ void Simulation::simulate() {
         scheduler->curNode->riverRouting();
         scheduler->curNode->runoff();
         // deliver simulation results.
-        scheduler->pNodesPool->deliver(scheduler->curNode);
+        scheduler->pNodesPool->deliver(*(scheduler->curNode));
         scheduler->postStep(); // update simulation variable after finishing a step of simulation.
         // todo write results of this time-step of this node to I/O.
     }
