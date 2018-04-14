@@ -17,6 +17,14 @@ private:
 
     bool beforeCreate(int argc, char *argv[]) override;
 
+    /**
+     * parse command line argv, and print necessary help information (e.g. run: app --help).
+     * @param argc argc from function main().
+     * @param argv argv from function main().
+     * @return false for interrupting the running of the program after parsing argv.
+     */
+    bool parseCommands(int argc, char *argv[]);
+
     void onCreate() override;
 
     bool prepare() override;

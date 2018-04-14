@@ -61,19 +61,6 @@ public:
     bool allCompleted();
 
     /**
-     * Update status {@var status_tasks_potentially_completed}.
-     * This status is updated after a stream routing message is added to task queue,
-     * which includes remote message(MPI routing message from other processors, corresponding upstream is on the other processor),
-     * and straightforward routing message (corresponding upstream is on the same processor).
-     *
-     * This update may involves multiple threads (message loop thread and main thread), so mutex is necessary.
-     * @param total_steps the total time steps of whole simulation.
-     */
-//    void updateStatusPotentiallyCompleted(Context *ctx, const unsigned long total_steps);
-
-//    void updatePotentiallyCompletedStatus(Context *ctx);
-
-    /**
      * After finishing the simulation of each time step of each node,
      * this function will be called to update some status flag of {@var status_all_tasks_completed}.
      * In fact, just check if each simulation nodes has reached its totalSteps.
@@ -87,13 +74,6 @@ private:
      * Status of whether all nodes on this processor has finished all their simulation.
      */
     bool status_all_tasks_completed = false;
-
-    /**
-     * For all nodes, if the data in task queue is enough to finish the whole simulation
-     * (no more data is required from upstream nodes), this status is called potentially completed.
-     * This status is updated by updatePotentiallyCompletedStatus after receiving a stream routing message.
-     */
-//    bool status_tasks_potentially_completed = false;
 
     /**
      * all nodes on this processor.

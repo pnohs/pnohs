@@ -70,10 +70,6 @@ void NodesPool::straightforwardDeliver(const SimulationNode &current_node) {
     }
 }
 
-//bool NodesPool::potentiallyCompleted() {
-//    return status_tasks_potentially_completed;
-//}
-
 bool NodesPool::allCompleted() {
     return status_all_tasks_completed;
 }

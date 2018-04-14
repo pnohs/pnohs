@@ -30,6 +30,8 @@ public:
 
     void onMessage(MPI_Status *pStatus) override;
 
+    void onMessage(MPI_Status *pStatus, MPI_Message *pMessage) override;
+
     void onDetach() override;
 
 private:

@@ -3,7 +3,6 @@
 //
 
 #include <utils/mpi_utils.h>
-#include <iostream>
 #include "scheduler.h"
 
 Scheduler::Scheduler(Context &ctx, unsigned long total_steps) : _total_steps(total_steps), ctx(ctx) {

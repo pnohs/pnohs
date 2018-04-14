@@ -8,6 +8,14 @@
 #include "iostream"
 
 bool pnohs::beforeCreate(int argc, char *argv[]) {
+    if (!parseCommands(argc, argv)) {
+        return false; // just return the return value of function parseCommands()
+    }
+    setMPIThreadSupport(MPI_THREAD_MULTIPLE); // set mpi multiple support.
+    return true;
+};
+
+bool pnohs::parseCommands(int argc, char *argv[]) {
     // parse arguments using lib args: https://github.com/Taywee/args.
     args::ArgumentParser parser("pnohs: A Hydrological Simulation framework.",
                                 "Copyright (C) 2017-2018 USTB.");
@@ -103,4 +111,4 @@ void pnohs::onDestroy() {
     if (kiwi::mpiUtils::ownRank == MASTER_PROCESSOR) {
         std::cout << "on destroy" << std::endl;
     }
-};
+}
