@@ -46,7 +46,6 @@ TEST(node_find_upstream_by_id_test, grapg_node_test) {
     EXPECT_EQ(node.upstream.findUpstreamNodeById(99), nullptr);
 }
 
-
 // test appendUpstreamRouting and isReady and minQueSize.
 TEST(node_task_queue_ready_test, grapg_node_test) {
     Node node = Node();
