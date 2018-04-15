@@ -2,13 +2,15 @@
 // Created by genshen on 2018-03-26.
 //
 
-#include <mutex>
+#include <climits>
 #include "upstream.h"
 
 Upstream::Upstream() {
     pthread_rwlock_init(&_task_queue_rwlock, nullptr);
 }
 
+// todo call minQueSize to set isReady.
+// todo use a bool ready flag?
 bool Upstream::isReady() {
     // if the node has no upstreams (nodes.empty is true), then this simulation node can be returned directly.
     pthread_rwlock_rdlock(&_task_queue_rwlock);
@@ -23,11 +25,10 @@ bool Upstream::isReady() {
 }
 
 unsigned long Upstream::minQueSize() {
-
-    unsigned long minQueSize = 0;
+    unsigned long minQueSize = ULONG_MAX;
     pthread_rwlock_rdlock(&_task_queue_rwlock);
     for (UpstreamNode &node:nodes) {
-        if(node.taskCount() < minQueSize) {
+        if (node.taskCount() < minQueSize) {
             minQueSize = node.taskCount();
         }
     }
