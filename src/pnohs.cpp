@@ -2,10 +2,11 @@
 // Created by genshen on 2017/12/24.
 //
 
+#include <iostream>
 #include <utils/mpi_utils.h>
 #include <args.hpp>
+#include <logs/logs.h>
 #include "pnohs.h"
-#include "iostream"
 
 bool pnohs::beforeCreate(int argc, char *argv[]) {
     if (!parseCommands(argc, argv)) {
@@ -44,7 +45,8 @@ bool pnohs::parseCommands(int argc, char *argv[]) {
     // version
     if (version) {
         std::cerr << "version 0.1.0" << std::endl
-                  << "Copyright (C) 2017-2018 USTB" << std::endl;
+                  << "compiled at " << __TIME__ << ", " << __DATE__ << "." << std::endl
+                  << "Copyright (C) 2017-2018 USTB." << std::endl;
         return false;
     }
 
@@ -62,11 +64,11 @@ bool pnohs::parseCommands(int argc, char *argv[]) {
 void pnohs::onCreate() {
     ConfigToml *pConfig;
     if (kiwi::mpiUtils::ownRank == MASTER_PROCESSOR) {
-        std::cout << "mpi env was initialed." << std::endl;
+        kiwi::logs::v("pnohs", "mpi env was initialed.\n");
         // initial config Obj, then read and resolve config file.
         pConfig = ConfigToml::newInstance(configFilePath); // todo config file from argv.
         if (pConfig->hasError) {
-            std::cerr << "[Error] " << pConfig->errorMessage << std::endl;
+            kiwi::logs::e("pnohs", pConfig->errorMessage.c_str());
             this->abort(2);
         }
     } else {
@@ -95,20 +97,20 @@ void pnohs::onStart() {
 void pnohs::onFinish() {
     // todo remove nodes here (release memory).
     // todo delete simulation context.
-    std::cout << "on finish of " << kiwi::mpiUtils::ownRank << std::endl;
+    kiwi::logs::s("pnohs", "on finished.\n");
 }
 
 void pnohs::beforeDestroy() {
     // todo delete simulation
     // todo delete config
     if (kiwi::mpiUtils::ownRank == MASTER_PROCESSOR) {
-        std::cout << "before destroy" << std::endl;
+        kiwi::logs::s("pnohs", "before destroy.\n");
     }
 }
 
 // do not use mpi in onDestroy.
 void pnohs::onDestroy() {
     if (kiwi::mpiUtils::ownRank == MASTER_PROCESSOR) {
-        std::cout << "on destroy" << std::endl;
+        kiwi::logs::s("pnohs", "on destroy.\n");
     }
 }

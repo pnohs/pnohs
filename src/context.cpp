@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <logs/logs.h>
 #include "context.h"
 
 Context::Context(ConfigToml *pConfig) : pConfig(pConfig) {
@@ -17,6 +18,6 @@ Context::~Context() { // todo delete context.
 }
 
 void Context::abort(const std::string &reason, int code) {
-    std::cerr << reason << std::endl;
+    kiwi::logs::e("abort", reason.c_str());
     MPI_Abort(MPI_COMM_WORLD, code);
 }

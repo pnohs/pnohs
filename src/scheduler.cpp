@@ -3,6 +3,7 @@
 //
 
 #include <utils/mpi_utils.h>
+#include <logs/logs.h>
 #include "scheduler.h"
 
 Scheduler::Scheduler(Context &ctx, unsigned long total_steps) : _total_steps(total_steps), ctx(ctx) {
@@ -57,4 +58,10 @@ SimulationNode *Scheduler::pickRunnable() {
 void Scheduler::postStep() {
     curNode->_time_steps++;
     pNodesPool->updateStatusAllCompleted(_total_steps); // update
+    kiwi::logs::i("schedule", "\tnode_id: {0}\t steps:{1}/{2}\tcom-status:{3}\tnodes_couts:{4}\n",
+                  curNode->id,
+                  curNode->_time_steps,
+                  _total_steps,
+                  pNodesPool->allCompleted(),
+                  pNodesPool->simulationNodes.size());
 }

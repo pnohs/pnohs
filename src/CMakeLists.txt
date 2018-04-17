@@ -4,7 +4,7 @@ include_directories(${PROJECT_SOURCE_DIR}/vendor/pkg/include)
 # include kiwi framework. # todo if has lib.
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/src/kiwi ${PROJECT_BINARY_DIR}/vendor/kiwi)
 include_directories(${KIWI_EXPORT_INCLUDE_PATH})
-set(EXTRA_LIBS kiwi ${EXTRA_LIBS})
+set(EXTRA_LIBS fmt kiwi ${EXTRA_LIBS}) # todo use KIWI_EXPORT_LIBS
 
 set(HEADER_FILES
         config_toml.h

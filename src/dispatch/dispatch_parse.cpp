@@ -2,7 +2,6 @@
 // Created by genshen on 3/28/18.
 //
 
-#include <iostream>
 #include <cassert>
 
 #include <io/io_utils.hpp>
