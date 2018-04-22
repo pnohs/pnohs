@@ -78,7 +78,7 @@ private:
     /**
      * all nodes on this processor.
      */
-    std::vector<SimulationNode> simulationNodes;
+    std::vector<SimulationNode> *simulationNodes;
 
     /**
      * Deliver simulation result to node on the same processor directly.
