@@ -6,13 +6,14 @@
 #include "simple_HBV_model.h"
 
 SimpleHBVModel::SimpleHBVModel(double T_t, double DD, double FC, double Beta, double C, double PWP, double K_0,
-                               double K_1, double K_2, double K_p, double L) : T_t(T_t), DD(DD), FC(FC), Beta(Beta),
-                                                                               C(C), PWP(PWP), K_0(K_0), K_1(K_1),
-                                                                               K_2(K_2), K_p(K_p), L(L) {}
+                               double K_1, double K_2, double K_p, double L)
+        : T_t(T_t), DD(DD), FC(FC), Beta(Beta),
+          C(C), PWP(PWP), K_0(K_0), K_1(K_1),
+          K_2(K_2), K_p(K_p), L(L) {}
 
-double
-SimpleHBVModel::run_model(const double temp, const double prec, const double PE_m, const double T_m, double &snow_prev,
-                          double &soil_prev, double &s1_prev, double s2_prev) {
+double SimpleHBVModel::run_model(const double temp, const double prec,
+                                 const double PE_m, const double T_m, double &snow_prev,
+                                 double &soil_prev, double &s1_prev, double s2_prev) {
 
     double liquid_water;
     double snow, soil, s1, s2;

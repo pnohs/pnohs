@@ -11,6 +11,9 @@
  * basic data type for river/stream routing communication among processors.
  */
 struct TypeRouting {
+    TypeRouting() = default;
+
+    TypeRouting(_type_node_id source, _type_node_id des);
 //    kiwi::RID ird;
     /**
      * Considering deliver routing results to its downstream node, denoted as D,

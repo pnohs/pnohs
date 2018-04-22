@@ -3,7 +3,7 @@
 //
 
 #include <utils/mpi_utils.h>
-#include <iostream>
+#include <logs/logs.h>
 #include "scheduler.h"
 
 Scheduler::Scheduler(Context &ctx, unsigned long total_steps) : _total_steps(total_steps), ctx(ctx) {
@@ -47,7 +47,7 @@ bool Scheduler::select() {
 
 // todo milestone: better pick strategy.
 SimulationNode *Scheduler::pickRunnable() {
-    for (SimulationNode &sNode : pNodesPool->simulationNodes) {
+    for (SimulationNode &sNode :*(pNodesPool->simulationNodes)) {
         if (sNode._time_steps < _total_steps && sNode.upstream.isReady()) {
             return &sNode;
         }
@@ -58,12 +58,10 @@ SimulationNode *Scheduler::pickRunnable() {
 void Scheduler::postStep() {
     curNode->_time_steps++;
     pNodesPool->updateStatusAllCompleted(_total_steps); // update
-    std::cout << ">>>>"
-              << " pro:" << kiwi::mpiUtils::ownRank
-              << " n-id:" << curNode->id
-              << " \tsteps: " << curNode->_time_steps << "/" << _total_steps
-              << " \tcom-status: " << pNodesPool->allCompleted()
-              //              << " \tpot-status: " << pNodesPool->potentiallyCompleted()
-              << " \tn count: " << pNodesPool->simulationNodes.size()
-              << std::endl;
+//    kiwi::logs::i("schedule", "\tnode_id: {0}\t steps:{1}/{2}\tcom-status:{3}\tnodes_couts:{4}\n",
+//                  curNode->id,
+//                  curNode->_time_steps,
+//                  _total_steps,
+//                  pNodesPool->allCompleted(),
+//                  pNodesPool->simulationNodes.size());
 }

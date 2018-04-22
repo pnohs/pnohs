@@ -29,10 +29,10 @@ ConfigToml *ConfigToml::newInstance(const std::string &configureFilePath) {
 
 // @override only for master processor.
 // @see https://github.com/skystrife/cpptoml#example-usage for more details.
-void ConfigToml::resolveConfig(std::shared_ptr<cpptoml::table> config) {
+void ConfigToml::resolveConfig(std::shared_ptr<cpptoml::table> config) { // todo change paarm name("config" is not allow).
     // dispatch section.
     auto confDispatch = config->get_table("dispatch");
-    dispatchFilePath = confDispatch->get_as<std::string>("dispatch_file").value_or("pnohs.dis");
+    dispatchFilePath = confDispatch->get_as<std::string>("dispatch_file").value_or("pnohs.dis"); // todo * get_as??
 
     // simulation section
     auto confSimulation = config->get_table("simulation");

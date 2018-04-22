@@ -2,21 +2,12 @@
 // Created by wujiahao on 2018/4/6.
 //
 
-//
-// Created by wujiahao on 2018/4/6.
-//
-
-//
-// Created by wujiahao on 2018/4/6.
-//
-
-
-#include <gtest/gtest.h>
-#include <models/simple_potential_evaporation_model.h>
 #include <iostream>
-#include <models/type_model_data.h>
 #include <fstream>
-#include <models/simple_HBV_model.h>
+#include <gtest/gtest.h>
+#include "models/simple_potential_evaporation_model.h"
+#include "models/type_model_data.h"
+#include "models/simple_HBV_model.h"
 
 // unuse
 TEST(model_test, model_test_simple_evpo) {

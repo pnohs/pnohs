@@ -41,9 +41,9 @@ public:
      * Otherwise, deliver result to its downstream.
      * In this case, if the downstream is on this processor, just copy result to corresponding task queue.
      * Otherwise, send result to the downstream on other processor by communicating.
-     * @param node_id the target simulation node id.
+     * @param current_node reference of current simulation node.
      */
-    void deliver(SimulationNode *current_node);
+    void deliver(const SimulationNode &current_node);
 
     /**
      * Return status of whether all tasks is potentially completed.
@@ -61,19 +61,6 @@ public:
     bool allCompleted();
 
     /**
-     * Update status {@var status_tasks_potentially_completed}.
-     * This status is updated after a stream routing message is added to task queue,
-     * which includes remote message(MPI routing message from other processors, corresponding upstream is on the other processor),
-     * and straightforward routing message (corresponding upstream is on the same processor).
-     *
-     * This update may involves multiple threads (message loop thread and main thread), so mutex is necessary.
-     * @param total_steps the total time steps of whole simulation.
-     */
-//    void updateStatusPotentiallyCompleted(Context *ctx, const unsigned long total_steps);
-
-//    void updatePotentiallyCompletedStatus(Context *ctx);
-
-    /**
      * After finishing the simulation of each time step of each node,
      * this function will be called to update some status flag of {@var status_all_tasks_completed}.
      * In fact, just check if each simulation nodes has reached its totalSteps.
@@ -89,30 +76,22 @@ private:
     bool status_all_tasks_completed = false;
 
     /**
-     * For all nodes, if the data in task queue is enough to finish the whole simulation
-     * (no more data is required from upstream nodes), this status is called potentially completed.
-     * This status is updated by updatePotentiallyCompletedStatus after receiving a stream routing message.
-     */
-//    bool status_tasks_potentially_completed = false;
-
-    /**
      * all nodes on this processor.
      */
-    std::vector<SimulationNode> simulationNodes;
+    std::vector<SimulationNode> *simulationNodes;
 
     /**
      * Deliver simulation result to node on the same processor directly.
-     * @param current_node_id the target simulation node id.
-     * @param downstream_node_id // todo document
+     * just do memory copy.
+     * @param current_node the current simulation node.
      */
-    void straightforwardDeliver(_type_node_id current_node_id, _type_node_id downstream_node_id);
+    void straightforwardDeliver(const SimulationNode &current_node);
 
     /**
      * deliver stream routing data to the downstream node on the remote processor.
-     * @param current_node_id // todo document
-     * @param downstream_node
+     * @param current_node the current simulation node.
      */
-    void remoteDeliver(_type_node_id current_node_id, const DownstreamNode &downstream_node);
+    void remoteDeliver(const SimulationNode &current_node);
 };
 
 

@@ -21,6 +21,6 @@ T &ModelDatas::at(const std::string &key) {
     if (typeid(T).name() == typeid(int).name())
         return this->iDatas[key];
 
-    std::cerr << "err type of T" << std::endl;
+    std::cerr << "err type of T" << std::endl;  // todo log
     exit(-1);
 }
