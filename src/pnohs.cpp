@@ -91,7 +91,12 @@ bool pnohs::prepare() {
 }
 
 void pnohs::onStart() {
+    double start = MPI_Wtime();
     mSimulation->simulate();
+    double stop = MPI_Wtime();
+    if (kiwi::mpiUtils::ownRank == MASTER_PROCESSOR) {
+        kiwi::logs::s("pnohs", "simulation finished in {} seconds.\n", stop - start);
+    }
 }
 
 void pnohs::onFinish() {
