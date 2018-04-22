@@ -2,6 +2,7 @@
 // Created by genshen on 4/7/18.
 //
 
+#include <logs/logs.h>
 #include "stream_routing_message_runner.h"
 #include "../simulation_node.h"
 #include "../nodes_pool.h"
@@ -13,7 +14,7 @@ StreamRoutingMessageRunner::StreamRoutingMessageRunner(Context &ctx, NodesPool *
 
 void StreamRoutingMessageRunner::onAttach() {
     // initialize _msg_upper_bound here
-    for (SimulationNode &sNode : pNodesPool->simulationNodes) {
+    for (SimulationNode &sNode : *(pNodesPool->simulationNodes)) {
         // exclude the nodes which is the origin of river.
         if (sNode.isRiverOrigin()) {
             continue;
@@ -59,6 +60,10 @@ void StreamRoutingMessageRunner::onMessage(MPI_Status *pStatus, MPI_Message *pMe
     TypeRouting up_routing;
     MPI_Mrecv(&up_routing, sizeof(TypeRouting), MPI_BYTE, pMessage, pStatus);
     SimulationNode *pNode = pNodesPool->findNodeById(up_routing.destination_id);
+    if (pNode == nullptr) {
+        kiwi::logs::e("message", "error finding node {}, which is not on this processor.\n", up_routing.destination_id);
+        return;
+    }
     pNode->upstream.appendUpstreamRouting(up_routing.source_id, up_routing); // write queue.
 
     // wake up the blocked main thread if necessary.

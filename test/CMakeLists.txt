@@ -37,6 +37,6 @@ MESSAGE(STATUS "Set googletest as test library.")
 
 ## add kiwi framefork
 include_directories(${KIWI_EXPORT_INCLUDE_PATH})
-set(EXTRA_LIBS kiwi ${EXTRA_LIBS})
+set(EXTRA_LIBS fmt kiwi ${EXTRA_LIBS})
 
 add_subdirectory(unit)

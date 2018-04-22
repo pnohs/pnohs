@@ -6,15 +6,17 @@
 #include "nodes_pool.h"
 #include "routing/type_routing.h"
 
-NodesPool::NodesPool() : simulationNodes() {}
+NodesPool::NodesPool() {
+    simulationNodes = new std::vector<SimulationNode>();
+}
 
 void NodesPool::appendNode(const SimulationNode &snode) { // todo remove all nodes.
-    simulationNodes.push_back(snode);
+    simulationNodes->push_back(snode);
 }
 
 SimulationNode *NodesPool::findNodeById(const _type_node_id node_id) {
     // travel all simulation nodes to find a node.
-    for (SimulationNode &node:simulationNodes) {
+    for (SimulationNode &node:*simulationNodes) {
         if (node.id == node_id) {
             return &node;
         }
@@ -78,7 +80,7 @@ bool NodesPool::allCompleted() {
 void NodesPool::updateStatusAllCompleted(const unsigned long total_steps) {
     bool finish_status = true;
     // update status_all_tasks_completed
-    for (SimulationNode &sNode : simulationNodes) {
+    for (SimulationNode &sNode : *simulationNodes) {
         if (sNode._time_steps < total_steps) { // the node does not finish its simulation.
             finish_status = false;
             break;
