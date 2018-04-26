@@ -11,8 +11,8 @@
 
 Simulation::Simulation() {
     pConfig = ConfigToml::getInstance();
-    ctx = new Context(pConfig); // todo release memory
-    scheduler = new Scheduler(*ctx, pConfig->simulationTimeSteps); // todo delete.
+    ctx = new Context(pConfig);
+    scheduler = new Scheduler(*ctx, pConfig->simulationTimeSteps);
 }
 
 void Simulation::setupNodes() {
@@ -29,8 +29,8 @@ void Simulation::setupNodes() {
     // todo too many object copies, but maybe it is not too important.
     DNode dnode;
     while (pa.isAfterLast()) { // add nodes to vector onr by one.
-        SimulationNode snode;
         dnode = pa.nextNode();
+        SimulationNode snode;
         snode.id = dnode.node_id;
 
         for (const StreamMeta &meta:dnode.getUpstreamNodes()) {
@@ -57,6 +57,7 @@ void Simulation::startMessageLooper() {
 }
 
 void Simulation::simulate() {
+    scheduler->preSchedule(); // prepare for running scheduler.
     while (scheduler->select()) {
         scheduler->curNode->riverRouting();
         scheduler->curNode->runoff();
@@ -66,4 +67,9 @@ void Simulation::simulate() {
         // todo write results of this time-step of this node to I/O.
     }
     // To here, it has finished all simulation time steps.
+}
+
+void Simulation::teardown() {
+    delete ctx; // delete simulation context
+    delete scheduler; // remove simulation nodes here
 }

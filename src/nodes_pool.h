@@ -13,6 +13,8 @@
  * NodePool is a collection of all simulation nodes on this processor.
  * {@see @var}
  */
+typedef std::list<SimulationNode> SimulationNodesSet;
+
 class NodesPool {
 public:
 
@@ -21,6 +23,9 @@ public:
     friend void StreamRoutingMessageRunner::onAttach();
 
     NodesPool();
+
+    // remove all simulation nodes.
+    ~NodesPool();
 
     /**
      * add a simulation node to vector @var simulationNodes,
@@ -78,7 +83,7 @@ private:
     /**
      * all nodes on this processor.
      */
-    std::vector<SimulationNode> *simulationNodes;
+    SimulationNodesSet *simulationNodes;
 
     /**
      * Deliver simulation result to node on the same processor directly.

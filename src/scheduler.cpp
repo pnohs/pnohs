@@ -11,7 +11,11 @@ Scheduler::Scheduler(Context &ctx, unsigned long total_steps) : _total_steps(tot
 }
 
 Scheduler::~Scheduler() {
-    // delete pNodesPool; // todo remove all nodes.
+    delete pNodesPool;
+}
+
+void Scheduler::preSchedule() {
+    nodesIter = pNodesPool->simulationNodes->begin(); // initialize nodesIter.
 }
 
 bool Scheduler::select() {
@@ -21,7 +25,7 @@ bool Scheduler::select() {
 
     // select one node can be simulated.
     SimulationNode *pickedNode = nullptr;
-    while (1) {
+    while (true) {
         pthread_mutex_lock(&(ctx._t_mu)); // lock
         pickedNode = pickRunnable(); // read queue
         if (pickedNode == nullptr) {
@@ -47,11 +51,17 @@ bool Scheduler::select() {
 
 // todo milestone: better pick strategy.
 SimulationNode *Scheduler::pickRunnable() {
-    for (SimulationNode &sNode :*(pNodesPool->simulationNodes)) {
-        if (sNode._time_steps < _total_steps && sNode.upstream.isReady()) {
-            return &sNode;
+    SimulationNodesSet::iterator itr_end = std::next(nodesIter, 1);
+    SimulationNodesSet::iterator itr = itr_end;
+    do {
+        if (itr->_time_steps < _total_steps && itr->upstream.isReady()) {
+            kiwi::logs::d("sch", "\t{}\n", itr->id);
+            nodesIter = itr;
+            return &(*itr);
         }
-    }
+        itr++;
+    } while (itr != itr_end);
+
     return nullptr;
 }
 
@@ -63,5 +73,5 @@ void Scheduler::postStep() {
 //                  curNode->_time_steps,
 //                  _total_steps,
 //                  pNodesPool->allCompleted(),
-//                  pNodesPool->simulationNodes.size());
+//                  pNodesPool->simulationNodes->size());
 }

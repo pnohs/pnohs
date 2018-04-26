@@ -31,6 +31,11 @@ public:
      */
     void startMessageLooper();
 
+    /**
+     * clean simulation after finished all simulation time-steps.
+     */
+    void teardown();
+
 private:
     ConfigToml *pConfig; // config pointer.
     Context *ctx; // context
