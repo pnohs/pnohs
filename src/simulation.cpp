@@ -4,22 +4,27 @@
 
 #include <utils/mpi_utils.h>
 #include <event/message_looper.h>
+#include <logs/logs.h>
 #include "simulation.h"
 #include "dispatch/dispatch_parse.h"
 #include "message/looper.h"
 #include "message/stream_routing_message_runner.h"
+#include "scheduler/strategy_container.h"
+#include "scheduler/ring_pickup.h"
+#include "scheduler/simple_pickup.h"
 
 Simulation::Simulation() {
     pConfig = ConfigToml::getInstance();
-    ctx = new Context(pConfig);
-    scheduler = new Scheduler(*ctx, pConfig->simulationTimeSteps);
+    sysCtx = new SysContext();
+    schCtx = new SContext(pConfig->simulationTimeSteps); // todo delete
+    scheduler = new Scheduler(*sysCtx, *schCtx);
 }
 
 void Simulation::setupNodes() {
     std::string dispatchFilePath = this->pConfig->dispatchFilePath;
     std::fstream fs(dispatchFilePath, std::ios::in | std::ios::binary);
     if (!fs.good()) { // file not exist, exit.
-        ctx->abort("open file " + dispatchFilePath + " error.", 1);
+        sysCtx->abort("open file " + dispatchFilePath + " error.", 1);
     }
 
     // parse dispatch file to get nodes for this processor.
@@ -41,28 +46,39 @@ void Simulation::setupNodes() {
         }
         snode.notifyDataSetChanged();
         // add more information to SimulationNode.
-        scheduler->pNodesPool->appendNode(snode);
+        schCtx->pNodesPool->appendNode(snode);
     }
     fs.close();
 }
 
 void Simulation::startMessageLooper() {
     kiwi::MessageLooper::registerRunner(
-            new StreamRoutingMessageRunner(*ctx, scheduler->pNodesPool, pConfig->simulationTimeSteps));
+            new StreamRoutingMessageRunner(*sysCtx, schCtx->pNodesPool, pConfig->simulationTimeSteps));
     // New message loop for listening message from other processors.
     Looper *loop = Looper::NewMessageLooper(); // todo delete
     if (loop == nullptr) {
-        ctx->abort("Error: pthread_create() failed.", 1);
+        sysCtx->abort("Error: pthread_create() failed.", 1);
     }
 }
 
 void Simulation::simulate() {
-    scheduler->preSchedule(); // prepare for running scheduler.
+    // register all kinds od strategy here.
+    StrategyContainer::registerStrategy(SimplePickup::Key, new SimplePickup(*schCtx));
+    StrategyContainer::registerStrategy(RingPickup::Key, new RingPickup(*schCtx));
+    if (StrategyContainer::findStrategyByKey("key") != nullptr) {
+
+    } else {
+        kiwi::logs::w("scheduler", "invalid strategy name: {0}, "
+                                   "we will use default pickup strategy 'ring pickup' instead.\n",
+                      "name"); // todo
+        scheduler->setPickupStrategy(RingPickup::Key);
+    }
+
     while (scheduler->select()) {
-        scheduler->curNode->riverRouting();
-        scheduler->curNode->runoff();
+        schCtx->curNode->riverRouting();
+        schCtx->curNode->runoff();
         // deliver simulation results.
-        scheduler->pNodesPool->deliver(*(scheduler->curNode));
+        schCtx->pNodesPool->deliver(*(schCtx->curNode)); // todo use current node?
         scheduler->postStep(); // update simulation variable after finishing a step of simulation.
         // todo write results of this time-step of this node to I/O.
     }
@@ -70,6 +86,8 @@ void Simulation::simulate() {
 }
 
 void Simulation::teardown() {
-    delete ctx; // delete simulation context
+    // destroy all pickup strategies.
+    StrategyContainer::DestroyAllStrategies();
+    delete sysCtx; // delete simulation context
     delete scheduler; // remove simulation nodes here
 }

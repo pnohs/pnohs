@@ -8,8 +8,8 @@
 
 #include "config_toml.h"
 #include "simulation_node.h"
-#include "context.h"
-#include "scheduler.h"
+#include "sys_context.h"
+#include "scheduler/scheduler.h"
 
 class Simulation {
 public:
@@ -38,7 +38,8 @@ public:
 
 private:
     ConfigToml *pConfig; // config pointer.
-    Context *ctx; // context
+    SysContext *sysCtx; // system context
+    SContext *schCtx; // schedule context
     Scheduler *scheduler;
 };
 

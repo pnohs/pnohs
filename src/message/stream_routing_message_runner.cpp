@@ -8,7 +8,7 @@
 #include "../nodes_pool.h"
 
 // initial context for thread here.
-StreamRoutingMessageRunner::StreamRoutingMessageRunner(Context &ctx, NodesPool *pPool, const unsigned long totalSteps) :
+StreamRoutingMessageRunner::StreamRoutingMessageRunner(SysContext &ctx, NodesPool *pPool, const unsigned long totalSteps) :
         total_steps(totalSteps), _msg_upper_bound(0), _msg_accumulator(0),
         ctx(ctx), pNodesPool(pPool) {}
 

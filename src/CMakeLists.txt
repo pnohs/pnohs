@@ -8,10 +8,9 @@ set(EXTRA_LIBS fmt kiwi ${EXTRA_LIBS}) # todo use KIWI_EXPORT_LIBS
 
 set(HEADER_FILES
         config_toml.h
-        context.h
+        sys_context.h
         nodes_pool.h
         pnohs.h
-        scheduler.h
         simulation.h
         simulation_node.h
         dispatch/dispatch_parse.h
@@ -34,14 +33,19 @@ set(HEADER_FILES
         routing/route.h
         routing/type_routing.h
         utils/predefine.h
+        scheduler/strategy_adapter.h
+        scheduler/ring_pickup.h
+        scheduler/s_context.h
+        scheduler/scheduler.h
+        scheduler/simple_pickup.h
+        scheduler/strategy_container.h
         )
 
 set(SOURCE_FILES
         config_toml.cpp
-        context.cpp
+        sys_context.cpp
         nodes_pool.cpp
         pnohs.cpp
-        scheduler.cpp
         simulation.cpp
         simulation_node.cpp
         dispatch/dnode.hpp
@@ -61,10 +65,15 @@ set(SOURCE_FILES
         models/simple_HBV_model.cpp
         routing/route.cpp
         routing/type_routing.cpp
+        scheduler/strategy_adapter.cpp
+        scheduler/ring_pickup.cpp
+        scheduler/s_context.cpp
+        scheduler/scheduler.cpp
+        scheduler/simple_pickup.cpp
+        scheduler/strategy_container.cpp
         )
 
-set(MAIN_FILE main.cpp
-        )
+set(MAIN_FILE main.cpp)
 
 
 # set binary path and lib storage path for compiling process.
@@ -76,6 +85,8 @@ add_library(${M_LIB_NAME} STATIC ${HEADER_FILES} ${SOURCE_FILES})
 set(EXTRA_LIBS ${M_LIB_NAME} ${EXTRA_LIBS})
 
 add_executable(${M_EXECUTE_BIN_NAME} ${MAIN_FILE})
+# set_target_properties(${M_EXECUTE_BIN_NAME} PROPERTIES LINK_FLAGS "-static")
+# or run: cmake -DCMAKE_EXE_LINKER_FLAGS="-static" -DCMAKE_FIND_LIBRARY_SUFFIXES=".a" ../
 
 target_link_libraries(${M_EXECUTE_BIN_NAME} ${EXTRA_LIBS}) # extra lib
 

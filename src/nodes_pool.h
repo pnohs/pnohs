@@ -6,7 +6,7 @@
 #define PNOHS_NODES_POOL_H
 
 #include "simulation_node.h"
-#include "context.h"
+#include "sys_context.h"
 #include "message/stream_routing_message_runner.h"
 
 /**
@@ -18,9 +18,10 @@ typedef std::list<SimulationNode> SimulationNodesSet;
 class NodesPool {
 public:
 
-    friend class Scheduler;
-
-    friend void StreamRoutingMessageRunner::onAttach();
+    /**
+     * all nodes on this processor.
+     */
+    SimulationNodesSet *simulationNodes;
 
     NodesPool();
 
@@ -79,11 +80,6 @@ private:
      * Status of whether all nodes on this processor has finished all their simulation.
      */
     bool status_all_tasks_completed = false;
-
-    /**
-     * all nodes on this processor.
-     */
-    SimulationNodesSet *simulationNodes;
 
     /**
      * Deliver simulation result to node on the same processor directly.
