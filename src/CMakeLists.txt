@@ -8,11 +8,12 @@ set(EXTRA_LIBS fmt kiwi ${EXTRA_LIBS}) # todo use KIWI_EXPORT_LIBS
 
 set(HEADER_FILES
         config_toml.h
-        sys_context.h
+        config_values.h
         nodes_pool.h
         pnohs.h
         simulation.h
         simulation_node.h
+        sys_context.h
         dispatch/dispatch_parse.h
         dispatch/dispatch_type.h
         dispatch/node_parse.h
@@ -43,11 +44,12 @@ set(HEADER_FILES
 
 set(SOURCE_FILES
         config_toml.cpp
-        sys_context.cpp
+        config_values.cpp
         nodes_pool.cpp
         pnohs.cpp
         simulation.cpp
         simulation_node.cpp
+        sys_context.cpp
         dispatch/dnode.hpp
         dispatch/node_parse.cpp
         dispatch/dispatch_parse.cpp

@@ -37,7 +37,7 @@ public:
     void teardown();
 
 private:
-    ConfigToml *pConfig; // config pointer.
+    ConfigValues *pConfig; // config values pointer.
     SysContext *sysCtx; // system context
     SContext *schCtx; // schedule context
     Scheduler *scheduler;

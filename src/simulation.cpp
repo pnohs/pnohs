@@ -14,7 +14,7 @@
 #include "scheduler/simple_pickup.h"
 
 Simulation::Simulation() {
-    pConfig = ConfigToml::getInstance();
+    pConfig = ConfigToml::getInstance()->getConfigValue();
     sysCtx = new SysContext();
     schCtx = new SContext(pConfig->simulationTimeSteps); // todo delete
     scheduler = new Scheduler(*sysCtx, *schCtx);
@@ -62,15 +62,17 @@ void Simulation::startMessageLooper() {
 }
 
 void Simulation::simulate() {
+    std::string pickupStrategyName = pConfig->pickupStrategy;
+
     // register all kinds od strategy here.
     StrategyContainer::registerStrategy(SimplePickup::Key, new SimplePickup(*schCtx));
     StrategyContainer::registerStrategy(RingPickup::Key, new RingPickup(*schCtx));
-    if (StrategyContainer::findStrategyByKey("key") != nullptr) {
-
+    if (StrategyContainer::findStrategyByKey(pickupStrategyName) != nullptr) {
+        scheduler->setPickupStrategy(pickupStrategyName);
     } else {
         kiwi::logs::w("scheduler", "invalid strategy name: {0}, "
                                    "we will use default pickup strategy 'ring pickup' instead.\n",
-                      "name"); // todo
+                      pickupStrategyName); // todo
         scheduler->setPickupStrategy(RingPickup::Key);
     }
 
