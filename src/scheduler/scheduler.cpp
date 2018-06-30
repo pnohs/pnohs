@@ -33,10 +33,8 @@ bool Scheduler::select() {
     SimulationNode *pickedNode = nullptr;
     while (true) {
         pthread_mutex_lock(&(ctx._t_mu)); // lock
-        kiwi::logs::i("schedule", "selecting new.\n");
         pickedNode = pickup->pickRunnable(); // read queue
         if (pickedNode == nullptr) {
-            kiwi::logs::i("schedule", "waiting.\n");
             ctx._t_waiting++;
             pthread_cond_wait(&(ctx._t_cond), &(ctx._t_mu));
             ctx._t_waiting--;
@@ -60,11 +58,10 @@ bool Scheduler::select() {
 void Scheduler::postStep() {
     schCtx.curNode->_time_steps++;
     schCtx.pNodesPool->updateStatusAllCompleted(schCtx._total_steps); // update
-    kiwi::logs::i("schedule", "\tnode_id: {0}\t steps:{1}/{2}\tcom-status:{3}\tnodes_couts:{4}\n",
-                  schCtx.curNode->id,
-                  schCtx.curNode->_time_steps,
-                  schCtx._total_steps,
-                  schCtx.pNodesPool->allCompleted(), 0);// ,
+//    kiwi::logs::i("schedule", "\tnode_id: {0}\t steps:{1}/{2}\tcom-status:{3}\tnodes_couts:{4}\n",
+//                  schCtx.curNode->id,
+//                  schCtx.curNode->_time_steps,
+//                  schCtx._total_steps,
+//                  schCtx.pNodesPool->allCompleted(), 0);
 //                  schCtx.pNodesPool->simulationNodes->size());
 }
-

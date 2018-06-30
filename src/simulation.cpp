@@ -69,10 +69,11 @@ void Simulation::simulate() {
     StrategyContainer::registerStrategy(RingPickup::Key, new RingPickup(*schCtx));
     if (StrategyContainer::findStrategyByKey(pickupStrategyName) != nullptr) {
         scheduler->setPickupStrategy(pickupStrategyName);
+        kiwi::logs::i("scheduler", "the {} pickup strategy in scheduler will be used.\n", pickupStrategyName);
     } else {
         kiwi::logs::w("scheduler", "invalid strategy name: {0}, "
                                    "we will use default pickup strategy 'ring pickup' instead.\n",
-                      pickupStrategyName); // todo
+                      pickupStrategyName);
         scheduler->setPickupStrategy(RingPickup::Key);
     }
 
