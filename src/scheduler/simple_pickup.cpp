@@ -9,5 +9,11 @@ const std::string SimplePickup::Key = "simple";
 SimplePickup::SimplePickup(SContext &context) : StrategyAdapter(context) {}
 
 SimulationNode *SimplePickup::pickRunnable() {
-    return nullptr; // todo
+    for (SimulationNode &sNode :*(context.pNodesPool->simulationNodes)) {
+        if (sNode._time_steps < context._total_steps && sNode.upstream.isReady()) {
+            return &sNode;
+        }
+    }
+    return nullptr;
+
 }
