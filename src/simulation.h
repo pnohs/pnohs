@@ -8,8 +8,8 @@
 
 #include "config_toml.h"
 #include "simulation_node.h"
-#include "context.h"
-#include "scheduler.h"
+#include "sys_context.h"
+#include "scheduler/scheduler.h"
 
 class Simulation {
 public:
@@ -31,9 +31,15 @@ public:
      */
     void startMessageLooper();
 
+    /**
+     * clean simulation after finished all simulation time-steps.
+     */
+    void teardown();
+
 private:
-    ConfigToml *pConfig; // config pointer.
-    Context *ctx; // context
+    ConfigValues *pConfig; // config values pointer.
+    SysContext *sysCtx; // system context
+    SContext *schCtx; // schedule context
     Scheduler *scheduler;
 };
 

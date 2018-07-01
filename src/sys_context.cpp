@@ -4,9 +4,9 @@
 
 #include <iostream>
 #include <logs/logs.h>
-#include "context.h"
+#include "sys_context.h"
 
-Context::Context(ConfigToml *pConfig) : pConfig(pConfig) {
+SysContext::SysContext() {
     // todo use pthread_once: https://linux.die.net/man/3/pthread_mutex_init
     // todo destroy
     // initialize pthread mutex and cond
@@ -14,10 +14,10 @@ Context::Context(ConfigToml *pConfig) : pConfig(pConfig) {
     pthread_cond_init(&_t_cond, nullptr);
 }
 
-Context::~Context() { // todo delete context.
+SysContext::~SysContext() { // todo delete context.
 }
 
-void Context::abort(const std::string &reason, int code) {
-    kiwi::logs::e("abort", reason.c_str());
+void SysContext::abort(const std::string &reason, int code) {
+    kiwi::logs::e("abort", (reason + "\n").c_str());
     MPI_Abort(MPI_COMM_WORLD, code);
 }

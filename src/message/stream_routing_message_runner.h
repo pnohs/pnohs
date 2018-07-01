@@ -8,7 +8,7 @@
 
 #include <io/io_writer.h>
 #include <event/message_runner.h>
-#include "../context.h"
+#include "../sys_context.h"
 
 /**
  * In our implementation,
@@ -18,7 +18,7 @@ class NodesPool;
 
 class StreamRoutingMessageRunner : public kiwi::MessageRunner {
 public:
-    StreamRoutingMessageRunner(Context &ctx, NodesPool *pPool, const unsigned long totalSteps);
+    StreamRoutingMessageRunner(SysContext &ctx, NodesPool *pPool, const unsigned long totalSteps);
 
     // this function runs in main thread.
     // initialize @var _msg_upper_bound here.
@@ -44,7 +44,7 @@ private:
     // messages count have received.
     unsigned long _msg_accumulator;
 
-    Context &ctx;
+    SysContext &ctx;
     NodesPool *pNodesPool;
 
 };

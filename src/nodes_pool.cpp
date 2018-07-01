@@ -7,7 +7,11 @@
 #include "routing/type_routing.h"
 
 NodesPool::NodesPool() {
-    simulationNodes = new std::vector<SimulationNode>();
+    simulationNodes = new SimulationNodesSet();
+}
+
+NodesPool::~NodesPool() {
+    simulationNodes->clear(); // todo release memory.
 }
 
 void NodesPool::appendNode(const SimulationNode &snode) { // todo remove all nodes.

@@ -6,13 +6,11 @@
 #define PNOHS_CONFIG_TOML_H
 
 #include "config/config.h"
+#include "config_values.h"
 
 class ConfigToml : public kiwi::config {
 
 public:
-    // config property here
-    unsigned long simulationTimeSteps = 0;
-    std::string dispatchFilePath;
 
     ConfigToml();
 
@@ -25,8 +23,15 @@ public:
     // If instance exists, return the pointer of the instance.
     static ConfigToml *newInstance(const std::string &configureFilePath);
 
+    inline ConfigValues *getConfigValue() {
+        return &confV;
+    }
+
 private:
     static ConfigToml *pConfigInstance; // pointer of instance of this class.
+
+    // all data in toml configure file is parsed to here.
+    ConfigValues confV;
 
     // override this function to resolve parsed config file.
     void resolveConfig(std::shared_ptr<cpptoml::table> table) override;

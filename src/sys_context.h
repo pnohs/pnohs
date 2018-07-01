@@ -2,17 +2,20 @@
 // Created by genshen on 3/28/18.
 //
 
-#ifndef PNOHS_CONTROLLER_H
-#define PNOHS_CONTROLLER_H
+#ifndef PNOHS_SYS_CONTEXT_H
+#define PNOHS_SYS_CONTEXT_H
 
 #include "config_toml.h"
 
-class Context {
+/**
+ * system relative context here, such as mutex, program lifetime.
+ */
+class SysContext {
 public:
 
-    Context(ConfigToml *pConfig);
+    SysContext(/*ConfigToml *pConfig*/);
 
-    ~ Context();
+    ~ SysContext();
 
     /**
      *  abort all processors with exit code specified by {@var code}
@@ -27,8 +30,8 @@ public:
     pthread_cond_t _t_cond;
 
 private:
-    const ConfigToml *pConfig;
+//    const ConfigToml *pConfig;
 
 };
 
-#endif //PNOHS_CONTROLLER_H
+#endif //PNOHS_SYS_CONTEXT_H

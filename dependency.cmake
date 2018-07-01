@@ -30,6 +30,8 @@ if (MPI_ENABLE_FLAG)
 endif ()
 ##### mpi and openmp end
 
+# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++")
+
 ################################
 ##### pthread lib
 ################################

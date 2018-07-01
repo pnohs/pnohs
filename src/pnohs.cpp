@@ -100,14 +100,15 @@ void pnohs::onStart() {
 }
 
 void pnohs::onFinish() {
-    // todo remove nodes here (release memory).
-    // todo delete simulation context.
+    mSimulation->teardown();
     kiwi::logs::s("pnohs", "on finished.\n");
 }
 
 void pnohs::beforeDestroy() {
     // todo delete simulation
-    // todo delete config
+    ConfigToml *pConfig = ConfigToml::getInstance(); // destroy config instance.
+    delete pConfig;
+
     if (kiwi::mpiUtils::ownRank == MASTER_PROCESSOR) {
         kiwi::logs::s("pnohs", "before destroy.\n");
     }
