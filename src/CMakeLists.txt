@@ -6,9 +6,19 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/src/kiwi ${PROJECT_BINARY_DIR}/ven
 include_directories(${KIWI_EXPORT_INCLUDE_PATH})
 set(EXTRA_LIBS fmt kiwi ${EXTRA_LIBS}) # todo use KIWI_EXPORT_LIBS
 
+# configure a header file to pass some of the CMake settings(such as debug flag) to the source code
+if (DEBUG_BUILD_ENABLE_FLAG)
+    set(BUILDING_DEBUG_MODE ON)
+endif ()
+configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/building_config.in"
+        "${CMAKE_CURRENT_SOURCE_DIR}/building_config.h"
+)
+
 set(HEADER_FILES
         config_toml.h
         config_values.h
+        building_config.h
         nodes_pool.h
         pnohs.h
         simulation.h
@@ -40,6 +50,7 @@ set(HEADER_FILES
         scheduler/scheduler.h
         scheduler/simple_pickup.h
         scheduler/strategy_container.h
+        utils/stopwatch.h
         )
 
 set(SOURCE_FILES
