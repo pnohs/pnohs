@@ -34,7 +34,7 @@ void NodesPool::deliver(const SimulationNode &current_node) {
         current_node.outletReached();
     } else {
         // if its downstream is on this processor, just do data copy in memory.
-        if (kiwi::mpiUtils::ownRank == current_node.downstream.nodes[0].location) {
+        if (kiwi::mpiUtils::own_rank == current_node.downstream.nodes[0].location) {
             straightforwardDeliver(current_node);
         } else {
             remoteDeliver(current_node); // deliver to the node on other processor.

@@ -28,7 +28,7 @@ void Simulation::setupNodes() {
     }
 
     // parse dispatch file to get nodes for this processor.
-    DispatchParse pa = DispatchParse(fs, kiwi::mpiUtils::ownRank);
+    DispatchParse pa = DispatchParse(fs, kiwi::mpiUtils::own_rank);
     pa.locate();
 
     // todo too many object copies, but maybe it is not too important.

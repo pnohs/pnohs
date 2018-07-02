@@ -21,7 +21,7 @@ void StreamRoutingMessageRunner::onAttach() {
         }
         for (UpstreamNode &upnode:sNode.upstream.nodes) {
             // exclude the upstream nodes which is located on the this processor.
-            if (upnode.location == kiwi::mpiUtils::ownRank) {
+            if (upnode.location == kiwi::mpiUtils::own_rank) {
                 continue;
             }
             _msg_upper_bound++;

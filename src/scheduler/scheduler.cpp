@@ -29,7 +29,7 @@ bool Scheduler::select() {
     if (schCtx.pNodesPool->allCompleted()) { // all simulation nodes have finished their simulation.
         // dump time line if time line is enabled.
         char buffer[50] = {'\0'};
-        sprintf(buffer, "debug_timeline_%d.dump", kiwi::mpiUtils::ownRank);
+        sprintf(buffer, "debug_timeline_%d.dump", kiwi::mpiUtils::own_rank);
         stopwatch::dumpToFile(std::string(buffer));
         return false;
     }

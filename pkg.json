@@ -20,7 +20,7 @@
       },
       "kiwi": {
         "path": "https://git.gensh.me/genshen/kiwi.git",
-        "hash": "21513034630d1e3fd4313e6571795da685c775e5"
+        "hash": "v0.1.0"
       }
     },
     "files": {
