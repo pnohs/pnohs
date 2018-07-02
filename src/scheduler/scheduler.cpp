@@ -54,13 +54,6 @@ bool Scheduler::select() {
             // got/picked up a runnable node, log this moment.
             stopwatch::appendToTimeLineNow(schCtx.curNode->id, schCtx.curNode->_time_steps,
                                            stopwatch::EventSignals::EVENT_SIGNAL_PICKED);
-            // Dequeue upstreams // write queue
-            // the task queue must have data (because pickRunnable returns non-null pointer).
-            // and the other thread only add data to task queue (don't remove data).
-            if (!pickedNode->isRiverOrigin()) {
-                std::list<TypeRouting> routingData = schCtx.curNode->upstream.deQueue();
-            }
-
             pthread_mutex_unlock(&(ctx._t_mu)); // lock
             return true;
         }
@@ -68,7 +61,6 @@ bool Scheduler::select() {
 }
 
 void Scheduler::postStep() {
-    schCtx.curNode->_time_steps++;
     schCtx.pNodesPool->updateStatusAllCompleted(schCtx._total_steps); // update
 
     stopwatch::appendToTimeLineNow(schCtx.curNode->id, schCtx.curNode->_time_steps,

@@ -10,7 +10,7 @@
 #include <list>
 #include "stream_meta.h"
 #include "upstream_node.h"
-#include "../routing/type_routing.h"
+#include "../adapter/type_routing.h"
 
 class Upstream {
 public:

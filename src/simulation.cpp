@@ -44,6 +44,7 @@ void Simulation::setupNodes() {
         for (const StreamMeta &meta:dnode.getDownstreamNodes()) {
             snode.downstream.putDownMetaStream(meta); // add downstream node.
         }
+        snode.testInit();
         snode.notifyDataSetChanged();
         // add more information to SimulationNode.
         schCtx->pNodesPool->appendNode(snode);
@@ -78,10 +79,12 @@ void Simulation::simulate() {
     }
 
     while (scheduler->select()) {
-        schCtx->curNode->riverRouting();
+        schCtx->curNode->beforeStep();
+        schCtx->curNode->routing();
         schCtx->curNode->runoff();
         // deliver simulation results.
         schCtx->pNodesPool->deliver(*(schCtx->curNode)); // todo use current node?
+        schCtx->curNode->postStep();
         scheduler->postStep(); // update simulation variable after finishing a step of simulation.
         // todo write results of this time-step of this node to I/O.
     }

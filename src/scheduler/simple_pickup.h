@@ -13,7 +13,7 @@ class SimplePickup : public StrategyAdapter {
 public:
     SimplePickup(SContext &context);
 
-    SimulationNode *pickRunnable();
+    SimulationNode *pickRunnable ();
 
     static const std::string Key;
 
