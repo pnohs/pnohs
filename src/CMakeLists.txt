@@ -100,6 +100,8 @@ set(EXTRA_LIBS ${M_LIB_NAME} ${EXTRA_LIBS})
 add_executable(${M_EXECUTE_BIN_NAME} ${MAIN_FILE})
 # set_target_properties(${M_EXECUTE_BIN_NAME} PROPERTIES LINK_FLAGS "-static")
 # or run: cmake -DCMAKE_EXE_LINKER_FLAGS="-static" -DCMAKE_FIND_LIBRARY_SUFFIXES=".a" ../
+#target_link_libraries(${M_EXECUTE_BIN_NAME} -static-libgcc -static-libstdc++)
+#set_target_properties(${M_EXECUTE_BIN_NAME} PROPERTIES LINK_FLAGS "-static -static-libgcc -static-libstdc++")
 
 target_link_libraries(${M_EXECUTE_BIN_NAME} ${EXTRA_LIBS}) # extra lib
 
