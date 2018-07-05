@@ -47,6 +47,14 @@ public:
     unsigned long minQueSize();
 
     /**
+     * get the maximum size of all task queue on the node.
+     * 
+     * From the above example in {@memberof minQueSize}, then 9 will be returned.
+     * @return the maximum size of all task queue on the node.
+     */
+    unsigned long maxQueSize();
+
+    /**
      * checkout whether there is a upstream node whose id is the given id,
      * returns pointer of UpstreamNode if found.
      * @param id node id

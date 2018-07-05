@@ -16,8 +16,9 @@ public:
 
     StrategyAdapter(SContext &context);
 
+    virtual ~StrategyAdapter();
+
     /**
-     * // todo milestone: better pick strategy.
      * select an runnable node (its all upstream task queue are not empty).
      * @return  returns an simulation node if there is at least node fit the condition, otherwise returns nullptr.
      */
@@ -33,6 +34,7 @@ public:
 protected:
     /**
      * iterator of std::list, which is used in schedule select strategy.
+     * The iterator will initialized as the first element of nodes list.
      * It points to {@var curNode}.
      */
     SimulationNodesSet::iterator nodesIter;

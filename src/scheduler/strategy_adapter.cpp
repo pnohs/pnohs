@@ -4,8 +4,9 @@
 
 #include "strategy_adapter.h"
 
-StrategyAdapter::StrategyAdapter(SContext &context) : context(context) {
-}
+StrategyAdapter::StrategyAdapter(SContext &context) : context(context) {}
+
+StrategyAdapter::~StrategyAdapter() {}
 
 void StrategyAdapter::onStrategySelected() {
     nodesIter = context.pNodesPool->simulationNodes->begin(); // initialize nodesIter.

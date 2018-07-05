@@ -21,8 +21,8 @@ void SimulationNode::runoff() {
 }
 
 void SimulationNode::outletReached() const {
-    kiwi::logs::i("flow", "flow is: {0}\n",
-                  _p_model_ctx->flow); // todo for an example, we just output the flow of outlet.
+//    kiwi::logs::i("flow", "flow is: {0}\n",
+//                  _p_model_ctx->flow); // todo for an example, we just output the flow of outlet.
 }
 
 TypeRouting SimulationNode::constructRouting() const {

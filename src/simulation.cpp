@@ -11,7 +11,7 @@
 #include "message/stream_routing_message_runner.h"
 #include "scheduler/strategy_container.h"
 #include "scheduler/ring_pickup.h"
-#include "scheduler/simple_pickup.h"
+#include "scheduler/longest_pickup.h"
 
 Simulation::Simulation() {
     pConfig = ConfigToml::getInstance()->getConfigValue();
@@ -66,8 +66,8 @@ void Simulation::simulate() {
     std::string pickupStrategyName = pConfig->pickupStrategy;
 
     // register all kinds od strategy here.
-    StrategyContainer::registerStrategy(SimplePickup::Key, new SimplePickup(*schCtx));
     StrategyContainer::registerStrategy(RingPickup::Key, new RingPickup(*schCtx));
+    StrategyContainer::registerStrategy(LongestPickup::Key, new LongestPickup(*schCtx));
     if (StrategyContainer::findStrategyByKey(pickupStrategyName) != nullptr) {
         scheduler->setPickupStrategy(pickupStrategyName);
         kiwi::logs::i("scheduler", "the {} pickup strategy in scheduler will be used.\n", pickupStrategyName);

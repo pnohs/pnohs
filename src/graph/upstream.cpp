@@ -33,7 +33,20 @@ unsigned long Upstream::minQueSize() {
         }
     }
     pthread_rwlock_unlock(&_task_queue_rwlock);
-    return minQueSize; // todo
+    return minQueSize;
+}
+
+
+unsigned long Upstream::maxQueSize() {
+    unsigned long maxQueSize = 0;
+    pthread_rwlock_rdlock(&_task_queue_rwlock);
+    for (UpstreamNode &node:nodes) {
+        if (node.taskCount() > maxQueSize) {
+            maxQueSize = node.taskCount();
+        }
+    }
+    pthread_rwlock_unlock(&_task_queue_rwlock);
+    return maxQueSize;
 }
 
 UpstreamNode *Upstream::findUpstreamNodeById(_type_node_id id) {

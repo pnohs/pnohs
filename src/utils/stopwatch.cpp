@@ -28,6 +28,7 @@ long stopwatch::defaultWatch() {
 void stopwatch::appendToTimeLine(long id, long step, int signal, long (*watch)()) {
 #ifdef BUILDING_DEBUG_MODE
     time_line.push_back(event{watch(), id, step, signal});
+//    std::cout << event{watch(), id, step, signal};
 #endif
 }
 

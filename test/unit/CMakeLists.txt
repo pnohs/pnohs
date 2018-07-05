@@ -22,7 +22,7 @@ set(TEST_SOURCE_FILES
         dispatch/dispatch_parse_test.cpp
         graph/node_test.cpp
         model/hbv_model_test.cpp
-        )
+        scheduler/longest_pickup_test.cpp)
 
 # set binary path and lib storage path wile compiling process.
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)

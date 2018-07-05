@@ -52,11 +52,11 @@ set(HEADER_FILES
         models/type_model_data.h
         models/simple_HBV_model.h
         utils/predefine.h
-        scheduler/strategy_adapter.h
+        scheduler/longest_pickup.h
         scheduler/ring_pickup.h
         scheduler/s_context.h
         scheduler/scheduler.h
-        scheduler/simple_pickup.h
+        scheduler/strategy_adapter.h
         scheduler/strategy_container.h
         utils/stopwatch.h
         )
@@ -88,11 +88,11 @@ set(SOURCE_FILES
         models/simple_potential_evaporation_model.cpp
         models/type_model_data.cpp
         models/simple_HBV_model.cpp
-        scheduler/strategy_adapter.cpp
+        scheduler/longest_pickup.cpp
         scheduler/ring_pickup.cpp
         scheduler/s_context.cpp
         scheduler/scheduler.cpp
-        scheduler/simple_pickup.cpp
+        scheduler/strategy_adapter.cpp
         scheduler/strategy_container.cpp
         utils/stopwatch.cpp
         )

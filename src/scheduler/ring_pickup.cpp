@@ -9,6 +9,8 @@ const std::string RingPickup::Key = "ring";
 RingPickup::RingPickup(SContext &context) : StrategyAdapter(context) {
 }
 
+RingPickup::~RingPickup() {}
+
 SimulationNode *RingPickup::pickRunnable() {
     SimulationNodesSet::iterator itr_end = std::next(nodesIter, 1);
     SimulationNodesSet::iterator itr = itr_end;
