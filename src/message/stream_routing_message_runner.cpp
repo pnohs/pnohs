@@ -8,7 +8,7 @@
 #include "../nodes_pool.h"
 
 // initial context for thread here.
-StreamRoutingMessageRunner::StreamRoutingMessageRunner(Context &ctx, NodesPool *pPool, const unsigned long totalSteps) :
+StreamRoutingMessageRunner::StreamRoutingMessageRunner(SysContext &ctx, NodesPool *pPool, const unsigned long totalSteps) :
         total_steps(totalSteps), _msg_upper_bound(0), _msg_accumulator(0),
         ctx(ctx), pNodesPool(pPool) {}
 
@@ -21,7 +21,7 @@ void StreamRoutingMessageRunner::onAttach() {
         }
         for (UpstreamNode &upnode:sNode.upstream.nodes) {
             // exclude the upstream nodes which is located on the this processor.
-            if (upnode.location == kiwi::mpiUtils::ownRank) {
+            if (upnode.location == kiwi::mpiUtils::own_rank) {
                 continue;
             }
             _msg_upper_bound++;

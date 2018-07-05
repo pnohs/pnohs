@@ -10,7 +10,7 @@
 #include <list>
 #include "stream_meta.h"
 #include "upstream_node.h"
-#include "../routing/type_routing.h"
+#include "../adapter/type_routing.h"
 
 class Upstream {
 public:
@@ -45,6 +45,14 @@ public:
      * @return the minimal size of all task queue on this node.
      */
     unsigned long minQueSize();
+
+    /**
+     * get the maximum size of all task queue on the node.
+     * 
+     * From the above example in {@memberof minQueSize}, then 9 will be returned.
+     * @return the maximum size of all task queue on the node.
+     */
+    unsigned long maxQueSize();
 
     /**
      * checkout whether there is a upstream node whose id is the given id,

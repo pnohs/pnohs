@@ -13,10 +13,11 @@ dispatch_file = "dispatch.dis"
 dob = 1979-05-27T07:32:00-08:00 # 日期是一等公民
 
 [simulation]
-time_steps = 100
+time_steps = 6
 
-[database]
-server = "192.168.1.1"
+[scheduler]
+pickup_strategy = "ring"
+
 ports = [ 8001, 8001, 8002 ]
 connection_max = 5000
 enabled = true

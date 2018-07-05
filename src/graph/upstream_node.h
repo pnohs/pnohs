@@ -10,7 +10,7 @@
 #include <pthread.h>
 //#include <concurrentqueue.hpp>
 #include "stream_meta.h"
-#include "../routing/type_routing.h"
+#include "../adapter/type_routing.h"
 
 class UpstreamNode : public StreamMeta {
 public:

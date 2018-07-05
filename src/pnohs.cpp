@@ -63,7 +63,7 @@ bool pnohs::parseCommands(int argc, char *argv[]) {
 // mpi has been initialized here.
 void pnohs::onCreate() {
     ConfigToml *pConfig;
-    if (kiwi::mpiUtils::ownRank == MASTER_PROCESSOR) {
+    if (kiwi::mpiUtils::own_rank == MASTER_PROCESSOR) {
         kiwi::logs::v("pnohs", "mpi env was initialed.\n");
         // initial config Obj, then read and resolve config file.
         pConfig = ConfigToml::newInstance(configFilePath); // todo config file from argv.
@@ -77,6 +77,8 @@ void pnohs::onCreate() {
     }
     pConfig->sync(); // sync config data to other processors from master processor.
 
+    // set log config
+    kiwi::logs::setCorlorFul(true);
 }
 
 bool pnohs::prepare() {
@@ -91,26 +93,32 @@ bool pnohs::prepare() {
 }
 
 void pnohs::onStart() {
+    double start = MPI_Wtime();
     mSimulation->simulate();
+    double stop = MPI_Wtime();
+    if (kiwi::mpiUtils::own_rank == MASTER_PROCESSOR) {
+        kiwi::logs::s("pnohs", "simulation finished in {} seconds.\n", stop - start);
+    }
 }
 
 void pnohs::onFinish() {
-    // todo remove nodes here (release memory).
-    // todo delete simulation context.
+    mSimulation->teardown();
     kiwi::logs::s("pnohs", "on finished.\n");
 }
 
 void pnohs::beforeDestroy() {
     // todo delete simulation
-    // todo delete config
-    if (kiwi::mpiUtils::ownRank == MASTER_PROCESSOR) {
+    ConfigToml *pConfig = ConfigToml::getInstance(); // destroy config instance.
+    delete pConfig;
+
+    if (kiwi::mpiUtils::own_rank == MASTER_PROCESSOR) {
         kiwi::logs::s("pnohs", "before destroy.\n");
     }
 }
 
 // do not use mpi in onDestroy.
 void pnohs::onDestroy() {
-    if (kiwi::mpiUtils::ownRank == MASTER_PROCESSOR) {
+    if (kiwi::mpiUtils::own_rank == MASTER_PROCESSOR) {
         kiwi::logs::s("pnohs", "on destroy.\n");
     }
 }
