@@ -12,9 +12,11 @@
  */
 class RingPickup : public StrategyAdapter {
 public:
-    RingPickup(SContext &context);
+    explicit RingPickup(SContext &context);
 
-    SimulationNode *pickRunnable();
+    ~RingPickup();
+
+    SimulationNode *pickRunnable() override;
 
     static const std::string Key;
 };

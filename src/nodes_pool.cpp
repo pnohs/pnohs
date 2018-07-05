@@ -4,7 +4,7 @@
 
 #include <utils/mpi_utils.h>
 #include "nodes_pool.h"
-#include "routing/type_routing.h"
+#include "adapter/type_routing.h"
 
 NodesPool::NodesPool() {
     simulationNodes = new SimulationNodesSet();
@@ -30,11 +30,11 @@ SimulationNode *NodesPool::findNodeById(const _type_node_id node_id) {
 
 void NodesPool::deliver(const SimulationNode &current_node) {
     if (current_node.isRiverOutlet()) {
-        // if its outlet of this river.
-        // todo out put to letout
+        // if its outlet of this river
+        current_node.outletReached();
     } else {
         // if its downstream is on this processor, just do data copy in memory.
-        if (kiwi::mpiUtils::ownRank == current_node.downstream.nodes[0].location) {
+        if (kiwi::mpiUtils::own_rank == current_node.downstream.nodes[0].location) {
             straightforwardDeliver(current_node);
         } else {
             remoteDeliver(current_node); // deliver to the node on other processor.
@@ -44,11 +44,7 @@ void NodesPool::deliver(const SimulationNode &current_node) {
 
 void NodesPool::remoteDeliver(const SimulationNode &current_node) {
     const DownstreamNode &downstream_node = current_node.downstream.nodes[0];
-    TypeRouting data = TypeRouting(); // todo example
-    data.routing_data = 3.14;
-    data.source_id = current_node.id;
-    data.destination_id = downstream_node.id;
-
+    TypeRouting data = current_node.constructRouting();
     MPI_Send(&data, sizeof(TypeRouting), MPI_BYTE,
              downstream_node.location, TagStreamRoutingMessage, MPI_COMM_WORLD);
 }
@@ -59,10 +55,7 @@ void NodesPool::straightforwardDeliver(const SimulationNode &current_node) {
     SimulationNode *downstreamNode = findNodeById(downstream_node_id);
     if (downstreamNode != nullptr) {
         // append routing results to upstream task list directly.
-        TypeRouting data = TypeRouting(); // todo just an example;
-        data.routing_data = 3.14;
-        data.source_id = current_node.id;
-        data.destination_id = downstream_node_id;
+        TypeRouting data = current_node.constructRouting();
         bool append_status = downstreamNode->upstream.appendUpstreamRouting(current_node.id, data);
         // New task will be append to the task queue, but there is no need to wake up the blocked main thread.
         // because the main thread is running here.

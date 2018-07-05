@@ -11,7 +11,7 @@
 #include "message/stream_routing_message_runner.h"
 #include "scheduler/strategy_container.h"
 #include "scheduler/ring_pickup.h"
-#include "scheduler/simple_pickup.h"
+#include "scheduler/longest_pickup.h"
 
 Simulation::Simulation() {
     pConfig = ConfigToml::getInstance()->getConfigValue();
@@ -28,7 +28,7 @@ void Simulation::setupNodes() {
     }
 
     // parse dispatch file to get nodes for this processor.
-    DispatchParse pa = DispatchParse(fs, kiwi::mpiUtils::ownRank);
+    DispatchParse pa = DispatchParse(fs, kiwi::mpiUtils::own_rank);
     pa.locate();
 
     // todo too many object copies, but maybe it is not too important.
@@ -44,6 +44,7 @@ void Simulation::setupNodes() {
         for (const StreamMeta &meta:dnode.getDownstreamNodes()) {
             snode.downstream.putDownMetaStream(meta); // add downstream node.
         }
+        snode.testInit();
         snode.notifyDataSetChanged();
         // add more information to SimulationNode.
         schCtx->pNodesPool->appendNode(snode);
@@ -65,8 +66,8 @@ void Simulation::simulate() {
     std::string pickupStrategyName = pConfig->pickupStrategy;
 
     // register all kinds od strategy here.
-    StrategyContainer::registerStrategy(SimplePickup::Key, new SimplePickup(*schCtx));
     StrategyContainer::registerStrategy(RingPickup::Key, new RingPickup(*schCtx));
+    StrategyContainer::registerStrategy(LongestPickup::Key, new LongestPickup(*schCtx));
     if (StrategyContainer::findStrategyByKey(pickupStrategyName) != nullptr) {
         scheduler->setPickupStrategy(pickupStrategyName);
         kiwi::logs::i("scheduler", "the {} pickup strategy in scheduler will be used.\n", pickupStrategyName);
@@ -78,10 +79,12 @@ void Simulation::simulate() {
     }
 
     while (scheduler->select()) {
-        schCtx->curNode->riverRouting();
+        schCtx->curNode->beforeStep();
+        schCtx->curNode->routing();
         schCtx->curNode->runoff();
         // deliver simulation results.
         schCtx->pNodesPool->deliver(*(schCtx->curNode)); // todo use current node?
+        schCtx->curNode->postStep();
         scheduler->postStep(); // update simulation variable after finishing a step of simulation.
         // todo write results of this time-step of this node to I/O.
     }

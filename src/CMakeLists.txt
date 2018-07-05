@@ -10,6 +10,11 @@ set(EXTRA_LIBS fmt kiwi ${EXTRA_LIBS}) # todo use KIWI_EXPORT_LIBS
 if (DEBUG_BUILD_ENABLE_FLAG)
     set(BUILDING_DEBUG_MODE ON)
 endif ()
+
+if (MPI_ENABLE_FLAG)
+    set(MPI_ENABLED ON)
+endif ()
+
 configure_file(
         "${CMAKE_CURRENT_SOURCE_DIR}/building_config.in"
         "${CMAKE_CURRENT_SOURCE_DIR}/building_config.h"
@@ -24,6 +29,11 @@ set(HEADER_FILES
         simulation.h
         simulation_node.h
         sys_context.h
+        adapter/model_adapter.h
+        adapter/model_context.h
+        adapter/routing_adapter.h
+        adapter/runoff_adapter.h
+        adapter/type_routing.h
         dispatch/dispatch_parse.h
         dispatch/dispatch_type.h
         dispatch/node_parse.h
@@ -41,14 +51,12 @@ set(HEADER_FILES
         models/models_config.h
         models/type_model_data.h
         models/simple_HBV_model.h
-        routing/route.h
-        routing/type_routing.h
         utils/predefine.h
-        scheduler/strategy_adapter.h
+        scheduler/longest_pickup.h
         scheduler/ring_pickup.h
         scheduler/s_context.h
         scheduler/scheduler.h
-        scheduler/simple_pickup.h
+        scheduler/strategy_adapter.h
         scheduler/strategy_container.h
         utils/stopwatch.h
         )
@@ -61,6 +69,10 @@ set(SOURCE_FILES
         simulation.cpp
         simulation_node.cpp
         sys_context.cpp
+        adapter/model_context.cpp
+        adapter/routing_adapter.cpp
+        adapter/runoff_adapter.cpp
+        adapter/type_routing.cpp
         dispatch/dnode.hpp
         dispatch/node_parse.cpp
         dispatch/dispatch_parse.cpp
@@ -76,14 +88,13 @@ set(SOURCE_FILES
         models/simple_potential_evaporation_model.cpp
         models/type_model_data.cpp
         models/simple_HBV_model.cpp
-        routing/route.cpp
-        routing/type_routing.cpp
-        scheduler/strategy_adapter.cpp
+        scheduler/longest_pickup.cpp
         scheduler/ring_pickup.cpp
         scheduler/s_context.cpp
         scheduler/scheduler.cpp
-        scheduler/simple_pickup.cpp
+        scheduler/strategy_adapter.cpp
         scheduler/strategy_container.cpp
+        utils/stopwatch.cpp
         )
 
 set(MAIN_FILE main.cpp)
