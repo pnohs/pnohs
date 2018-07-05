@@ -10,6 +10,11 @@ set(EXTRA_LIBS fmt kiwi ${EXTRA_LIBS}) # todo use KIWI_EXPORT_LIBS
 if (DEBUG_BUILD_ENABLE_FLAG)
     set(BUILDING_DEBUG_MODE ON)
 endif ()
+
+if (MPI_ENABLE_FLAG)
+    set(MPI_ENABLED ON)
+endif ()
+
 configure_file(
         "${CMAKE_CURRENT_SOURCE_DIR}/building_config.in"
         "${CMAKE_CURRENT_SOURCE_DIR}/building_config.h"
@@ -89,6 +94,7 @@ set(SOURCE_FILES
         scheduler/scheduler.cpp
         scheduler/simple_pickup.cpp
         scheduler/strategy_container.cpp
+        utils/stopwatch.cpp
         )
 
 set(MAIN_FILE main.cpp)

@@ -9,10 +9,6 @@
  * the time line.
  */
 #include <list>
-#include <string>
-#include <ctime>
-#include <fstream>
-#include "../building_config.h"
 
 namespace stopwatch {
     const int STOP_ID_NONE = -1;
@@ -25,7 +21,6 @@ namespace stopwatch {
         EVENT_SIGNAL_FINISH,
     };
 
-
     class event {
     public:
         long clock_t; // the processor time consumed by the program.
@@ -35,45 +30,30 @@ namespace stopwatch {
         friend std::ostream &operator<<(std::ostream &out, const event &e);
     };
 
-    std::ostream &operator<<(std::ostream &out, const stopwatch::event &e) {
-        out << e.clock_t << " " << e.id << " " << e.step << " " << e.signal << std::endl;
-        return out;
-    }
+    // declare overriding.
+    std::ostream &operator<<(std::ostream &out, const event &e);
 
-    std::list<event> time_line; // todo release mem.
+    // all events at each time step are stored here.
+    extern std::list<event> time_line; // todo release mem.
 
     /**
-     * add an event to time line.
-     * @param id river sub-basin id.
-     * @param signal signal type.
+     * this method returns current clock time, which is used as default param for {@function appendToTimeLine}.
+     * @return current clock time.
      */
-    inline void appendToTimeLineNow(long id, long step, int signal) {
-#ifdef BUILDING_DEBUG_MODE
-        time_line.push_back(event{clock(), id, step, signal});
-#endif
-    }
+    long defaultWatch();
 
-    inline void dumpToFile(const std::string &filename) {
-#ifdef BUILDING_DEBUG_MODE
-        std::ofstream ofs(filename);
-        if (!ofs.good()) {
-            return;
-        }
+    /**
+     * add an event to time line, which can customize the function of getting current clock time.
+     * @param id river sub-basin id.
+     * @param step simulation step of current node.
+     * @param signal signal type.
+     * @param watch the function returns current clock time.
+     */
+    void appendToTimeLine(long id, long step, int signal, long (*watch)() = defaultWatch);
 
-        // write data.
-        for (event &e : time_line) {
-            ofs << e;
-        }
-        ofs.flush();
-        ofs.close();
-#endif
-    }
+    void dumpToFile(const std::string &filename);
 
-    inline void deleteAllEvent() {
-#ifdef BUILDING_DEBUG_MODE
-        time_line.clear();
-#endif
-    }
+    void deleteAllEvent();
 
 };
 
