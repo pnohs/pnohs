@@ -20,37 +20,9 @@
       },
       "kiwi": {
         "path": "https://git.gensh.me/genshen/kiwi.git",
-        "hash": "v0.1.0"
+        "hash": "76c5be3e0dd88cbb9f0662044ff0ae1c093c58be"
       }
     },
-    "files": {
-      "agrs": {
-        "path": "https://raw.githubusercontent.com/Taywee/args/master",
-        "files": {
-          "args.hxx": "args.hpp"
-        },
-        "build": [
-          "CP args.hpp {INCLUDE}"
-        ]
-      },
-      "nlohmann": {
-        "path": "https://github.com/nlohmann/json/raw/v3.1.2/single_include/nlohmann",
-        "files": {
-          "json.hpp": "json.hpp"
-        },
-        "build": [
-          "CP json.hpp {INCLUDE}"
-        ]
-      },
-      "concurrentqueue": {
-        "path": "https://raw.githubusercontent.com/cameron314/concurrentqueue/master",
-        "files": {
-          "concurrentqueue.h": "concurrentqueue.hpp"
-        },
-        "build": [
-          "CP concurrentqueue.hpp {INCLUDE}"
-        ]
-      }
-    }
+    "files": {}
   }
 }

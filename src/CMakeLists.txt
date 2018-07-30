@@ -1,18 +1,16 @@
 # include directory
-include_directories(${PROJECT_SOURCE_DIR}/vendor/pkg/include)
+include_directories(${PROJECT_SOURCE_DIR}/vendor/include)
 
 # include kiwi framework. # todo if has lib.
-add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/src/kiwi ${PROJECT_BINARY_DIR}/vendor/kiwi)
 include_directories(${KIWI_EXPORT_INCLUDE_PATH})
-set(EXTRA_LIBS fmt kiwi ${EXTRA_LIBS}) # todo use KIWI_EXPORT_LIBS
 
 # configure a header file to pass some of the CMake settings(such as debug flag) to the source code
-if (DEBUG_BUILD_ENABLE_FLAG)
-    set(BUILDING_DEBUG_MODE ON)
+if (PNOHS_DEBUG_BUILD_ENABLE_FLAG)
+    set(PNOHS_BUILDING_DEBUG_MODE ON)
 endif ()
 
-if (MPI_ENABLE_FLAG)
-    set(MPI_ENABLED ON)
+if (PNOHS_MPI_ENABLE_FLAG)
+    set(PNOHS_MPI_ENABLED ON)
 endif ()
 
 configure_file(
@@ -97,29 +95,17 @@ set(SOURCE_FILES
         utils/stopwatch.cpp
         )
 
-set(MAIN_FILE main.cpp)
-
-
 # set binary path and lib storage path for compiling process.
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 # make lib
-add_library(${M_LIB_NAME} STATIC ${HEADER_FILES} ${SOURCE_FILES})
-set(EXTRA_LIBS ${M_LIB_NAME} ${EXTRA_LIBS})
-
-add_executable(${M_EXECUTE_BIN_NAME} ${MAIN_FILE})
-# set_target_properties(${M_EXECUTE_BIN_NAME} PROPERTIES LINK_FLAGS "-static")
-# or run: cmake -DCMAKE_EXE_LINKER_FLAGS="-static" -DCMAKE_FIND_LIBRARY_SUFFIXES=".a" ../
-#target_link_libraries(${M_EXECUTE_BIN_NAME} -static-libgcc -static-libstdc++)
-#set_target_properties(${M_EXECUTE_BIN_NAME} PROPERTIES LINK_FLAGS "-static -static-libgcc -static-libstdc++")
-
-target_link_libraries(${M_EXECUTE_BIN_NAME} ${EXTRA_LIBS}) # extra lib
+add_library(${PNOHS_LIB_NAME} STATIC ${HEADER_FILES} ${SOURCE_FILES})
 
 ##########################
 ##### install files
 ##########################
-install(TARGETS ${M_EXECUTE_BIN_NAME} ${M_LIB_NAME}
+install(TARGETS ${PNOHS_LIB_NAME}
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib

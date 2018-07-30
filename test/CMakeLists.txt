@@ -1,9 +1,9 @@
 enable_testing()
 
-if (NOT (MPI_ENABLE_FLAG))
-    set(TEST_MPI_ENABLE_FLAG OFF)  # if we disabled MPI_ENABLE_FLAG,we cann't also use TEST_MPI_ENABLE_FLAG.
+if (NOT (PNOHS_MPI_ENABLE_FLAG))
+    set(PNOHS_TEST_MPI_ENABLE_FLAG OFF)  # if we disabled MPI_ENABLE_FLAG,we cann't also use TEST_MPI_ENABLE_FLAG.
 endif ()
-MESSAGE(STATUS "MPI in test: ${TEST_MPI_ENABLE_FLAG}")
+MESSAGE(STATUS "MPI in test: ${PNOHS_TEST_MPI_ENABLE_FLAG}")
 
 # set(TEST_LIBRARY_TO_USE "catch2" CACHE STRING "test library selected at CMake configure time,googletest or catch2")
 # set_property(CACHE TEST_LIBRARY_TO_USE PROPERTY STRINGS googletest catch2)
@@ -32,11 +32,7 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 #include_directories(${gmock_SOURCE_DIR}/include ${gmock_SOURCE_DIR})
 
 # Standard linking to gtest stuff.
-set(EXTRA_LIBS gtest gtest_main ${EXTRA_LIBS})
+set(PNOHS_EXTRA_LIBS gtest gtest_main ${PNOHS_EXTRA_LIBS})
 MESSAGE(STATUS "Set googletest as test library.")
-
-## add kiwi framefork
-include_directories(${KIWI_EXPORT_INCLUDE_PATH})
-set(EXTRA_LIBS fmt kiwi ${EXTRA_LIBS})
 
 add_subdirectory(unit)
