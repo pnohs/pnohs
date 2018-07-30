@@ -19,12 +19,8 @@ configure_file(
 )
 
 set(HEADER_FILES
-        config_toml.h
-        config_values.h
         building_config.h
         nodes_pool.h
-        pnohs.h
-        simulation.h
         simulation_node.h
         sys_context.h
         adapter/model_adapter.h
@@ -44,11 +40,6 @@ set(HEADER_FILES
         graph/upstream_node.h
         message/looper.h
         message/stream_routing_message_runner.h
-        models/interface_potential_evaporation_model.h
-        models/simple_potential_evaporation_model.h
-        models/models_config.h
-        models/type_model_data.h
-        models/simple_HBV_model.h
         utils/predefine.h
         scheduler/longest_pickup.h
         scheduler/ring_pickup.h
@@ -60,11 +51,7 @@ set(HEADER_FILES
         )
 
 set(SOURCE_FILES
-        config_toml.cpp
-        config_values.cpp
         nodes_pool.cpp
-        pnohs.cpp
-        simulation.cpp
         simulation_node.cpp
         sys_context.cpp
         adapter/model_context.cpp
@@ -83,9 +70,6 @@ set(SOURCE_FILES
         graph/upstream_node.cpp
         message/looper.cpp
         message/stream_routing_message_runner.cpp
-        models/simple_potential_evaporation_model.cpp
-        models/type_model_data.cpp
-        models/simple_HBV_model.cpp
         scheduler/longest_pickup.cpp
         scheduler/ring_pickup.cpp
         scheduler/s_context.cpp

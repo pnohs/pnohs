@@ -5,7 +5,8 @@
 #ifndef PNOHS_SYS_CONTEXT_H
 #define PNOHS_SYS_CONTEXT_H
 
-#include "config_toml.h"
+#include <pthread.h>
+#include <string>
 
 /**
  * system relative context here, such as mutex, program lifetime.

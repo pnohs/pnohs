@@ -6,6 +6,7 @@
 #define PNOHS_STRATEGY_CONTAINER_H
 
 #include <string>
+#include <map>
 #include "strategy_adapter.h"
 
 /**
