@@ -1,5 +1,5 @@
 # store temp file, e.g. files for IO test.
-set(TEST_TEMP_STORAGE_PATH ${CMAKE_CURRENT_BINARY_DIR})
+set(PNOHS_TEST_TEMP_STORAGE_PATH ${CMAKE_CURRENT_BINARY_DIR})
 
 # configure a header file to pass some of the CMake settings to the source code
 configure_file(

@@ -10,7 +10,7 @@
 #include "dispatch/dispatch_parse.h"
 #include "dispatch_json_string.h"
 
-const std::string dispatch_bin_file = TEST_TEMP_STORAGE_PATH "/dispatch.bin";
+const std::string dispatch_bin_file = PNOHS_TEST_TEMP_STORAGE_PATH "/dispatch.bin";
 const int ranks = 3;
 
 void generateDispatchBinFile() {

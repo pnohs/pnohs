@@ -7,7 +7,7 @@
 #include <gtest/gtest.h>
 #include "test_config.h"
 
-#ifdef TEST_MPI_ENABLE_FLAG
+#ifdef PNOHS_TEST_MPI_ENABLE_FLAG
 #include "mpi.h"
 
 class MPIEnvironment : public ::testing::Environment {
@@ -26,7 +26,7 @@ public:
 
     ~MPIEnvironment() override = default;
 };
-#endif  // end TEST_MPI_ENABLE_FLAG
+#endif  // end PPNOHS_TEST_MPI_ENABLE_FLAG
 
 
 #endif // PNOHS_GTEST_ENV_H
