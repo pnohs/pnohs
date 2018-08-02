@@ -28,11 +28,13 @@ void SimulationNode::routing() {
     // Dequeue upstreams // write queue
     // the task queue must have data (because this node is the pickup/runnable node).
     // and the other thread only add data to task queue (don't remove data).
+    std::list<TypeRouting> routing_data;
     if (!isRiverOrigin()) {
-        std::list<TypeRouting> routing_data = upstream.deQueue();
-        _p_routing_model->stashUpstreamRouting(routing_data);
-        _p_routing_model->exec(_p_model_ctx, _time_steps);
+        routing_data = upstream.deQueue();
     }
+    // if the node is river origin, the empty upstream data(std::list<TypeRouting>) will be passed.
+    _p_routing_model->stashUpstreamRouting(routing_data);
+    _p_routing_model->exec(_p_model_ctx, _time_steps);
 }
 
 void SimulationNode::runoff() {
