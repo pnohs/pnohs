@@ -7,6 +7,7 @@
 #include <event/message_looper.h>
 #include "looper.h"
 #include "stream_routing_message_runner.h"
+#include "../utils/sim_domain.h"
 
 Looper *Looper::NewMessageLooper() {
     auto looperInstance = new Looper(); // todo delete.
@@ -24,6 +25,8 @@ Looper *Looper::NewMessageLooper() {
 void *Looper::messageLoopNewThread(void *object) {
 //    Looper *looperInstance = reinterpret_cast<Looper *>(object);
 
+    // we only listen messages in simulation communication domain.
+    kiwi::MessageLooper::setGlobalMessageDomain(domain::mpi_sim_process.comm);
     // Start a dead loop to listen and dispatch messages.
     // And runners in message loop will be unregistered automatically before loop finished.
     kiwi::MessageLooper::start();
