@@ -1,3 +1,6 @@
+pkg.dep.cmake
+vendor
+
 ### C++ template
 # Prerequisites
 *.d
