@@ -24,7 +24,6 @@ $ pkg install # install dependency
 ```
 
 ## Build
-### Normal build
 ```bash
 $ cd pnohs
 $ mkdir build

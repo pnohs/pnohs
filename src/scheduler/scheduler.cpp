@@ -7,6 +7,7 @@
 #include "scheduler.h"
 #include "strategy_container.h"
 #include "../utils/stopwatch.h"
+#include "../utils/sim_domain.h"
 
 Scheduler::Scheduler(SysContext &ctx, SContext &scheduleContext) :
         ctx(ctx), schCtx(scheduleContext) {
@@ -29,7 +30,7 @@ bool Scheduler::select() {
     if (schCtx.pNodesPool->allCompleted()) { // all simulation nodes have finished their simulation.
         // dump time line if time line is enabled.
         char buffer[50] = {'\0'};
-        sprintf(buffer, "debug_timeline_%d.dump", kiwi::mpiUtils::own_rank);
+        sprintf(buffer, "debug_timeline_%d.dump", domain::mpi_sim_process.own_rank);
         stopwatch::dumpToFile(std::string(buffer));
         return false;
     }

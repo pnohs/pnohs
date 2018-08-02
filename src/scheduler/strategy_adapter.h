@@ -39,7 +39,7 @@ protected:
      */
     SimulationNodesSet::iterator nodesIter;
 
-    // contest of scheduling
+    // context of scheduling
     SContext &context;
 
 };

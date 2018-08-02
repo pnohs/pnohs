@@ -7,9 +7,7 @@ configure_file(
         "${PROJECT_SOURCE_DIR}/test/unit/test_config.h"
 )
 
-include_directories(${PROJECT_SOURCE_DIR}/vendor/include)
-## add kiwi framefork
-include_directories(${KIWI_EXPORT_INCLUDE_PATH})
+include_directories(${PNOHS_VENDOR_INCLUDE_PATH})
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
 set(TEST_HEADER_FILES
