@@ -23,7 +23,7 @@ MESSAGE(STATUS "MPI in test: ${PNOHS_TEST_MPI_ENABLE_FLAG}")
 # Include the gtest library. gtest_SOURCE_DIR is available due to 'project(gtest)' above.
 # an issue for mingw on winodws, see: https://github.com/google/googletest/issues/606#issuecomment-234733757
 if (NOT TARGET gtest)
-    add_subdirectory(${CMAKE_SOURCE_DIR}/vendor/src/googletest/googletest ${PROJECT_BINARY_DIR}/vendor/googletest)
+    add_subdirectory(${PNOHS_VENDOR_SRC_PATH}/googletest/googletest ${PROJECT_BINARY_DIR}/vendor/googletest)
 endif ()
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 

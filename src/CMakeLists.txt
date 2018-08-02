@@ -1,8 +1,5 @@
 # include directory
-include_directories(${PROJECT_SOURCE_DIR}/vendor/include)
-
-# include kiwi framework. # todo if has lib.
-include_directories(${KIWI_EXPORT_INCLUDE_PATH})
+include_directories(${PNOHS_VENDOR_INCLUDE_PATH})
 
 # configure a header file to pass some of the CMake settings(such as debug flag) to the source code
 if (PNOHS_DEBUG_BUILD_ENABLE_FLAG)
@@ -48,7 +45,7 @@ set(HEADER_FILES
         scheduler/strategy_adapter.h
         scheduler/strategy_container.h
         utils/stopwatch.h
-        )
+        utils/sim_domain.h)
 
 set(SOURCE_FILES
         nodes_pool.cpp
@@ -77,7 +74,7 @@ set(SOURCE_FILES
         scheduler/strategy_adapter.cpp
         scheduler/strategy_container.cpp
         utils/stopwatch.cpp
-        )
+        utils/sim_domain.cpp)
 
 # set binary path and lib storage path for compiling process.
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
@@ -89,10 +86,17 @@ add_library(${PNOHS_LIB_NAME} STATIC ${HEADER_FILES} ${SOURCE_FILES})
 ##########################
 ##### install files
 ##########################
+# install bin and libs.
 install(TARGETS ${PNOHS_LIB_NAME}
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
         )
 
-install(FILES ${HEADER_FILES} DESTINATION include) # todo head file
+# install header.
+install(DIRECTORY "./"
+        DESTINATION "include"
+        FILES_MATCHING
+        PATTERN "*.h"
+        PATTERN "*.hpp"
+        )

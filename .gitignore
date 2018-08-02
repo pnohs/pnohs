@@ -1,3 +1,5 @@
+pkg.dep.cmake
+
 ### C++ template
 # Prerequisites
 *.d

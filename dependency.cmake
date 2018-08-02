@@ -30,14 +30,17 @@ if (PNOHS_MPI_ENABLE_FLAG)
 endif ()
 ##### mpi and openmp end
 
+
+include(pkg.dep.cmake)
+set(PNOHS_VENDOR_PATH ${VENDOR_PATH})
+set(PNOHS_VENDOR_SRC_PATH ${PNOHS_VENDOR_PATH}/src)
+set(PNOHS_VENDOR_INCLUDE_PATH ${PNOHS_VENDOR_PATH}/include)
+set(PNOHS_VENDOR_PKG_PATH ${PNOHS_VENDOR_PATH}/pkg)
+
 ################################
 ###### kiwi framework globally
 ################################
-if (NOT TARGET kiwi)
-    add_subdirectory(${CMAKE_SOURCE_DIR}/vendor/src/kiwi ${PROJECT_BINARY_DIR}/vendor/kiwi)
-endif ()
-set(PNOHS_EXTRA_LIBS ${KIWI_EXPORT_LINK_LIBS} ${PNOHS_EXTRA_LIBS})
-#set(EXTRA_LIBS fmt kiwi ${EXTRA_LIBS}) # todo use KIWI_EXPORT_LIBS
+set(PNOHS_EXTRA_LIBS fmt kiwi ${PNOHS_EXTRA_LIBS})
 
 ################################
 ##### check pthread lib

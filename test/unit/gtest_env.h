@@ -26,7 +26,7 @@ public:
 
     ~MPIEnvironment() override = default;
 };
-#endif  // end PPNOHS_TEST_MPI_ENABLE_FLAG
+#endif  // end PNOHS_TEST_MPI_ENABLE_FLAG
 
 
 #endif // PNOHS_GTEST_ENV_H

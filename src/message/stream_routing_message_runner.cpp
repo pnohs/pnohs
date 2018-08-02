@@ -6,9 +6,11 @@
 #include "stream_routing_message_runner.h"
 #include "../simulation_node.h"
 #include "../nodes_pool.h"
+#include "../utils/sim_domain.h"
 
 // initial context for thread here.
-StreamRoutingMessageRunner::StreamRoutingMessageRunner(SysContext &ctx, NodesPool *pPool, const unsigned long totalSteps) :
+StreamRoutingMessageRunner::StreamRoutingMessageRunner(SysContext &ctx, NodesPool *pPool,
+                                                       const unsigned long totalSteps) :
         total_steps(totalSteps), _msg_upper_bound(0), _msg_accumulator(0),
         ctx(ctx), pNodesPool(pPool) {}
 
@@ -21,7 +23,7 @@ void StreamRoutingMessageRunner::onAttach() {
         }
         for (UpstreamNode &upnode:sNode.upstream.nodes) {
             // exclude the upstream nodes which is located on the this processor.
-            if (upnode.location == kiwi::mpiUtils::own_rank) {
+            if (upnode.location == domain::mpi_sim_process.own_rank) {
                 continue;
             }
             _msg_upper_bound++;
@@ -42,7 +44,7 @@ void StreamRoutingMessageRunner::onMessage(MPI_Status *pStatus) {
     // receive upstream routing message/data.
     TypeRouting up_routing;
     MPI_Recv(&up_routing, sizeof(TypeRouting), MPI_BYTE, pStatus->MPI_SOURCE,
-             TagStreamRoutingMessage, MPI_COMM_WORLD, MPI_STATUS_IGNORE); // todo use type: TypeRouting
+             TagStreamRoutingMessage, domain::mpi_sim_process.comm, MPI_STATUS_IGNORE); // todo use type: TypeRouting
     SimulationNode *pNode = pNodesPool->findNodeById(up_routing.destination_id);
     pNode->upstream.appendUpstreamRouting(up_routing.source_id, up_routing); // write queue.
 

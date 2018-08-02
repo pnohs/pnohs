@@ -4,6 +4,7 @@
 
 #include <utils/mpi_utils.h>
 #include "nodes_pool.h"
+#include "utils/sim_domain.h"
 #include "adapter/type_routing.h"
 
 NodesPool::NodesPool() {
@@ -34,7 +35,7 @@ void NodesPool::deliver(const SimulationNode &current_node) {
         current_node.outletReached();
     } else {
         // if its downstream is on this processor, just do data copy in memory.
-        if (kiwi::mpiUtils::own_rank == current_node.downstream.nodes[0].location) {
+        if (domain::mpi_sim_process.own_rank == current_node.downstream.nodes[0].location) {
             straightforwardDeliver(current_node);
         } else {
             remoteDeliver(current_node); // deliver to the node on other processor.
@@ -46,7 +47,7 @@ void NodesPool::remoteDeliver(const SimulationNode &current_node) {
     const DownstreamNode &downstream_node = current_node.downstream.nodes[0];
     TypeRouting data = current_node.constructRouting();
     MPI_Send(&data, sizeof(TypeRouting), MPI_BYTE,
-             downstream_node.location, TagStreamRoutingMessage, MPI_COMM_WORLD);
+             downstream_node.location, TagStreamRoutingMessage, domain::mpi_sim_process.comm);
 }
 
 // todo usr event message.

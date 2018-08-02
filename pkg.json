@@ -20,9 +20,25 @@
       },
       "kiwi": {
         "path": "https://git.gensh.me/genshen/kiwi.git",
-        "hash": "76c5be3e0dd88cbb9f0662044ff0ae1c093c58be"
+        "hash": "b77e63d00d111fe752b8288cc553d7a376381954"
       }
     },
-    "files": {}
-  }
+    "files": {
+      "nlohmann": {
+        "path": "https://github.com/nlohmann/json/raw/v3.1.2/single_include/nlohmann",
+        "files": {
+          "json.hpp": "json.hpp"
+        },
+        "build": [
+          "CP json.hpp {INCLUDE}"
+        ]
+      }
+    }
+  },
+  "build": {
+    "linux": [
+      "RUN {CACHE} cmake {SRC_DIR} -DCMAKE_INSTALL_PREFIX={PKG_DIR}; make -j4; make install"
+    ]
+  },
+  "cmake_lib": "include_directories({CMAKE_VENDOR_PATH_PKG}/include)\nlink_directories({CMAKE_VENDOR_PATH_PKG}/lib)"
 }
