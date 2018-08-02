@@ -5,6 +5,25 @@
 #include <logs/logs.h>
 #include "simulation_node.h"
 
+void SimulationNode::setModelRouting(RoutingAdapter *p_adapter) {
+    _p_routing_model = p_adapter;
+    p_adapter->onBind(_p_model_ctx, id); // bind model to simulation node.
+}
+
+void SimulationNode::setModelRunoff(RunoffAdapter *p_adapter) {
+    _p_runoff_model = p_adapter;
+    p_adapter->onBind(_p_model_ctx, id); // bind model to simulation node.
+}
+
+void SimulationNode::setModels(RunoffAdapter *p_runoff_adapter, RoutingAdapter *p_routing_adapter) {
+    setModelRunoff(p_runoff_adapter);
+    setModelRouting(p_routing_adapter);
+}
+
+void SimulationNode::setModelContext(ModelContext *p_context) {
+    _p_model_ctx = p_context;
+}
+
 void SimulationNode::routing() {
     // Dequeue upstreams // write queue
     // the task queue must have data (because this node is the pickup/runnable node).
@@ -12,12 +31,12 @@ void SimulationNode::routing() {
     if (!isRiverOrigin()) {
         std::list<TypeRouting> routing_data = upstream.deQueue();
         _p_routing_model->stashUpstreamRouting(routing_data);
-        _p_routing_model->exec(_p_model_ctx);
+        _p_routing_model->exec(_p_model_ctx, _time_steps);
     }
 }
 
 void SimulationNode::runoff() {
-    _p_runoff_model->exec(_p_model_ctx);
+    _p_runoff_model->exec(_p_model_ctx, _time_steps);
 }
 
 void SimulationNode::outletReached() const {
@@ -43,8 +62,3 @@ void SimulationNode::postStep() {
     _time_steps++;
 }
 
-void SimulationNode::testInit() {
-    _p_model_ctx = new ModelContext();
-    _p_routing_model = new RoutingAdapter();
-    _p_runoff_model = new RunoffAdapter();
-}

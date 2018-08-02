@@ -9,8 +9,9 @@ void RoutingAdapter::stashUpstreamRouting(std::list<TypeRouting> &routing_data) 
     upstream_routing = routing_data;
 }
 
-void RoutingAdapter::exec(ModelContext *p_context) {
-    for (TypeRouting &r:upstream_routing) {
-        p_context->flow += r.routing_data; // todo just an example.
-    }
+void RoutingAdapter::exec(ModelContext *p_context, unsigned long time_steps) {
+    // for example, you can:
+//    for (TypeRouting &r:upstream_routing) {
+//        p_context->flow += r.routing_data;
+//    }
 }

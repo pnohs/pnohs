@@ -10,8 +10,7 @@
 
 class RunoffAdapter : public ModelAdapter {
 public:
-    void exec(ModelContext *p_context) override;
+    void exec(ModelContext *p_context, unsigned long time_steps) override;
 };
-
 
 #endif //PNOHS_RUNOFF_ADAPTER_H
