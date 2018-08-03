@@ -22,6 +22,12 @@ public:
     virtual void onBind(ModelContext *p_model_context, _type_node_id node_id) = 0; // todo check model context nullptr.
 
     /**
+     * get parameter count of this model
+     * @return default value: 0
+     */
+    static int paramCount();
+
+    /**
      *
      * implement this method to set parameters for models in this method.
      * this method may be called many time for setting different groups of params.
@@ -36,5 +42,6 @@ public:
      */
     virtual void exec(ModelContext *p_context, unsigned long time_steps) = 0;
 };
+
 
 #endif //PNOHS_MODE_ADAPTER_H

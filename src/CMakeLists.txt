@@ -76,6 +76,7 @@ set(SOURCE_FILES
         scheduler/strategy_container.cpp
         utils/stopwatch.cpp
         utils/sim_domain.cpp
+        adapter/model_adapter.cpp
         )
 
 # set binary path and lib storage path for compiling process.
