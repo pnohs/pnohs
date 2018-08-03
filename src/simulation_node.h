@@ -20,6 +20,14 @@ public:
     unsigned long _time_steps = 0;
 
     /**
+     * model context for passing data between runoff model and routing model.
+     */
+    ModelContext *_p_model_ctx;
+
+    RoutingAdapter *_p_routing_model; // todo free mem after new pointer.
+    RunoffAdapter *_p_runoff_model;
+
+    /**
      * set river routing model, and initialize this model.
      * @param p_adapter
      */
@@ -77,11 +85,6 @@ public:
      * The simulation time step of current node will be increased by 1.
      */
     void postStep();
-
-private:
-    ModelContext *_p_model_ctx;
-    RoutingAdapter *_p_routing_model; // todo free mem after new pointer.
-    RunoffAdapter *_p_runoff_model;
 
 };
 
