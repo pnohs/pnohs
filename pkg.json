@@ -16,11 +16,15 @@
     "git": {
       "googletest": {
         "path": "https://github.com/google/googletest.git",
-        "tag": "release-1.8.0"
+        "tag": "release-1.8.0",
+        "build": [
+          "RUN {CACHE} cmake {SRC_DIR}/googletest -DCMAKE_INSTALL_PREFIX={PKG_DIR}; make -j4; make install"
+        ],
+        "cmake_lib": "include_directories({CMAKE_VENDOR_PATH_PKG}/include)\nlink_directories({CMAKE_VENDOR_PATH_PKG}/lib)"
       },
       "kiwi": {
         "path": "https://git.gensh.me/genshen/kiwi.git",
-        "hash": "3694d4194a5e3f26484cc42285653d080b966d6c"
+        "hash": "38eae60c80b3dbb4cc345182d10f6bd7096c170d"
       }
     },
     "files": {
