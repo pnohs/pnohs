@@ -12,6 +12,8 @@
 
 class RoutingAdapter : public ModelAdapter {
 public:
+    virtual ~RoutingAdapter() override = default;
+
     void stashUpstreamRouting(std::list<TypeRouting> &routing_data);
 
     void exec(ModelContext *p_context, unsigned long time_steps) override;

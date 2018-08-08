@@ -10,6 +10,8 @@
 
 class RunoffAdapter : public ModelAdapter {
 public:
+    virtual ~RunoffAdapter();
+
     void exec(ModelContext *p_context, unsigned long time_steps) override;
 };
 

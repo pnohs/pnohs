@@ -7,3 +7,5 @@
 ModelContext::ModelContext() : area(0), flow(0) {
 
 }
+
+ModelContext::~ModelContext() = default;

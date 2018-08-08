@@ -7,11 +7,15 @@
 class SimpleCtx : public ModelContext {
 public:
     param_const P_A;
+
+    ~SimpleCtx() override = default;
 };
 
 class SimpleRunOffModel : public RunoffAdapter {
 public:
     bool bind_test = false;
+
+    ~SimpleRunOffModel() override = default;
 
     void onBind(ModelContext *p_model_context, _type_node_id node_id) override {
         bind_test = true;

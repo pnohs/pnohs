@@ -14,6 +14,10 @@
  */
 class ModelAdapter {
 public:
+    // it is a good practice to declare virtual destructors for base classes in C++.
+    // or the behaviour or deleting Derived object is undefined.
+    virtual ~ModelAdapter();
+
     /**
      * this method is called when a model is bind to some simulation node.
      * @param p_model_context model context
