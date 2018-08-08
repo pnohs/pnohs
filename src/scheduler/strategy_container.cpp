@@ -13,6 +13,8 @@ void StrategyContainer::registerStrategy(const std::string &key, StrategyAdapter
         container.insert(std::pair<std::string, StrategyAdapter *>(key, strategy));
     } else {
         // todo handle the error: already exist.
+        // just overwrite it.
+        container[key] = strategy;
     }
 }
 
@@ -25,7 +27,11 @@ StrategyAdapter *StrategyContainer::findStrategyByKey(const std::string &key) {
     }
 }
 
-void StrategyContainer::DestroyStrategy(const std::string &key) {
+unsigned long StrategyContainer::strategies() {
+    return container.size();
+}
+
+void StrategyContainer::destroyStrategy(const std::string &key) {
     auto itr = container.find(key);
     if (itr != container.end()) {
         delete (*itr).second;
@@ -33,10 +39,11 @@ void StrategyContainer::DestroyStrategy(const std::string &key) {
     }
 }
 
-void StrategyContainer::DestroyAllStrategies() {
+void StrategyContainer::destroyAllStrategies() {
     std::map<std::string, StrategyAdapter *>::iterator itr;
-    for (itr = container.begin(); itr != container.end(); ++itr) {
-        delete (*itr).second;
-        container.erase(itr);
+    for (itr = container.begin(); itr != container.end();) {
+        delete itr->second;
+        itr->second = nullptr;
+        container.erase(itr++);
     }
 }

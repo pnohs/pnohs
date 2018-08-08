@@ -22,6 +22,7 @@ set(TEST_SOURCE_FILES
         dispatch/dispatch_parse_test.cpp
         graph/node_test.cpp
         scheduler/longest_pickup_test.cpp
+        scheduler/strategy_adapter_test.cpp
         )
 
 # set binary path and lib storage path wile compiling process.
