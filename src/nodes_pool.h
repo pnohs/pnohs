@@ -54,7 +54,13 @@ public:
      * for each node, the callback function will be called with passing the reference of this node.
      */
     template<typename Callable>
-    void forEachNode(Callable callback);
+    inline void forEachNode(Callable callback) {
+        for (SimulationNode &snode: *simulationNodes) {
+            if (callback(snode)) {
+                break;
+            }
+        }
+    }
 
     /**
      * Deliver simulation to its downstream node.
@@ -88,6 +94,11 @@ public:
      * @param total_steps the total time steps of whole simulation.
      */
     void updateStatusAllCompleted(const unsigned long total_steps);
+
+    /**
+     * reset @var status_all_tasks_completed to initial value.
+     */
+    void clearStatus();
 
 private:
 

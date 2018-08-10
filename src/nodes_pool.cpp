@@ -33,15 +33,6 @@ SimulationNode *NodesPool::findNodeById(const _type_node_id node_id) {
     return nullptr;
 }
 
-template<typename Callable>
-void NodesPool::forEachNode(Callable callback) {
-    for (SimulationNode &snode: *simulationNodes) {
-        if (callback(snode)) {
-            break;
-        }
-    }
-}
-
 void NodesPool::deliver(const SimulationNode &current_node) {
     if (current_node.isRiverOutlet()) {
         // if its outlet of this river
@@ -98,4 +89,8 @@ void NodesPool::updateStatusAllCompleted(const unsigned long total_steps) {
         }
     }
     status_all_tasks_completed = finish_status;
+}
+
+void NodesPool::clearStatus() {
+    status_all_tasks_completed = false;
 }
