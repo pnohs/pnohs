@@ -86,6 +86,12 @@ public:
      */
     void postStep();
 
+    /**
+     * reset this simulation node for performing next simulation.
+     * if the context/models is not recyclable,
+     * the old instance of context/models will be destroyed, and a new instance will be created.
+     */
+    void reset();
 };
 
 

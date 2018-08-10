@@ -45,6 +45,15 @@ public:
      * run the model.
      */
     virtual void exec(ModelContext *p_context, unsigned long time_steps) = 0;
+
+    /**
+     * For multiple simulation, the model context can be reusable.
+     * if the model context reusable, the instance of this Model will be used in next simulation,
+     * and @memberof onReused will be called to reset the model for next simulation;
+     * otherwise a new the instance of this kind of model will be created to perform next simulation.
+     * @return true for reusable, false for not reusable.
+     */
+    virtual bool isReusable() = 0;
 };
 
 

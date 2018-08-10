@@ -63,3 +63,30 @@ void SimulationNode::postStep() {
     _time_step++;
 }
 
+void SimulationNode::reset() {
+    this->_time_step = 0; // reset time step.
+    // reset model context
+    if (_p_model_ctx->isRecyclable()) {
+        _p_model_ctx->onRecycle(true);
+    } else {
+        ModelContext *temp_ctx = _p_model_ctx;
+        _p_model_ctx = _p_model_ctx->onRecycle(false); // create new one
+        delete temp_ctx; // remove old one
+    }
+    // reset runoff model.
+    if (_p_runoff_model->isReusable()) {
+        _p_runoff_model->onReused(true);
+    } else {
+        RunoffAdapter *temp_pointer = _p_runoff_model;
+        _p_runoff_model = _p_runoff_model->onReused(false);
+        delete temp_pointer;
+    }
+    // reset routing model.
+    if (_p_routing_model->isReusable()) {
+        _p_routing_model->onReused(true);
+    } else {
+        RoutingAdapter *temp_pointer = _p_routing_model;
+        _p_routing_model = _p_routing_model->onReused(false);
+        delete temp_pointer;
+    }
+}

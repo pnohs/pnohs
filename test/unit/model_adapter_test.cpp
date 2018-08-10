@@ -9,6 +9,10 @@ public:
     param_const P_A;
 
     ~SimpleCtx() override = default;
+
+    bool isRecyclable() override { return true; }
+
+    ModelContext *onRecycle(bool) override { return this; }
 };
 
 class SimpleRunOffModel : public RunoffAdapter {
@@ -28,6 +32,10 @@ public:
     void exec(ModelContext *p_context, unsigned long time_steps) override {
         ((SimpleCtx *) p_context)->P_A += 3.0; // change param.
     }
+
+    bool isReusable() override { return true; }
+
+    SimpleRunOffModel *onReused(bool) override { return this; }
 };
 
 TEST(model_adapter_test_create, model_adapter_test) {

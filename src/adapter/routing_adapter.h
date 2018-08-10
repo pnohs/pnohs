@@ -18,6 +18,14 @@ public:
 
     void exec(ModelContext *p_context, unsigned long time_steps) override;
 
+    /**
+     * in this method, if the model is reusable, this routing model should be reset to performing next simulation;
+     * otherwise(non reusable mode), a new routing model should be created to performing next simulation.
+     * @note in non reusable mode, the old RoutingAdapter instance will automatically destroyed after new instant is created.
+     * @return current RoutingAdapter(for recyclable) or new RoutingAdapter(for non-recyclable).
+     */
+    virtual RoutingAdapter *onReused(bool reusable) = 0;
+
 protected:
     std::list<TypeRouting> upstream_routing; // todo temp variable
 };
