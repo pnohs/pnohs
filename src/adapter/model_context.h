@@ -15,6 +15,8 @@ public:
     double flow;
 
     ModelContext();
+
+    virtual ~ModelContext();
 };
 
 

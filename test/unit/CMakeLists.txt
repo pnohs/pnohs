@@ -12,16 +12,17 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 
 set(TEST_HEADER_FILES
         test_config.h
-        gtest_env.h
         dispatch/dispatch_json_string.h
         )
 
 set(TEST_SOURCE_FILES
-        main.cpp
         app_test.cpp
+        main.cpp
+        model_adapter_test.cpp
         dispatch/dispatch_parse_test.cpp
         graph/node_test.cpp
         scheduler/longest_pickup_test.cpp
+        scheduler/strategy_adapter_test.cpp
         )
 
 # set binary path and lib storage path wile compiling process.

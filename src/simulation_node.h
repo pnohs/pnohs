@@ -20,24 +20,38 @@ public:
     unsigned long _time_steps = 0;
 
     /**
-     * set river routing model.
+     * model context for passing data between runoff model and routing model.
      */
-    void setModelRouting(RoutingAdapter *p_adapter) {
-        _p_routing_model = p_adapter;
-    }
+    ModelContext *_p_model_ctx;
 
-    inline void setModelRunoff(RunoffAdapter *p_adapter) {
-        _p_runoff_model = p_adapter;
-    }
+    RoutingAdapter *_p_routing_model; // todo free mem after new pointer.
+    RunoffAdapter *_p_runoff_model;
 
-    inline void setModels(RunoffAdapter *p_runoff_adapter, RoutingAdapter *p_routing_adapter) {
-        setModelRunoff(p_runoff_adapter);
-        setModelRouting(p_routing_adapter);
-    }
+    /**
+     * set river routing model, and initialize this model.
+     * @param p_adapter
+     */
+    void setModelRouting(RoutingAdapter *p_adapter);
 
-    inline void setModelContext(ModelContext *p_context) {
-        _p_model_ctx = p_context;
-    }
+    /**
+     * set runoff model and initialize this model (by calling onBind(node_id)).
+     * @param p_adapter
+     */
+    void setModelRunoff(RunoffAdapter *p_adapter);
+
+    /**
+     * set both runoff model and river routing model.
+     * @param p_runoff_adapter runoff model
+     * @param p_routing_adapter routing model
+     */
+    void setModels(RunoffAdapter *p_runoff_adapter, RoutingAdapter *p_routing_adapter);
+
+    /**
+     * set mode context for saving model variables.
+     * model context must be set before model set, or null context will be passed to initialize model.
+     * @param p_context model context.
+     */
+    void setModelContext(ModelContext *p_context);
 
     /**
      * run river routing model.
@@ -71,13 +85,6 @@ public:
      * The simulation time step of current node will be increased by 1.
      */
     void postStep();
-
-    void testInit(); // todo initialize context and model.
-
-private:
-    ModelContext *_p_model_ctx;
-    RoutingAdapter *_p_routing_model;
-    RunoffAdapter *_p_runoff_model;
 
 };
 

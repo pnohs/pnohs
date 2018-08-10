@@ -22,6 +22,7 @@ set(HEADER_FILES
         sys_context.h
         adapter/model_adapter.h
         adapter/model_context.h
+        adapter/model_params_def.h
         adapter/routing_adapter.h
         adapter/runoff_adapter.h
         adapter/type_routing.h
@@ -74,7 +75,9 @@ set(SOURCE_FILES
         scheduler/strategy_adapter.cpp
         scheduler/strategy_container.cpp
         utils/stopwatch.cpp
-        utils/sim_domain.cpp)
+        utils/sim_domain.cpp
+        adapter/model_adapter.cpp
+        )
 
 # set binary path and lib storage path for compiling process.
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
