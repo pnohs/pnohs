@@ -41,6 +41,13 @@ public:
     SContext(NodesPool *pool, unsigned long total_steps);
 
     ~SContext();
+
+    /**
+     * reset scheduler context for performing next simulation.
+     * in this method, the @var curNode pointer will be reset to nullptr.
+     * and the nodes poll will be reset.
+     */
+    void reset();
 };
 
 

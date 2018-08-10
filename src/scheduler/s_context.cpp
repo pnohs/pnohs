@@ -14,3 +14,7 @@ SContext::~SContext() {
     delete pNodesPool; // fixme delete not here if NodesPool is not create by SContext.
 }
 
+void SContext::reset() {
+    curNode = nullptr;
+    pNodesPool->clearStatus();
+}
