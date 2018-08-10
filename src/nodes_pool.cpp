@@ -19,6 +19,10 @@ void NodesPool::appendNode(const SimulationNode &snode) { // todo remove all nod
     simulationNodes->push_back(snode);
 }
 
+unsigned long NodesPool::nodes() const {
+    return simulationNodes->size();
+}
+
 SimulationNode *NodesPool::findNodeById(const _type_node_id node_id) {
     // travel all simulation nodes to find a node.
     for (SimulationNode &node:*simulationNodes) {
@@ -27,6 +31,15 @@ SimulationNode *NodesPool::findNodeById(const _type_node_id node_id) {
         }
     }
     return nullptr;
+}
+
+template<typename Callable>
+void NodesPool::forEachNode(Callable callback) {
+    for (SimulationNode &snode: *simulationNodes) {
+        if (callback(snode)) {
+            break;
+        }
+    }
 }
 
 void NodesPool::deliver(const SimulationNode &current_node) {

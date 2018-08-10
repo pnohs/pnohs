@@ -5,6 +5,8 @@
 #ifndef PNOHS_NODES_POOL_H
 #define PNOHS_NODES_POOL_H
 
+#include <functional>
+
 #include "simulation_node.h"
 #include "sys_context.h"
 #include "message/stream_routing_message_runner.h"
@@ -34,12 +36,25 @@ public:
     void appendNode(const SimulationNode &snode);
 
     /**
+     * get the count of nodes on this processor.
+     * @return the count of simulation nodes
+     */
+    unsigned long nodes() const;
+
+    /**
      * checkout whether there is a node whose id is the given id,
      * returns pointer of SimulationNode if found.
      * @param id node id
      * @return if true, return pointer of the SimulationNode, otherwise return nullptr.
      */
     SimulationNode *findNodeById(const _type_node_id node_id);
+
+    /**
+     * iterate all simulation node in this nodes pool.
+     * for each node, the callback function will be called with passing the reference of this node.
+     */
+    template<typename Callable>
+    void forEachNode(Callable callback);
 
     /**
      * Deliver simulation to its downstream node.
