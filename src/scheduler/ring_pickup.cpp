@@ -20,7 +20,7 @@ SimulationNode *RingPickup::pickRunnable() {
             // (which is the theoretical element that would follow the last element), pass it.
             itr++;
         }
-        if (itr->_time_steps < context._total_steps && itr->upstream.isReady()) {
+        if (itr->_time_step < context._total_steps && itr->upstream.isReady()) {
             nodesIter = itr;
             return &(*itr);
         }

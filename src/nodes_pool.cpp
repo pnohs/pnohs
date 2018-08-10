@@ -92,7 +92,7 @@ void NodesPool::updateStatusAllCompleted(const unsigned long total_steps) {
     bool finish_status = true;
     // update status_all_tasks_completed
     for (SimulationNode &sNode : *simulationNodes) {
-        if (sNode._time_steps < total_steps) { // the node does not finish its simulation.
+        if (sNode._time_step < total_steps) { // the node does not finish its simulation.
             finish_status = false;
             break;
         }

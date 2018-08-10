@@ -2,7 +2,6 @@
 // Created by genshen on 3/27/18.
 //
 
-#include <logs/logs.h>
 #include "simulation_node.h"
 
 void SimulationNode::setModelRouting(RoutingAdapter *p_adapter) {
@@ -34,11 +33,11 @@ void SimulationNode::routing() {
     }
     // if the node is river origin, the empty upstream data(std::list<TypeRouting>) will be passed.
     _p_routing_model->stashUpstreamRouting(routing_data);
-    _p_routing_model->exec(_p_model_ctx, _time_steps);
+    _p_routing_model->exec(_p_model_ctx, _time_step);
 }
 
 void SimulationNode::runoff() {
-    _p_runoff_model->exec(_p_model_ctx, _time_steps);
+    _p_runoff_model->exec(_p_model_ctx, _time_step);
 }
 
 void SimulationNode::outletReached() const {
@@ -61,6 +60,6 @@ void SimulationNode::beforeStep() {
 }
 
 void SimulationNode::postStep() {
-    _time_steps++;
+    _time_step++;
 }
 
