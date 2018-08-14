@@ -22,7 +22,6 @@ set(HEADER_FILES
         sys_context.h
         adapter/model_adapter.h
         adapter/model_context.h
-        adapter/model_params_def.h
         adapter/routing_adapter.h
         adapter/runoff_adapter.h
         adapter/type_routing.h
@@ -30,6 +29,9 @@ set(HEADER_FILES
         dispatch/dispatch_type.h
         dispatch/node_parse.h
         dispatch/dispatch_writer.h
+        ds/base_data_list.hpp
+        ds/model_params_def.h
+        ds/params_list.hpp
         graph/downstream.h
         graph/downstream_node.h
         graph/node.h
@@ -46,7 +48,8 @@ set(HEADER_FILES
         scheduler/strategy_adapter.h
         scheduler/strategy_container.h
         utils/stopwatch.h
-        utils/sim_domain.h)
+        utils/sim_domain.h
+        )
 
 set(SOURCE_FILES
         nodes_pool.cpp

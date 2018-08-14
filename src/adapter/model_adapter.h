@@ -6,7 +6,7 @@
 #define PNOHS_MODE_ADAPTER_H
 
 #include "model_context.h"
-#include "model_params_def.h"
+#include "../ds/model_params_def.h"
 #include "../graph/node.h"
 
 /**
