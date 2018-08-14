@@ -39,7 +39,7 @@ public:
      * @param p_model_context pointer to model context
      * @param params data of params.
      */
-    virtual void onParamsPassed(ModelContext *p_model_context, param_const params[]) = 0;
+    virtual void onParamsPassed(ModelContext *p_model_context, param_const params[], size_t size) = 0;
 
     /*
      * run the model.
