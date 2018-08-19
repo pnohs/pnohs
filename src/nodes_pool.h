@@ -10,6 +10,7 @@
 #include "simulation_node.h"
 #include "sys_context.h"
 #include "message/stream_routing_message_runner.h"
+#include "graph/graph.h"
 
 /**
  * NodePool is a collection of all simulation nodes on this processor.
@@ -39,7 +40,7 @@ public:
      * get the count of nodes on this processor.
      * @return the count of simulation nodes
      */
-    unsigned long nodes() const;
+    _type_nodes_count nodes() const;
 
     /**
      * checkout whether there is a node whose id is the given id,
@@ -61,6 +62,13 @@ public:
             }
         }
     }
+
+    /**
+     * convert simulation nodes list to pure graph (which is nodes list. {@see graph/graph.h and graph/node.h })
+     * In fact, it is just coping simulation nodes list to pure graph nodes.
+     * @param graph pointer to a empty pure graph (without simulation information).
+     */
+    void toPureGraph(Graph *graph);
 
     /**
      * Deliver simulation to its downstream node.

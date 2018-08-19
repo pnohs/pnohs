@@ -19,7 +19,7 @@ void NodesPool::appendNode(const SimulationNode &snode) { // todo remove all nod
     simulationNodes->push_back(snode);
 }
 
-unsigned long NodesPool::nodes() const {
+_type_nodes_count NodesPool::nodes() const {
     return simulationNodes->size();
 }
 
@@ -31,6 +31,12 @@ SimulationNode *NodesPool::findNodeById(const _type_node_id node_id) {
         }
     }
     return nullptr;
+}
+
+void NodesPool::toPureGraph(Graph *graph) {
+    for (SimulationNode &snode: *simulationNodes) {
+        graph->addNode(snode);
+    }
 }
 
 void NodesPool::deliver(const SimulationNode &current_node) {

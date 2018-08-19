@@ -35,6 +35,8 @@ set(HEADER_FILES
         graph/downstream.h
         graph/downstream_node.h
         graph/node.h
+        graph/graph.h
+        graph/graph_traversing.h
         graph/stream_meta.h
         graph/upstream.h
         graph/upstream_node.h
@@ -66,6 +68,8 @@ set(SOURCE_FILES
         graph/downstream.cpp
         graph/downstream_node.cpp
         graph/node.cpp
+        graph/graph.cpp
+        graph/graph_traversing.cpp
         graph/stream_meta.cpp
         graph/upstream.cpp
         graph/upstream_node.cpp

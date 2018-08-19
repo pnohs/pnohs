@@ -22,6 +22,7 @@ set(TEST_SOURCE_FILES
         dispatch/dispatch_parse_test.cpp
         ds/base_data_list_test.cpp
         ds/param_list_test.cpp
+        graph/graph_test.cpp
         graph/node_test.cpp
         scheduler/longest_pickup_test.cpp
         scheduler/strategy_adapter_test.cpp

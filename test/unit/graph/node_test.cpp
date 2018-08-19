@@ -5,7 +5,7 @@
 #include <gtest/gtest.h>
 #include "graph/node.h"
 
-TEST(node_upstream_add_test, grapg_node_test) {
+TEST(node_upstream_add_test, graph_node_test) {
     Node node = Node();
     EXPECT_EQ(node.isRiverOrigin(), true);
     EXPECT_EQ(node.isRiverOutlet(), true);
