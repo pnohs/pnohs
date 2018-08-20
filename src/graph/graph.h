@@ -97,10 +97,10 @@ public:
 
     /**
      * Similar as preview one, but it one set global nodes ids for root processor.
-     * 
+     *
      * After calling this function, the array @var ids on the ROOT processor
      * will be filled with all nodes ids of global graph;
-     * the array @var ids on the other processors will be ignored 
+     * the array @var ids on the other processors will be ignored
      * (@var ids and @var counts can be null for non-root processors in this case).
      *
      * @param ids global graph nodes ids will be saved in this array.
@@ -120,6 +120,21 @@ private:
      * Note that the upstream and downstream nodes may located on other processors.
      */
     std::list<Node> nodes; // todo use pointer, returned by NodesPool.
+
+    /**
+     * flags used for gathering graph nodes ids.
+     */
+    static const int FLAG_ROOT_ONLY = 0x100; // gather to root
+    static const int FLAG_ALL_PRO = 0x101; // gather to all processors.
+
+    /**
+     * combine two different gather method: gather to root or gather to all processors.
+     * @param ids global graph nodes ids will be saved in this array.
+     * @param counts the nodes count of sub-graph on each processor.
+     * @param root the rank id for root processor in ROOT_ONLY mode.
+     * @param flag FLAG_ROOT_ONLY:gather to root or FLAG_ALL_PRO: gather to all processors.
+     */
+    void gatherAllNodesIds(_type_node_id *ids, _type_nodes_count *counts, kiwi::RID root, int flag);
 };
 
 

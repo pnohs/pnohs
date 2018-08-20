@@ -62,30 +62,8 @@ void Graph::gatherNodesIds(_type_node_id *ids, _type_nodes_count *counts) {
     if (counts[domain::mpi_sim_process.own_rank] != nodesCount()) {
         throw std::invalid_argument("invalid nodes count in counts array");
     }
-
-    // set displace and receive count.
-    int *displace = new int[domain::mpi_sim_process.all_ranks];
-    int *rev_count = new int[domain::mpi_sim_process.all_ranks];
-    int offset = 0;
-    for (int i = 0; i < domain::mpi_sim_process.all_ranks; i++) {
-        // receive count must be int array; and data type is _type_node_id.
-        rev_count[i] = static_cast<int>(counts[i]) * sizeof(_type_node_id);
-        displace[i] = offset * sizeof(_type_node_id);
-        offset += counts[i]; // set next offset.
-    }
-
-    // load local nodes ids.
-    _type_nodes_count local_nodes_count = nodesCount();
-    _type_node_id *local_ids = new _type_node_id[local_nodes_count];
-    getLocalGraphNodesIds(local_ids);
-
-    // after sending, the array ids on each processor will have the same data (global nodes ids).
-    MPI_Allgatherv(local_ids, static_cast<int>(local_nodes_count * sizeof(_type_node_id)), MPI_BYTE,
-                   ids, rev_count, displace, MPI_BYTE, domain::mpi_sim_process.comm);
-
-    delete[]local_ids;
-    delete[]rev_count;
-    delete[]displace;
+    // the third params in gatherAllNodesIds can be whatever you want.
+    gatherAllNodesIds(ids, counts, 0, FLAG_ALL_PRO);
 }
 
 /*
@@ -96,9 +74,15 @@ rank 1: 4, 7, 8        |  4,3,3,3   | _ _ _
 rank 2: 5, 6, 3        |  4,3,3,3   | _ _ _
 */
 void Graph::gatherNodesIds(_type_node_id *ids, _type_nodes_count *counts, kiwi::RID root) {
+    gatherAllNodesIds(ids, counts, root, FLAG_ROOT_ONLY);
+}
+
+void Graph::gatherAllNodesIds(_type_node_id *ids, _type_nodes_count *counts, kiwi::RID root, int flag) {
     int *displace = nullptr, *rev_count = nullptr;
-    // set displace and rec_count for root processor, the other processors keep empty.
-    if (domain::mpi_sim_process.own_rank == root) {
+    // in FLAG_ROOT_ONLY mode, set displace and rec_count for root processor, the other processors keep empty.
+    // but in FLAG_ALL_PRO mode, set displace and rec_count for all processor.
+    if ((flag == FLAG_ROOT_ONLY && domain::mpi_sim_process.own_rank == root) ||
+        flag == FLAG_ALL_PRO) {
         displace = new int[domain::mpi_sim_process.all_ranks];
         rev_count = new int[domain::mpi_sim_process.all_ranks];
         int offset = 0;
@@ -115,28 +99,20 @@ void Graph::gatherNodesIds(_type_node_id *ids, _type_nodes_count *counts, kiwi::
     _type_node_id *local_ids = new _type_node_id[local_nodes_count];
     getLocalGraphNodesIds(local_ids);
 
-    // after syncing nodes ids to root processors,
-    // the array ids on each processor will have the same data (global nodes ids).
-    MPI_Gatherv(local_ids, static_cast<int>(local_nodes_count * sizeof(_type_node_id)), MPI_BYTE,
-                ids, rev_count, displace, MPI_BYTE,
-                root, domain::mpi_sim_process.comm);
+    if (flag == FLAG_ROOT_ONLY) {
+        // after syncing nodes ids to root processors,
+        // the array ids on each processor will have the same data (global nodes ids).
+        MPI_Gatherv(local_ids, static_cast<int>(local_nodes_count * sizeof(_type_node_id)), MPI_BYTE,
+                    ids, rev_count, displace, MPI_BYTE,
+                    root, domain::mpi_sim_process.comm);
+
+    } else {
+        // after sending, the array ids on each processor will have the same data (global nodes ids).
+        MPI_Allgatherv(local_ids, static_cast<int>(local_nodes_count * sizeof(_type_node_id)), MPI_BYTE,
+                       ids, rev_count, displace, MPI_BYTE, domain::mpi_sim_process.comm);
+    }
 
     delete[]local_ids;
     delete[]rev_count;
     delete[]displace;
-
-//    // set offset position.
-//    int offset = 0;
-//    for (int i = 0; i < domain::mpi_sim_process.own_rank; i++) {
-//        offset += counts[i];
-//    }
-//    // fill array ids with local nodes ids.
-//    // (fill array with ids of sub-graph nodes on this processor).
-//    getLocalGraphNodesIds(ids + offset);
-//
-//    // sync nodes ids to other processors(master or all other processors).
-//    _type_nodes_count total_nodes = 0;
-//    for (int i = 0; i < domain::mpi_sim_process.all_ranks; i++) {
-//        total_nodes += counts[i];
-//    }
 }
