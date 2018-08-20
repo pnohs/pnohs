@@ -36,7 +36,8 @@ public:
     }
 
     /**
-     * It returns the nodes count of sub-graph on each processor in simulation domain.
+     * For all processor in simulation domain,
+     * it returns the nodes count of sub-graph on each processor in simulation domain.
      * The return data are stored in array @var counts,
      * the ith element in array stores the nodes count of sub-graph on ith processor.
      *
@@ -53,18 +54,62 @@ public:
     void globalNodesCount(_type_nodes_count *counts);
 
     /**
+     * Similar as preview one, but it only for root processor (just like MPI_Gather and MPI_AllGather):
+     * It returns the nodes count of sub-graph on each processor in simulation domain for root processor.
+     * The other processors will be ignored.
+     * 
+     * @param counts array to store nodes count. only necessary for root processor.
+     * can set it to null for non-root processor.
+     * @param root the rank id for root processor.
+     */
+    void globalNodesCount(_type_nodes_count *counts, kiwi::RID root);
+
+    /**
      * This function returns all nodes ids of sub-graph on this processor.
      * The ids are stored in array @var ids,
      * whose length must be at least the nodes count of sub-graph on this processor.
      * @param ids the ids of sub-graph on this processor are stored in this array.
      */
-    void getGraphNodesIds(_type_node_id *ids);
+    void getLocalGraphNodesIds(_type_node_id *ids);
 
     /**
      * The same as above, but returns std::vector.
      * @return the ids of sub-graph on this processor.
      */
-    std::vector<_type_node_id> getGraphNodesIds();
+    std::vector<_type_node_id> getLocalGraphNodesIds();
+
+    /**
+     * This function gather all nodes ids in global graph for all processors in simulation domain.
+     * The nodes ids are saved in array {@var ids}.
+     *
+     * @note before calling this function, you must known the nodes count on each processor.
+     * Then, the length of array @var ids must be the sum of all nodes count on each processor.
+     *
+     * After calling this function, the array @var ids on the all processors
+     * will be filled with all nodes ids of global graph.
+     *
+     * @param ids global graph nodes ids will be saved in this array.
+     * the length of array @var ids must be the sum of all nodes count on each processor.
+     * @param counts the nodes count of sub-graph on each processor.
+     * the length of array @var counts must equal to the MPI ranks in simulation domain.
+     */
+    void gatherNodesIds(_type_node_id *ids, _type_nodes_count *counts);
+
+    /**
+     * Similar as preview one, but it one set global nodes ids for root processor.
+     * 
+     * After calling this function, the array @var ids on the ROOT processor
+     * will be filled with all nodes ids of global graph;
+     * the array @var ids on the other processors will be ignored 
+     * (@var ids and @var counts can be null for non-root processors in this case).
+     *
+     * @param ids global graph nodes ids will be saved in this array.
+     * the length of array @var ids must be the sum of all nodes count on each processor.
+     * @param counts the nodes count of sub-graph on each processor.
+     * the length of array @var counts must equal to the MPI ranks in simulation domain.
+     * @param root the rank id for root processor.
+     */
+    void gatherNodesIds(_type_node_id *ids, _type_nodes_count *counts, kiwi::RID root);
 
 private:
 
