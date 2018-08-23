@@ -19,7 +19,7 @@
 
 class Node {
 public:
-    _type_node_id id; // node id.
+    const _type_node_id id; // node id.
 
     /**
      *  upstream of this node.
@@ -32,13 +32,16 @@ public:
     Downstream downstream;
 
     /**
+     * construction method for creating a node using given id.
+     * @param id node id.
+     */
+    Node(const _type_node_id id);
+
+    /**
      * use this function to update/refresh node information in this class
      * after some upstream or downstream nodes are added to this node.
      */
-    void notifyDataSetChanged() {
-        _is_river_outlet = downstream.nodes.empty();
-        _is_river_origin = (upstream.count() == 0);
-    }
+    void notifyDataSetChanged();
 
     /**
      * Check whether this node is the river outlet.

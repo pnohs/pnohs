@@ -21,8 +21,7 @@ struct PickupTestNode {
 void generateTestNodes(SContext *context, std::vector<PickupTestNode> &nodes) {
     // set nodes and its upstream graph.
     for (PickupTestNode &node: nodes) {
-        SimulationNode snode;
-        snode.id = node.id;
+        SimulationNode snode(node.id);
         for (PickupTestUpMate up: node._ups) {
             snode.upstream.putUpMetaStream(StreamMeta{up.id, up.rank}); // StreamMeta{upstream_id, upstream_rank}
         }

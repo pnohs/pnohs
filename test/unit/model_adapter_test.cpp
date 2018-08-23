@@ -40,7 +40,7 @@ public:
 
 TEST(model_adapter_test_create, model_adapter_test) {
     // create a simulation node.
-    SimulationNode s_node;
+    SimulationNode s_node(0x123);
     SimpleCtx simpleCtx;
     SimpleRunOffModel runoff;
 

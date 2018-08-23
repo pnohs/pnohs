@@ -28,6 +28,14 @@ public:
     RunoffAdapter *_p_runoff_model;
 
     /**
+     * create a simulation node using given id.
+     * this id should not be an null id.
+     * @note simulation node id shouldn't be null, but graph node id can.
+     * @param id node id.
+     */
+    SimulationNode(const _type_node_id id);
+
+    /**
      * set river routing model, and initialize this model.
      * @param p_adapter
      */

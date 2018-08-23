@@ -16,6 +16,7 @@ NodesPool::~NodesPool() {
 }
 
 void NodesPool::appendNode(const SimulationNode &snode) { // todo remove all nodes.
+    // todo checkout node id not null.
     simulationNodes->push_back(snode);
 }
 

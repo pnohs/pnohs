@@ -6,7 +6,7 @@
 #include "graph/node.h"
 
 TEST(node_upstream_add_test, graph_node_test) {
-    Node node = Node();
+    Node node = Node(0x123);
     EXPECT_EQ(node.isRiverOrigin(), true);
     EXPECT_EQ(node.isRiverOutlet(), true);
 
@@ -33,7 +33,7 @@ TEST(node_upstream_add_test, graph_node_test) {
 }
 
 TEST(node_find_upstream_by_id_test, grapg_node_test) {
-    Node node = Node();
+    Node node = Node(0x123);
 
     node.upstream.putUpMetaStream(StreamMeta(100, 0));  // add upstream nodes.
     node.upstream.putUpMetaStream(StreamMeta(101, 1));
@@ -48,8 +48,7 @@ TEST(node_find_upstream_by_id_test, grapg_node_test) {
 
 // test appendUpstreamRouting and isReady and minQueSize.
 TEST(node_task_queue_ready_test, grapg_node_test) {
-    Node node = Node();
-    node.id = 1000;
+    Node node = Node(1000);
 
     node.upstream.putUpMetaStream(StreamMeta(100, 0));  // add upstream nodes.
     node.upstream.putUpMetaStream(StreamMeta(101, 1));

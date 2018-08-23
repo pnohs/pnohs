@@ -25,8 +25,7 @@ Graph genSubGraphForTest() {
     const int L = domain::mpi_sim_process.own_rank;
     // in this test, rank i will have i+1 node(s). e.g. rank 0 have 1 node; rank 4 have 5 nodes.
     for (int V = 0; V < (1 << L); V++) { // V_max = 2^L -1
-        Node node;
-        node.id = NODE_ID(L, V);
+        Node node(NODE_ID(L, V));
 
         // the nodes on the last rank have no upstream
         if (L + 1 != domain::mpi_sim_process.all_ranks) {
