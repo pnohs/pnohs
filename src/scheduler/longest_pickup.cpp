@@ -27,7 +27,7 @@ SimulationNode *LongestPickup::pickRunnable() {
             itr++;
         }
         // if this node is ok (it does not finish simulation, and its upstream is ready).
-        if (itr->_time_steps < context._total_steps && itr->upstream.isReady()) {
+        if (itr->_time_step < context._total_steps && itr->upstream.isReady()) {
             // if this node is the river origin, {@variable len} can be 0.
             int len = static_cast<int>(itr->upstream.maxQueSize());
             // found a node whose upstream queue length is bigger than the preview ones.

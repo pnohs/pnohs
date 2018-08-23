@@ -21,8 +21,7 @@ struct PickupTestNode {
 void generateTestNodes(SContext *context, std::vector<PickupTestNode> &nodes) {
     // set nodes and its upstream graph.
     for (PickupTestNode &node: nodes) {
-        SimulationNode snode;
-        snode.id = node.id;
+        SimulationNode snode(node.id);
         for (PickupTestUpMate up: node._ups) {
             snode.upstream.putUpMetaStream(StreamMeta{up.id, up.rank}); // StreamMeta{upstream_id, upstream_rank}
         }
@@ -72,7 +71,7 @@ TEST(longest_pickup_strategy_test, scheduler_pickup_test) {
 
     SimulationNode *picked = pickup->pickRunnable();
     EXPECT_NE(picked == nullptr, true);
-    EXPECT_EQ(picked->id, 3);
+    EXPECT_EQ(picked->id, (_type_node_id) 3);
 
     delete pickup;
     delete ctx;

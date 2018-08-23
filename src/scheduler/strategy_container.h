@@ -6,6 +6,7 @@
 #define PNOHS_STRATEGY_CONTAINER_H
 
 #include <string>
+#include <map>
 #include "strategy_adapter.h"
 
 /**
@@ -17,6 +18,8 @@ class StrategyContainer {
 public:
     /**
       * add an pickup strategy and initialize this strategy.
+      * Note: make sure the pointer variable strategy is create by "new" keyword,
+      *       or "signal 11: SIGSEGV" error will be thrown when deleting this strategy(deleting an object not create by 'new').
       * @param key the key to uniquely identifies the pickup strategy.
       * @param strategy the pointer to the strategy entity identified by strategyKey.
       */
@@ -30,15 +33,21 @@ public:
     static StrategyAdapter *findStrategyByKey(const std::string &key);
 
     /**
+     * returns the count of strategy.
+     * @return the strategy count.
+     */
+    static unsigned long strategies();
+
+    /**
      * delete one strategy by key.
      * @param key strategy key
      */
-    static void DestroyStrategy(const std::string &key);
+    static void destroyStrategy(const std::string &key);
 
     /**
      * delete all strategy entity.
      */
-    static void DestroyAllStrategies();
+    static void destroyAllStrategies();
 
 private:
     // declare a map for storage all pickup strategy.

@@ -1,7 +1,7 @@
 ################################
 # MPI and OpenMP
 ################################
-if (OpenMP_ENABLE_FLAG)
+if (PNOHS_OpenMP_ENABLE_FLAG)
     find_package(OpenMP REQUIRED)
 
     if (OPENMP_FOUND)
@@ -11,7 +11,7 @@ if (OpenMP_ENABLE_FLAG)
     endif ()
 endif ()
 
-if (MPI_ENABLE_FLAG)
+if (PNOHS_MPI_ENABLE_FLAG)
     find_package(MPI REQUIRED)
     MESSAGE(STATUS "MPI_INCLUDE dir:" ${MPI_INCLUDE_PATH})
     MESSAGE(STATUS "MPI_LIBRARIES dir:" ${MPI_LIBRARIES})
@@ -26,16 +26,26 @@ if (MPI_ENABLE_FLAG)
 
     include_directories(${MPI_CXX_INCLUDE_PATH})
 
-    set(EXTRA_LIBS ${EXTRA_LIBS} ${MPI_CXX_LIBRARIES}) #add mpi lib
+    set(PNOHS_EXTRA_LIBS ${PNOHS_EXTRA_LIBS} ${MPI_CXX_LIBRARIES}) #add mpi lib
 endif ()
 ##### mpi and openmp end
 
-# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libgcc -static-libstdc++")
+
+include(pkg.dep.cmake)
+set(PNOHS_VENDOR_PATH ${VENDOR_PATH})
+set(PNOHS_VENDOR_SRC_PATH ${PNOHS_VENDOR_PATH}/src)
+set(PNOHS_VENDOR_INCLUDE_PATH ${PNOHS_VENDOR_PATH}/include)
+set(PNOHS_VENDOR_PKG_PATH ${PNOHS_VENDOR_PATH}/pkg)
 
 ################################
-##### pthread lib
+###### kiwi framework globally
 ################################
-find_package (Threads REQUIRED)
-set(EXTRA_LIBS ${EXTRA_LIBS} ${CMAKE_THREAD_LIBS_INIT})
+set(PNOHS_EXTRA_LIBS fmt kiwi ${PNOHS_EXTRA_LIBS})
+
+################################
+##### check pthread lib
+################################
+find_package(Threads REQUIRED)
+set(PNOHS_EXTRA_LIBS ${PNOHS_EXTRA_LIBS} ${CMAKE_THREAD_LIBS_INIT})
 MESSAGE(STATUS "pthread is used.")
 ## pthread end

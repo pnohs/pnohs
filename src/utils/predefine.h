@@ -5,10 +5,14 @@
 #ifndef PNOHS_TYPEDEF_H
 #define PNOHS_TYPEDEF_H
 
+#include <cstddef>
+
 // graph
 typedef unsigned long _type_node_id;
 typedef unsigned long _type_node_index; // node index type.
-typedef _type_node_index _type_nodes_count; // node count type.
+typedef size_t _type_nodes_count; // node count type.
+
+static const _type_node_id NODE_ID_NULL = 0;
 
 // mpi message
 static const int TagStreamRoutingMessage = 0x101;

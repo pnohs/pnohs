@@ -7,6 +7,7 @@
 #include "scheduler.h"
 #include "strategy_container.h"
 #include "../utils/stopwatch.h"
+#include "../utils/sim_domain.h"
 
 Scheduler::Scheduler(SysContext &ctx, SContext &scheduleContext) :
         ctx(ctx), schCtx(scheduleContext) {
@@ -29,7 +30,7 @@ bool Scheduler::select() {
     if (schCtx.pNodesPool->allCompleted()) { // all simulation nodes have finished their simulation.
         // dump time line if time line is enabled.
         char buffer[50] = {'\0'};
-        sprintf(buffer, "debug_timeline_%d.dump", kiwi::mpiUtils::own_rank);
+        sprintf(buffer, "debug_timeline_%d.dump", domain::mpi_sim_process.own_rank);
         stopwatch::dumpToFile(std::string(buffer));
         return false;
     }
@@ -52,7 +53,7 @@ bool Scheduler::select() {
         } else {
             schCtx.curNode = pickedNode;
             // got/picked up a runnable node, log this moment.
-            stopwatch::appendToTimeLine(schCtx.curNode->id, schCtx.curNode->_time_steps,
+            stopwatch::appendToTimeLine(schCtx.curNode->id, schCtx.curNode->_time_step,
                                            stopwatch::EventSignals::EVENT_SIGNAL_PICKED);
             pthread_mutex_unlock(&(ctx._t_mu)); // lock
             return true;
@@ -63,11 +64,11 @@ bool Scheduler::select() {
 void Scheduler::postStep() {
     schCtx.pNodesPool->updateStatusAllCompleted(schCtx._total_steps); // update
 
-    stopwatch::appendToTimeLine(schCtx.curNode->id, schCtx.curNode->_time_steps,
+    stopwatch::appendToTimeLine(schCtx.curNode->id, schCtx.curNode->_time_step,
                                    stopwatch::EventSignals::EVENT_SIGNAL_FINISH); // finish one step, log this time.
 //    kiwi::logs::i("schedule", "\tnode_id: {0}\t steps:{1}/{2}\tcom-status:{3}\tnodes_couts:{4}\n",
 //                  schCtx.curNode->id,
-//                  schCtx.curNode->_time_steps,
+//                  schCtx.curNode->_time_step,
 //                  schCtx._total_steps,
 //                  schCtx.pNodesPool->allCompleted(), 0);
 //                  schCtx.pNodesPool->simulationNodes->size());

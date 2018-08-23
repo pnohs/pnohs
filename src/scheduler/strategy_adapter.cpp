@@ -6,7 +6,7 @@
 
 StrategyAdapter::StrategyAdapter(SContext &context) : context(context) {}
 
-StrategyAdapter::~StrategyAdapter() {}
+StrategyAdapter::~StrategyAdapter() = default;
 
 void StrategyAdapter::onStrategySelected() {
     nodesIter = context.pNodesPool->simulationNodes->begin(); // initialize nodesIter.

@@ -5,7 +5,9 @@
 #ifndef PNOHS_SYS_CONTEXT_H
 #define PNOHS_SYS_CONTEXT_H
 
-#include "config_toml.h"
+#include <pthread.h>
+#include <string>
+#include <utils/mpi_utils.h>
 
 /**
  * system relative context here, such as mutex, program lifetime.
@@ -28,7 +30,7 @@ public:
     int _t_waiting = 0; // todo add comments here.
     pthread_mutex_t _t_mu;
     pthread_cond_t _t_cond;
-
+//    kiwi::mpi_process mpi_sim_process; // todo move here
 private:
 //    const ConfigToml *pConfig;
 

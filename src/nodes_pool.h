@@ -5,9 +5,12 @@
 #ifndef PNOHS_NODES_POOL_H
 #define PNOHS_NODES_POOL_H
 
+#include <functional>
+
 #include "simulation_node.h"
 #include "sys_context.h"
 #include "message/stream_routing_message_runner.h"
+#include "graph/graph.h"
 
 /**
  * NodePool is a collection of all simulation nodes on this processor.
@@ -34,12 +37,38 @@ public:
     void appendNode(const SimulationNode &snode);
 
     /**
+     * get the count of nodes on this processor.
+     * @return the count of simulation nodes
+     */
+    _type_nodes_count nodes() const;
+
+    /**
      * checkout whether there is a node whose id is the given id,
      * returns pointer of SimulationNode if found.
      * @param id node id
      * @return if true, return pointer of the SimulationNode, otherwise return nullptr.
      */
     SimulationNode *findNodeById(const _type_node_id node_id);
+
+    /**
+     * iterate all simulation node in this nodes pool.
+     * for each node, the callback function will be called with passing the reference of this node.
+     */
+    template<typename Callable>
+    inline void forEachNode(Callable callback) {
+        for (SimulationNode &snode: *simulationNodes) {
+            if (callback(snode)) {
+                break;
+            }
+        }
+    }
+
+    /**
+     * convert simulation nodes list to pure graph (which is nodes list. {@see graph/graph.h and graph/node.h })
+     * In fact, it is just coping simulation nodes list to pure graph nodes.
+     * @param graph pointer to a empty pure graph (without simulation information).
+     */
+    void toPureGraph(Graph *graph);
 
     /**
      * Deliver simulation to its downstream node.
@@ -73,6 +102,11 @@ public:
      * @param total_steps the total time steps of whole simulation.
      */
     void updateStatusAllCompleted(const unsigned long total_steps);
+
+    /**
+     * reset @var status_all_tasks_completed to initial value.
+     */
+    void clearStatus();
 
 private:
 
