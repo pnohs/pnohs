@@ -81,9 +81,9 @@ public:
     bool appendUpstreamRouting(_type_node_id upstream_node_id, TypeRouting &task);
 
     /**
-     * Dequeue an routing results of task queue from each upstream nodes.
+     * DeQueue routing results from the task queues of each upstream node.
      * Each upstream node would contribute one routing results.
-     * And all routing results all belongs to the same time step.
+     * And all routing results all have the same time step.
      *
      * If one task queue of upstream nodes is empty,
      * a new and empty TypeRouting will be added to the returned list.

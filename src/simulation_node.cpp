@@ -2,7 +2,16 @@
 // Created by genshen on 3/27/18.
 //
 
+#include <stdexcept>
 #include "simulation_node.h"
+#include "utils/predefine.h"
+
+SimulationNode::SimulationNode(const _type_node_id id) : Node(id) {
+    // simulation node id shouldn't be null, but graph node id can.
+    if (id == NODE_ID_NULL) {
+        throw std::invalid_argument("invalid argument id (can not be null) while creating simulation node.");
+    }
+}
 
 void SimulationNode::setModelRouting(RoutingAdapter *p_adapter) {
     _p_routing_model = p_adapter;

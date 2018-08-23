@@ -13,6 +13,7 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 set(TEST_HEADER_FILES
         test_config.h
         dispatch/dispatch_json_string.h
+        graph/generate_graph.hpp
         )
 
 set(TEST_SOURCE_FILES
@@ -20,6 +21,10 @@ set(TEST_SOURCE_FILES
         main.cpp
         model_adapter_test.cpp
         dispatch/dispatch_parse_test.cpp
+        ds/base_data_list_test.cpp
+        ds/param_list_test.cpp
+        graph/graph_test.cpp
+        graph/graph_traversing_test.cpp
         graph/node_test.cpp
         scheduler/longest_pickup_test.cpp
         scheduler/strategy_adapter_test.cpp

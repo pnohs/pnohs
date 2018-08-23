@@ -25,7 +25,7 @@ public:
         bind_test = true;
     }
 
-    void onParamsPassed(ModelContext *p_model_context, param_const params[]) override {
+    void onParamsPassed(ModelContext *p_model_context, param_const params[], size_t size) override {
         ((SimpleCtx *) p_model_context)->P_A = params[0];
     }
 
@@ -40,7 +40,7 @@ public:
 
 TEST(model_adapter_test_create, model_adapter_test) {
     // create a simulation node.
-    SimulationNode s_node;
+    SimulationNode s_node(0x123);
     SimpleCtx simpleCtx;
     SimpleRunOffModel runoff;
 
@@ -52,7 +52,7 @@ TEST(model_adapter_test_create, model_adapter_test) {
 
     // set params
     param_const params[] = {1.2};
-    runoff.onParamsPassed(&simpleCtx, params);
+    runoff.onParamsPassed(&simpleCtx, params, 1);
 
     // simulate
     s_node.runoff();
