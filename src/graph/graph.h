@@ -62,7 +62,7 @@ public:
      * can set it to null for non-root processor.
      * @param root the rank id for root processor.
      */
-    void globalNodesCount(_type_nodes_count *counts, kiwi::RID root);
+    void globalNodesCount(_type_nodes_count *counts,const kiwi::RID root);
 
     /**
      * This function returns all nodes ids of sub-graph on this processor.
@@ -109,7 +109,7 @@ public:
      * the length of array @var counts must equal to the MPI ranks in simulation domain.
      * @param root the rank id for root processor.
      */
-    void gatherNodesIds(_type_node_id *ids, _type_nodes_count *counts, kiwi::RID root);
+    void gatherNodesIds(_type_node_id *ids, _type_nodes_count *counts,const kiwi::RID root);
 
 private:
 
@@ -134,7 +134,7 @@ private:
      * @param root the rank id for root processor in ROOT_ONLY mode.
      * @param flag FLAG_ROOT_ONLY:gather to root or FLAG_ALL_PRO: gather to all processors.
      */
-    void gatherAllNodesIds(_type_node_id *ids, _type_nodes_count *counts, kiwi::RID root, int flag);
+    void gatherAllNodesIds(_type_node_id *ids, _type_nodes_count *counts,const kiwi::RID root,const int flag);
 };
 
 
