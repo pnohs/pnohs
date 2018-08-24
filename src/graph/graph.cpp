@@ -26,12 +26,25 @@ void Graph::globalNodesCount(_type_nodes_count *counts) {
                   domain::mpi_sim_process.comm);
 }
 
-void Graph::globalNodesCount(_type_nodes_count *counts,const kiwi::RID root) {
+void Graph::globalNodesCount(_type_nodes_count *counts, const kiwi::RID root) {
     _type_nodes_count my_node_count = nodes.size();
     MPI_Gather(&my_node_count, sizeof(_type_nodes_count), MPI_BYTE,
                counts, sizeof(_type_nodes_count), MPI_BYTE,
                root, domain::mpi_sim_process.comm);
 }
+
+/**
+_type_nodes_count Graph::globalNodesCount() {
+    _type_nodes_count *_counts = new _type_nodes_count[domain::mpi_sim_process.all_ranks];
+    globalNodesCount(_counts);
+    _type_nodes_count total = 0;
+    for (kiwi::RID i = 0; i < domain::mpi_sim_process.all_ranks; i++) {
+        total += _counts[i];
+    }
+    delete[]_counts;
+    return total;
+}
+ */
 
 void Graph::getLocalGraphNodesIds(_type_node_id *ids) {
     int i = 0;
@@ -73,11 +86,11 @@ rank 0: 9, 2, 3, 10    |  4,3,3,3   | 9,2,3,10,4,7,8,5,6,3
 rank 1: 4, 7, 8        |  4,3,3,3   | _ _ _
 rank 2: 5, 6, 3        |  4,3,3,3   | _ _ _
 */
-void Graph::gatherNodesIds(_type_node_id *ids, _type_nodes_count *counts,const kiwi::RID root) {
+void Graph::gatherNodesIds(_type_node_id *ids, _type_nodes_count *counts, const kiwi::RID root) {
     gatherAllNodesIds(ids, counts, root, FLAG_ROOT_ONLY);
 }
 
-void Graph::gatherAllNodesIds(_type_node_id *ids, _type_nodes_count *counts,const kiwi::RID root,const int flag) {
+void Graph::gatherAllNodesIds(_type_node_id *ids, _type_nodes_count *counts, const kiwi::RID root, const int flag) {
     int *displace = nullptr, *rev_count = nullptr;
     // in FLAG_ROOT_ONLY mode, set displace and rec_count for root processor, the other processors keep empty.
     // but in FLAG_ALL_PRO mode, set displace and rec_count for all processor.

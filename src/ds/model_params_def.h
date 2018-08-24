@@ -18,6 +18,8 @@ typedef double var_local_double;
 
 // this variable not change when it is assigned, use as model params.
 typedef double param_const;
+typedef param_const _type_param;
+
 
 typedef std::string params_key;
 
