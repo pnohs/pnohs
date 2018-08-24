@@ -14,6 +14,9 @@ typedef size_t _type_nodes_count; // node count type.
 
 static const _type_node_id NODE_ID_NULL = 0;
 
+// params
+typedef size_t _type_params_count;
+
 // mpi message
 static const int TagStreamRoutingMessage = 0x101;
 
