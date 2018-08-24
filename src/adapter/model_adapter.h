@@ -29,7 +29,7 @@ public:
      * get parameter count of this model
      * @return default value: 0
      */
-    _type_params_count paramCount();
+    virtual const _type_params_count paramCount();
 
     /**
      *
