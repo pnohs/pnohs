@@ -64,6 +64,20 @@ public:
     }
 
     /**
+     * set models parameters for all nodes on this processors.
+     * @param nodes_ids vector of node ids.
+     * @param runoff_params parameters list for runoff models.
+     * Each element in this vector points to a 1-d parameters array.
+     * Its length must be equals to the length of @var nodes_ids.
+     * @param routing_params parameters list for routing models.
+     * Each element in this vector points to a 1-d parameters array.
+     * Its length must be equals to nodes_ids's length.
+     */
+    void setNodesParams(std::vector<_type_node_id> nodes_ids,
+                        std::vector<param_const *> runoff_params,
+                        std::vector<param_const *> routing_params);
+
+    /**
      * convert simulation nodes list to pure graph (which is nodes list. {@see graph/graph.h and graph/node.h })
      * In fact, it is just coping simulation nodes list to pure graph nodes.
      * @param graph pointer to a empty pure graph (without simulation information).

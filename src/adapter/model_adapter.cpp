@@ -7,6 +7,6 @@
 ModelAdapter::~ModelAdapter() = default;
 
 // default count 0.
-int ModelAdapter::paramCount() {
+const _type_params_count ModelAdapter::paramCount() {
     return 0;
 }

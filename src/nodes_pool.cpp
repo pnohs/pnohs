@@ -34,6 +34,24 @@ SimulationNode *NodesPool::findNodeById(const _type_node_id node_id) {
     return nullptr;
 }
 
+void NodesPool::setNodesParams(std::vector<_type_node_id> nodes_ids,
+                               std::vector<param_const *> runoff_params,
+                               std::vector<param_const *> routing_params) {
+    _type_nodes_count i = 0;
+    for (_type_node_id id : nodes_ids) {
+        SimulationNode *node = findNodeById(id);
+        if (node == nullptr) {
+            continue; // todo not exists.
+        }
+        // todo pass parameters count in this function.
+        node->_p_runoff_model->onParamsPassed(node->_p_model_ctx, runoff_params[i],
+                                              node->_p_runoff_model->paramCount());
+        node->_p_routing_model->onParamsPassed(node->_p_model_ctx, routing_params[i],
+                                               node->_p_routing_model->paramCount());
+        i++;
+    }
+}
+
 void NodesPool::toPureGraph(Graph *graph) {
     for (SimulationNode &snode: *simulationNodes) {
         graph->addNode(snode);
