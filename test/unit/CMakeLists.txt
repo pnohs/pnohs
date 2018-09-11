@@ -28,6 +28,7 @@ set(TEST_SOURCE_FILES
         graph/node_test.cpp
         scheduler/longest_pickup_test.cpp
         scheduler/strategy_adapter_test.cpp
+        utils/sim_reduction_test.cpp
         )
 
 # set binary path and lib storage path wile compiling process.
