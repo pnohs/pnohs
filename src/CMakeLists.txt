@@ -51,12 +51,14 @@ set(HEADER_FILES
         scheduler/strategy_container.h
         utils/stopwatch.h
         utils/sim_domain.h
+        utils/sim_reduction.hpp
         )
 
 set(SOURCE_FILES
         nodes_pool.cpp
         simulation_node.cpp
         sys_context.cpp
+        adapter/model_adapter.cpp
         adapter/model_context.cpp
         adapter/routing_adapter.cpp
         adapter/runoff_adapter.cpp
@@ -83,7 +85,6 @@ set(SOURCE_FILES
         scheduler/strategy_container.cpp
         utils/stopwatch.cpp
         utils/sim_domain.cpp
-        adapter/model_adapter.cpp
         )
 
 # set binary path and lib storage path for compiling process.
