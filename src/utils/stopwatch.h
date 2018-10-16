@@ -9,7 +9,12 @@
  * the time line.
  */
 #include <list>
+#include <fstream>
 
+/**
+ * stopwatch is used to record the events and event time
+ * while carrying on simulation node selection.
+ */
 namespace stopwatch {
     const int STOP_ID_NONE = -1;
     const int STOP_STEP_NONE = -1;
@@ -34,7 +39,20 @@ namespace stopwatch {
     std::ostream &operator<<(std::ostream &out, const event &e);
 
     // all events at each time step are stored here.
-    extern std::list<event> time_line; // todo release mem.
+    extern std::list<event> time_line;
+
+    /**
+     * If @var enabled is true, then the events will be saved to @var time_line.
+     * when function @fn appendToTimeLine is called.
+     * otherwise, the event will be ignored (events will not be record).
+     */
+    extern bool enabled;
+
+    /**
+     * set @var enabled.
+     * @param enabled
+     */
+    void setStopWatchEnabled(bool enabled);
 
     /**
      * this method returns current clock time, which is used as default param for {@function appendToTimeLine}.
@@ -43,7 +61,8 @@ namespace stopwatch {
     long defaultWatch();
 
     /**
-     * add an event to time line, which can customize the function of getting current clock time.
+     * Add an event to @var time line if stopwatch option @var enabled is enabled.
+     * You can customize the function of getting current clock time.
      * @param id river sub-basin id.
      * @param step simulation step of current node.
      * @param signal signal type.
@@ -51,8 +70,15 @@ namespace stopwatch {
      */
     void appendToTimeLine(long id, long step, int signal, long (*watch)() = defaultWatch);
 
+    /**
+     * dump all event data to filesystem.
+     * @param filename filename of dump file.
+     */
     void dumpToFile(const std::string &filename);
 
+    /**
+     * clean all event data saved in list @var time_line.
+     */
     void deleteAllEvent();
 
 };
