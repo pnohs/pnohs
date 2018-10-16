@@ -22,6 +22,7 @@ set(HEADER_FILES
         sys_context.h
         adapter/model_adapter.h
         adapter/model_context.h
+        adapter/model_register.h
         adapter/routing_adapter.h
         adapter/runoff_adapter.h
         adapter/type_routing.h
@@ -60,6 +61,7 @@ set(SOURCE_FILES
         sys_context.cpp
         adapter/model_adapter.cpp
         adapter/model_context.cpp
+        adapter/model_register.cpp
         adapter/routing_adapter.cpp
         adapter/runoff_adapter.cpp
         adapter/type_routing.cpp
