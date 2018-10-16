@@ -16,6 +16,7 @@
 #endif
 
 std::list<stopwatch::event> stopwatch::time_line;
+bool stopwatch::enabled=false;
 
 void stopwatch::setStopWatchEnabled(bool enabled) {
     stopwatch::enabled = enabled;
