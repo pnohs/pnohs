@@ -4,9 +4,10 @@ option(PNOHS_OpenMP_ENABLE_FLAG "Use OpenMP" OFF) #change this flag to OFF to di
 option(PNOHS_MPI_ENABLE_FLAG "Use MPI library" ON) #change this flag to false to disable mpi
 option(PNOHS_TEST_BUILD_ENABLE_FLAG "Enable test" ON) # enable test
 option(PNOHS_TEST_MPI_ENABLE_FLAG "Enable MPI in test" ON) # enable mpi in test, its value depends on option MPI_ENABLE_FLAG.
-option(PNOHS_DEBUG_BUILD_ENABLE_FLAG "Enable tools building" ON) # enable debug mode building.
+option(PNOHS_TOOLS_BUILD_ENABLE_FLAG "Enable tools building" ON) # building tools directory.
+option(PNOHS_DEBUG_ENABLE_FLAG "Enable tools building" ON) # enable debug mode building.
 
-if (PNOHS_DEBUG_BUILD_ENABLE_FLAG)
+if (PNOHS_DEBUG_ENABLE_FLAG)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
 endif ()
 

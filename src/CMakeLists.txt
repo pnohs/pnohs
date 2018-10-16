@@ -2,7 +2,7 @@
 include_directories(${PNOHS_VENDOR_INCLUDE_PATH})
 
 # configure a header file to pass some of the CMake settings(such as debug flag) to the source code
-if (PNOHS_DEBUG_BUILD_ENABLE_FLAG)
+if (PNOHS_DEBUG_ENABLE_FLAG)
     set(PNOHS_BUILDING_DEBUG_MODE ON)
 endif ()
 
@@ -93,6 +93,11 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 # make lib
 add_library(${PNOHS_LIB_NAME} STATIC ${HEADER_FILES} ${SOURCE_FILES})
+
+target_include_directories(
+        ${PNOHS_LIB_NAME}
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 ##########################
 ##### install files
