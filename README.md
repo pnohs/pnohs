@@ -37,5 +37,9 @@ $ make
 $ make install
 ```
 
+## CHANGELOG.
+We use [chglog](https://github.com/git-chglog/git-chglog) tool to generate CHANGELOG.md file.
+Make sure you have **chglog** installed before updating CHANGELOG.md file.
+
 ## LiCENSE
 Mozilla Public License Version 2.0

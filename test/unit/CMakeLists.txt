@@ -8,7 +8,6 @@ configure_file(
 )
 
 include_directories(${PNOHS_VENDOR_INCLUDE_PATH})
-include_directories(${PROJECT_SOURCE_DIR}/src)
 
 set(TEST_HEADER_FILES
         test_config.h
@@ -28,6 +27,7 @@ set(TEST_SOURCE_FILES
         graph/node_test.cpp
         scheduler/longest_pickup_test.cpp
         scheduler/strategy_adapter_test.cpp
+        utils/sim_reduction_test.cpp
         )
 
 # set binary path and lib storage path wile compiling process.
@@ -37,10 +37,12 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 add_executable(${PNOHS_UINT_TEST_NAME} ${TEST_SOURCE_FILES} ${TEST_HEADER_FILES})
 
 ## Extra linking for the project: add pnohs lib
-set(PNOHS_EXTRA_LIBS ${PNOHS_LIB_NAME} ${PNOHS_EXTRA_LIBS})
+#set(PNOHS_EXTRA_LIBS ${PNOHS_LIB_NAME} ${PNOHS_EXTRA_LIBS})
 
 # Extra linking for the project.
-target_link_libraries(${PNOHS_UINT_TEST_NAME} ${PNOHS_EXTRA_LIBS})
+target_link_libraries(${PNOHS_UINT_TEST_NAME}
+        PRIVATE ${PNOHS_EXTRA_LIBS} ${PNOHS_LIB_NAME}
+        )
 
 # This is so you can do 'make test' to see all your tests run, instead of
 # manually running the executable runUnitTests to see those specific tests.

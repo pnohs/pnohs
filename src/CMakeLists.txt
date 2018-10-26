@@ -2,7 +2,7 @@
 include_directories(${PNOHS_VENDOR_INCLUDE_PATH})
 
 # configure a header file to pass some of the CMake settings(such as debug flag) to the source code
-if (PNOHS_DEBUG_BUILD_ENABLE_FLAG)
+if (PNOHS_DEBUG_ENABLE_FLAG)
     set(PNOHS_BUILDING_DEBUG_MODE ON)
 endif ()
 
@@ -22,6 +22,7 @@ set(HEADER_FILES
         sys_context.h
         adapter/model_adapter.h
         adapter/model_context.h
+        adapter/model_register.h
         adapter/routing_adapter.h
         adapter/runoff_adapter.h
         adapter/type_routing.h
@@ -51,13 +52,16 @@ set(HEADER_FILES
         scheduler/strategy_container.h
         utils/stopwatch.h
         utils/sim_domain.h
+        utils/sim_reduction.hpp
         )
 
 set(SOURCE_FILES
         nodes_pool.cpp
         simulation_node.cpp
         sys_context.cpp
+        adapter/model_adapter.cpp
         adapter/model_context.cpp
+        adapter/model_register.cpp
         adapter/routing_adapter.cpp
         adapter/runoff_adapter.cpp
         adapter/type_routing.cpp
@@ -83,7 +87,6 @@ set(SOURCE_FILES
         scheduler/strategy_container.cpp
         utils/stopwatch.cpp
         utils/sim_domain.cpp
-        adapter/model_adapter.cpp
         )
 
 # set binary path and lib storage path for compiling process.
@@ -92,6 +95,11 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 # make lib
 add_library(${PNOHS_LIB_NAME} STATIC ${HEADER_FILES} ${SOURCE_FILES})
+
+target_include_directories(
+        ${PNOHS_LIB_NAME}
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 ##########################
 ##### install files

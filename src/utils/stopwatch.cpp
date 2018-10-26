@@ -16,6 +16,11 @@
 #endif
 
 std::list<stopwatch::event> stopwatch::time_line;
+bool stopwatch::enabled=false;
+
+void stopwatch::setStopWatchEnabled(bool enabled) {
+    stopwatch::enabled = enabled;
+}
 
 long stopwatch::defaultWatch() {
 #ifdef PNOHS_MPI_ENABLED
@@ -26,14 +31,15 @@ long stopwatch::defaultWatch() {
 }
 
 void stopwatch::appendToTimeLine(long id, long step, int signal, long (*watch)()) {
-#ifdef PNOHS_BUILDING_DEBUG_MODE
+    // if time line (stopwatch) is disabled, function appendToTimeLine will do nothing.
+    if (!stopwatch::enabled) {
+        return;
+    }
     time_line.push_back(event{watch(), id, step, signal});
 //    std::cout << event{watch(), id, step, signal};
-#endif
 }
 
 void stopwatch::dumpToFile(const std::string &filename) {
-#ifdef PNOHS_BUILDING_DEBUG_MODE
     std::ofstream ofs(filename);
     if (!ofs.good()) {
         return;
@@ -47,13 +53,10 @@ void stopwatch::dumpToFile(const std::string &filename) {
     }
     ofs.flush();
     ofs.close();
-#endif
 }
 
 void stopwatch::deleteAllEvent() {
-#ifdef PNOHS_BUILDING_DEBUG_MODE
     time_line.clear();
-#endif
 }
 
 std::ostream &stopwatch::operator<<(std::ostream &out, const stopwatch::event &e) {

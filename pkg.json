@@ -36,6 +36,15 @@
         "build": [
           "CP json.hpp {INCLUDE}"
         ]
+      },
+      "agrs": {
+        "path": "https://raw.githubusercontent.com/Taywee/args/master",
+        "files": {
+          "args.hxx": "args.hpp"
+        },
+        "build": [
+          "CP args.hpp {INCLUDE}"
+        ]
       }
     }
   },

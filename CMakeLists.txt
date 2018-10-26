@@ -9,6 +9,9 @@ include(dependency.cmake)
 
 add_subdirectory(src)
 
+if (PNOHS_TOOLS_BUILD_ENABLE_FLAG)
+    add_subdirectory(tools)
+endif ()
 ################################
 ## test configure
 ################################

@@ -28,10 +28,13 @@ bool Scheduler::setPickupStrategy(const std::string &key) {
 
 bool Scheduler::select() {
     if (schCtx.pNodesPool->allCompleted()) { // all simulation nodes have finished their simulation.
-        // dump time line if time line is enabled.
-        char buffer[50] = {'\0'};
-        sprintf(buffer, "debug_timeline_%d.dump", domain::mpi_sim_process.own_rank);
-        stopwatch::dumpToFile(std::string(buffer));
+        // dump time line if time line (stopwatch) is enabled.
+        if (stopwatch::enabled) {
+            char buffer[50] = {'\0'};
+            sprintf(buffer, "debug_timeline_%d.dump", domain::mpi_sim_process.own_rank);
+            stopwatch::dumpToFile(std::string(buffer));
+        }
+        stopwatch::deleteAllEvent(); // release event memory.
         return false;
     }
 
@@ -41,20 +44,21 @@ bool Scheduler::select() {
         pthread_mutex_lock(&(ctx._t_mu)); // lock
         pickedNode = pickup->pickRunnable(); // read queue
         if (pickedNode == nullptr) {
+            // if time line (stopwatch) is disabled, function appendToTimeLine will do nothing.
             stopwatch::appendToTimeLine(stopwatch::STOP_ID_NONE, stopwatch::STOP_STEP_NONE,
-                                           stopwatch::EventSignals::EVENT_SIGNAL_WAITING);
+                                        stopwatch::EventSignals::EVENT_SIGNAL_WAITING);
             ctx._t_waiting++;
             pthread_cond_wait(&(ctx._t_cond), &(ctx._t_mu));
             ctx._t_waiting--;
             pthread_mutex_unlock(&(ctx._t_mu)); // lock
             stopwatch::appendToTimeLine(stopwatch::STOP_ID_NONE, stopwatch::STOP_STEP_NONE,
-                                           stopwatch::EventSignals::EVENT_SIGNAL_RESUME);
+                                        stopwatch::EventSignals::EVENT_SIGNAL_RESUME);
             continue;
         } else {
             schCtx.curNode = pickedNode;
             // got/picked up a runnable node, log this moment.
             stopwatch::appendToTimeLine(schCtx.curNode->id, schCtx.curNode->_time_step,
-                                           stopwatch::EventSignals::EVENT_SIGNAL_PICKED);
+                                        stopwatch::EventSignals::EVENT_SIGNAL_PICKED);
             pthread_mutex_unlock(&(ctx._t_mu)); // lock
             return true;
         }
@@ -65,7 +69,7 @@ void Scheduler::postStep() {
     schCtx.pNodesPool->updateStatusAllCompleted(schCtx._total_steps); // update
 
     stopwatch::appendToTimeLine(schCtx.curNode->id, schCtx.curNode->_time_step,
-                                   stopwatch::EventSignals::EVENT_SIGNAL_FINISH); // finish one step, log this time.
+                                stopwatch::EventSignals::EVENT_SIGNAL_FINISH); // finish one step, log this time.
 //    kiwi::logs::i("schedule", "\tnode_id: {0}\t steps:{1}/{2}\tcom-status:{3}\tnodes_couts:{4}\n",
 //                  schCtx.curNode->id,
 //                  schCtx.curNode->_time_step,
