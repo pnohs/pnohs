@@ -18,6 +18,14 @@ Looper *Looper::NewMessageLooper() {
     if (ret != 0) {
         return nullptr;
     }
+
+    // Make a thread detached(by default threads are joinable).
+    int err_detach = 0;
+    err_detach = pthread_detach(message_thread);
+    if (err_detach != 0) {
+        // detach error.
+        return nullptr;
+    }
     return looperInstance;
 }
 
@@ -30,5 +38,5 @@ void *Looper::messageLoopNewThread(void *object) {
     // Start a dead loop to listen and dispatch messages.
     // And runners in message loop will be unregistered automatically before loop finished.
     kiwi::MessageLooper::start();
-    pthread_exit(nullptr);
+    return nullptr;
 }
