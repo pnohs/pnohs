@@ -1,9 +1,9 @@
-image: genshen/mpich-with-pkg:3.2.1
+image: genshen/mpich-pkg:0.2.0-beta
 #services:
 #  - postgres
 
 before_script:
-  - snetlogin # login network first if necessary.
+  - pkg fetch
   - pkg install
 
 cache:
