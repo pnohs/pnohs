@@ -32,15 +32,6 @@ endif ()
 
 
 include(pkg.dep.cmake)
-set(PNOHS_VENDOR_PATH ${VENDOR_PATH})
-set(PNOHS_VENDOR_SRC_PATH ${PNOHS_VENDOR_PATH}/src)
-set(PNOHS_VENDOR_INCLUDE_PATH ${PNOHS_VENDOR_PATH}/include)
-set(PNOHS_VENDOR_PKG_PATH ${PNOHS_VENDOR_PATH}/pkg)
-
-################################
-###### kiwi framework globally
-################################
-set(PNOHS_EXTRA_LIBS fmt kiwi ${PNOHS_EXTRA_LIBS})
 
 ################################
 ##### check pthread lib

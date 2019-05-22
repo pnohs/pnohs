@@ -1,6 +1,3 @@
-# include directory
-include_directories(${PNOHS_VENDOR_INCLUDE_PATH})
-
 # configure a header file to pass some of the CMake settings(such as debug flag) to the source code
 if (PNOHS_DEBUG_ENABLE_FLAG)
     set(PNOHS_BUILDING_DEBUG_MODE ON)
@@ -99,6 +96,13 @@ add_library(${PNOHS_LIB_NAME} STATIC ${HEADER_FILES} ${SOURCE_FILES})
 target_include_directories(
         ${PNOHS_LIB_NAME}
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_link_libraries(
+        ${PNOHS_LIB_NAME}
+        PUBLIC
+        kiwi::kiwi
+        # fmt is included in kiwi.
 )
 
 ##########################
