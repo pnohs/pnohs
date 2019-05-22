@@ -18,8 +18,10 @@ pnohs is Not Only Hydrological Simulation.
 - pthread
 
 ## Install Dependency
+Install [pkg](https://github.com/genshen/pkg) version 0.2.0 first.
 ```bash
 $ cd pnohs
+$ pkg fetch
 $ pkg install # install dependency
 ```
 
