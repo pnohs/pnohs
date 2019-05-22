@@ -1,13 +1,61 @@
 
-<a name="v0.2.0-beta"></a>
-## [v0.2.0-beta](https://github.com/genshen/pnohs/compare/v0.2.0-alpha...v0.2.0-beta)
+<a name="v0.2.0"></a>
+## [v0.2.0](https://github.com/genshen/pnohs/compare/v0.2.0-beta...v0.2.0)
 
-> 2018-09-12
+> 2019-05-22
+
+### Build
+
+* **cmake:** add cmake EXPORT installation for lib pnohs.
+* **cmake:** update cmake files to link exported target.
+* **dependency:** update dependency kiwi and gtest.
+* **dependency:** update to pkg tool version v0.2.0-beta.
+
+### Ci
+
+* **gitlab-ci:** update .gitlab-ci.yml config file to build project using image hpcer/hpcdev:pkg-0.2.0
 
 ### Feat
 
+* **model-adapter:** add model id for register map.
+
+### Merge
+
+* Merge branch 'dev' into 'master'
+* **model-register:** Merge pull request [#4](https://github.com/genshen/pnohs/issues/4) from genshen/feature-register-model-id
+
+
+<a name="v0.2.0-beta"></a>
+## [v0.2.0-beta](https://github.com/genshen/pnohs/compare/v0.2.0-alpha...v0.2.0-beta)
+
+> 2018-10-26
+
+### Docs
+
+* **changelog:** update changelogs.
+
+### Feat
+
+* **dispatch-convert-tool:** add dispatch convert tool back.
+* **model-adapter:** add model register feature.
 * **output:** add result conversion from map-vector to 1-d array.
 * **output:** add utils class SimReduction for saving simulaiton results.
+* **stopwatch:** add stopwatch enable option.
+
+### Fix
+
+* **message-loop:** fixed bug of "pthread_create error with code 11".
+
+### Merge
+
+* Merge branch 'dev' into branch 'master' for release v0.2.0-beta.
+* Merge pull request [#2](https://github.com/genshen/pnohs/issues/2) from genshen/fix-pthread-creation-error
+* **output:** Merge branch 'feature-sim-reduction' into dev.
+* **stopwatch:** Merge branch 'fix-stopwatch-enable-switch' into 'dev'
+
+### Revert
+
+* **stopwatch:** fixed compile error: undefined reference to 'stopwatch::enabled'.
 
 
 <a name="v0.2.0-alpha"></a>
