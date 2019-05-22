@@ -1,6 +1,3 @@
-# json dependency directory
-include_directories(${PNOHS_VENDOR_INCLUDE_PATH})
-
 set(HEADER_FILES
         convert.h
         )

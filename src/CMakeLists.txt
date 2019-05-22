@@ -1,6 +1,3 @@
-# include directory
-include_directories(${PNOHS_VENDOR_INCLUDE_PATH})
-
 # configure a header file to pass some of the CMake settings(such as debug flag) to the source code
 if (PNOHS_DEBUG_ENABLE_FLAG)
     set(PNOHS_BUILDING_DEBUG_MODE ON)
@@ -98,14 +95,30 @@ add_library(${PNOHS_LIB_NAME} STATIC ${HEADER_FILES} ${SOURCE_FILES})
 
 target_include_directories(
         ${PNOHS_LIB_NAME}
-        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+        $<INSTALL_INTERFACE:include>
+)
+
+target_link_libraries(
+        ${PNOHS_LIB_NAME}
+        PUBLIC
+        kiwi::kiwi
+        # fmt is included in kiwi.
 )
 
 ##########################
 ##### install files
 ##########################
+set(TARGETS_EXPORT_NAME ${PNOHS_LIB_NAME}-targets)
+set(PNOHS_LIB_CMAKE_DIR lib/cmake/${PNOHS_LIB_NAME})
+set(PNOHS_LIB_CMAKE_NAMESPACE ${PNOHS_LIB_NAME}::)
+set(PNOHS_LIB_CMAKE_CONFIG_IN "${PNOHS_LIB_NAME}-config.cmake.in")
+set(PNOHS_LIB_CMAKE_CONFIG_OUT "${CMAKE_CURRENT_BINARY_DIR}/${PNOHS_LIB_NAME}-config.cmake")
+
 # install bin and libs.
 install(TARGETS ${PNOHS_LIB_NAME}
+        EXPORT ${TARGETS_EXPORT_NAME}
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
@@ -118,3 +131,12 @@ install(DIRECTORY "./"
         PATTERN "*.h"
         PATTERN "*.hpp"
         )
+
+# install export target and config for find_package
+install(EXPORT ${TARGETS_EXPORT_NAME} DESTINATION ${PNOHS_LIB_CMAKE_DIR} NAMESPACE ${PNOHS_LIB_CMAKE_NAMESPACE}) # todo
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+        ${PNOHS_LIB_CMAKE_CONFIG_IN} ${PNOHS_LIB_CMAKE_CONFIG_OUT}
+        INSTALL_DESTINATION ${PNOHS_LIB_CMAKE_DIR}
+)
+install(FILES ${PNOHS_LIB_CMAKE_CONFIG_OUT} DESTINATION ${PNOHS_LIB_CMAKE_DIR})

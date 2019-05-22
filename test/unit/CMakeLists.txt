@@ -7,8 +7,6 @@ configure_file(
         "${PROJECT_SOURCE_DIR}/test/unit/test_config.h"
 )
 
-include_directories(${PNOHS_VENDOR_INCLUDE_PATH})
-
 set(TEST_HEADER_FILES
         test_config.h
         dispatch/dispatch_json_string.h
@@ -28,6 +26,7 @@ set(TEST_SOURCE_FILES
         scheduler/longest_pickup_test.cpp
         scheduler/strategy_adapter_test.cpp
         utils/sim_reduction_test.cpp
+        adapter/model_register_test.cpp
         )
 
 # set binary path and lib storage path wile compiling process.
@@ -41,12 +40,12 @@ add_executable(${PNOHS_UINT_TEST_NAME} ${TEST_SOURCE_FILES} ${TEST_HEADER_FILES}
 
 # Extra linking for the project.
 target_link_libraries(${PNOHS_UINT_TEST_NAME}
-        PRIVATE ${PNOHS_EXTRA_LIBS} ${PNOHS_LIB_NAME}
+        PRIVATE GTest::gtest GTest::gtest_main ${PNOHS_LIB_NAME} ${PNOHS_EXTRA_LIBS}
         )
 
 # This is so you can do 'make test' to see all your tests run, instead of
 # manually running the executable runUnitTests to see those specific tests.
-add_test(NAME exampleTests COMMAND ${PNOHS_UINT_TEST_NAME})
+add_test(NAME pnohsTests COMMAND ${PNOHS_UINT_TEST_NAME})
 
 
 ##########################
