@@ -5,9 +5,12 @@
 #ifndef PNOHS_MODEL_CONTEXT_H
 #define PNOHS_MODEL_CONTEXT_H
 
+#include "utils/predefine.h"
+
 /**
  * Model Context is used in simulation for passing node information (e.g. area of simulation node.)
  * to runoff model and river routing mode.
+ * In other words, model context is shared by runoff model and routing mode on the same sub-basin.
  */
 class ModelContext {
 public:
@@ -17,6 +20,13 @@ public:
     ModelContext();
 
     virtual ~ModelContext();
+
+    /**
+     * When the model context is bind to a simulation node,
+     * this interface will be called.
+     * @param node_id
+     */
+    virtual void onBind(const _type_node_id node_id) = 0;
 
     /**
      * for multiple simulation, the model context can be recyclable.

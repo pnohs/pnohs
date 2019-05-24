@@ -30,6 +30,7 @@ void SimulationNode::setModels(RunoffAdapter *p_runoff_adapter, RoutingAdapter *
 
 void SimulationNode::setModelContext(ModelContext *p_context) {
     _p_model_ctx = p_context;
+    _p_model_ctx->onBind(id);
 }
 
 void SimulationNode::routing() {
