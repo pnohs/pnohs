@@ -19,10 +19,11 @@ RoutingAdapter *ModelRegister::RoutingInterface::newInstance() {
 
 // for runoff models
 
-void ModelRegister::registerRunoffModel(const _type_model_key key, RunoffInstanceInterface model) {
+_type_model_id ModelRegister::registerRunoffModel(const _type_model_key key, RunoffInstanceInterface model) {
     _type_model_id id = generateModelId();
     id_key_map.insert({key, id});
     runoffNest.insert({id, model});
+    return id;
 }
 
 void ModelRegister::unRegisterRunoffModel(const _type_model_id id) {
@@ -49,8 +50,11 @@ RunoffAdapter *ModelRegister::newInstanceRunoff(const _type_model_id id) {
 
 // for routing models
 
-void ModelRegister::registerRoutingModel(const _type_model_key key, RoutingInstanceInterface model) {
-    routingNest.insert({generateModelId(), model});
+_type_model_id ModelRegister::registerRoutingModel(const _type_model_key key, RoutingInstanceInterface model) {
+    _type_model_id id = generateModelId();
+    id_key_map.insert({key, id});
+    routingNest.insert({id, model});
+    return id;
 }
 
 void ModelRegister::unRegisterRoutingModel(const _type_model_id id) {
