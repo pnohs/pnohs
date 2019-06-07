@@ -1,4 +1,29 @@
 
+<a name="v0.3.0-alpha"></a>
+## [v0.3.0-alpha](https://github.com/genshen/pnohs/compare/v0.2.0...v0.3.0-alpha)
+
+> 2019-06-07
+
+### Feat
+
+* **model-register:** return model id when registering runoff and routing model.
+* **modelcontext:** add onBind interface for model context.
+* **params:** add member keys(model params keys/names) for class ParamsList, as well as its tests.
+
+### Merge
+
+* Merge branch 'dev' into 'master' for version 0.3.0-alpha.
+
+### Test
+
+* **params:** add more tests for params binding in params list data structure.
+
+### BREAKING CHANGE
+
+
+add another template param(ID) for template class ParamsList<N, ID>.
+
+
 <a name="v0.2.0"></a>
 ## [v0.2.0](https://github.com/genshen/pnohs/compare/v0.2.0-beta...v0.2.0)
 
@@ -14,6 +39,10 @@
 ### Ci
 
 * **gitlab-ci:** update .gitlab-ci.yml config file to build project using image hpcer/hpcdev:pkg-0.2.0
+
+### Docs
+
+* **changelog:** update changelog to show what's new in version v0.2.0.
 
 ### Feat
 
