@@ -1,8 +1,31 @@
 
+<a name="v0.3.0-alpha-2"></a>
+## [v0.3.0-alpha-2](https://github.com/genshen/pnohs/compare/v0.3.0-alpha...v0.3.0-alpha-2)
+
+> 2019-06-07
+
+### Fix
+
+* **params:** rename ParamsList::setValues to ParamsList::setValuesMap to fix compiling issue.
+
+### Merger
+
+* Merge branch 'dev' into 'master' for version v0.3.0-alpha-2
+
+### BREAKING CHANGE
+
+
+ParamsList::setValues was renamed to ParamsList::setValuesMap.
+
+
 <a name="v0.3.0-alpha"></a>
 ## [v0.3.0-alpha](https://github.com/genshen/pnohs/compare/v0.2.0...v0.3.0-alpha)
 
 > 2019-06-07
+
+### Docs
+
+* **changelog:** update changelog for version 0.3.0-alpha.
 
 ### Feat
 
