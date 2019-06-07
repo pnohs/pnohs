@@ -57,8 +57,9 @@ public:
      * you can get the model id by calling @fn getModelKeyByName(${model_key}).
      * @param key unique model name for this model.
      * @param model the model instantiation callback function.
+     * @return the id of registered run off model.
      */
-    static void registerRunoffModel(const _type_model_key key, RunoffInstanceInterface model);
+    static _type_model_id registerRunoffModel(const _type_model_key key, RunoffInstanceInterface model);
 
     /**
      * un-register a runoff model by the model id.
@@ -87,8 +88,9 @@ public:
      * you can get the model key by calling @fn getModelKeyByName(${model_name}).
      * @param name unique model name to tag the model.
      * @param model the model instantiation callback function.
+     * @return the id of registered run off model.
      */
-    static void registerRoutingModel(const _type_model_key name, RoutingInstanceInterface model);
+    static _type_model_id registerRoutingModel(const _type_model_key name, RoutingInstanceInterface model);
 
     /**
      * unregister a runoff model by the model id.

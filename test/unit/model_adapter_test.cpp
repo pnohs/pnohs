@@ -7,8 +7,13 @@
 class SimpleCtx : public ModelContext {
 public:
     param_const P_A;
+    bool is_bind = false;
 
     ~SimpleCtx() override = default;
+
+    void onBind(const _type_node_id node_id) {
+        is_bind = true;
+    }
 
     bool isRecyclable() override { return true; }
 
@@ -58,5 +63,6 @@ TEST(model_adapter_test_create, model_adapter_test) {
     s_node.runoff();
 
     EXPECT_EQ(runoff.bind_test, true); // on bind called.
+    EXPECT_EQ(simpleCtx.is_bind, true); // on context bind called.
     EXPECT_FLOAT_EQ(simpleCtx.P_A, 1.2 + 3.0);
 }
