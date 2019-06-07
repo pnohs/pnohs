@@ -3,6 +3,7 @@
 //
 
 #include <map>
+#include <array>
 #include <gtest/gtest.h>
 #include <ds/params_list.hpp>
 
@@ -48,7 +49,22 @@ TEST(set_value_by_map, params_list_test) {
             {"B", 5},
             {"C", 6},
     };
+    list.setValuesMap(params);
+    EXPECT_EQ(list.data[0], 4);
+    EXPECT_EQ(list.data[1], 5);
+    EXPECT_EQ(list.data[2], 6);
+}
+
+// just a compiling test.
+TEST(set_value_by_array, params_list_test) {
+    TestParamsList2 list;
+    list.P1 = 1;
+    list.data[1] = 2;
+    list.data[3] = 3;
+
+    std::array<param_const, 3> params = {4, 5, 6};
     list.setValues(params);
+
     EXPECT_EQ(list.data[0], 4);
     EXPECT_EQ(list.data[1], 5);
     EXPECT_EQ(list.data[2], 6);

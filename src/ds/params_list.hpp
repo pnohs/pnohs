@@ -46,7 +46,7 @@ public:
      * assign values by a map, whose key is params key (or name) and value is params value.
      * @param
      */
-    void setValues(const std::map<std::string, param_const> &params_map);
+    void setValuesMap(const std::map<std::string, param_const> &params_map);
 };
 
 template<size_t N, unsigned long ID>
@@ -55,7 +55,7 @@ size_t ParamsList<N, ID>::getParamsSize() {
 }
 
 template<size_t N, unsigned long ID>
-void ParamsList<N, ID>::setValues(const std::map<std::string, param_const> &params_map) {
+void ParamsList<N, ID>::setValuesMap(const std::map<std::string, param_const> &params_map) {
     for (tp_params_map_itl itl = params_map.begin(); itl != params_map.end(); ++itl) {
         for (size_t i = 0; i < N; ++i) {
             if (keys[i] == itl->first) {
