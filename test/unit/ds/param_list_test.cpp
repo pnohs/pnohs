@@ -23,7 +23,7 @@ TEST(params_list_test_get_count, params_list_test) {
 // test params binding in class statically.
 class TestParamsList2 : public ParamsList<3, 1> {
 public:
-    param_const &P1 = data[0];
+    double &P1 = data[0].float_param;
 };
 
 // set params keys/names
@@ -34,38 +34,38 @@ TEST(params_list_test_params_name, params_list_test) {
     TestParamsList2 list;
     list.P1 = 2;
     EXPECT_DOUBLE_EQ(list.P1, 2);
-    EXPECT_DOUBLE_EQ(list.data[0], 2);
+    EXPECT_DOUBLE_EQ(list.data[0].float_param, 2);
 }
 
 // test set params by key-value map.
 TEST(set_value_by_map, params_list_test) {
     TestParamsList2 list;
     list.P1 = 1;
-    list.data[1] = 2;
-    list.data[3] = 3;
+    list.data[1].float_param = 2;
+    list.data[3].float_param = 3;
 
     std::map<std::string, param_const> params = {
-            {"A", 4},
-            {"B", 5},
-            {"C", 6},
+            {"A", param_const{4}},
+            {"B", param_const{5}},
+            {"C", param_const{6}},
     };
     list.setValuesMap(params);
-    EXPECT_EQ(list.data[0], 4);
-    EXPECT_EQ(list.data[1], 5);
-    EXPECT_EQ(list.data[2], 6);
+    EXPECT_EQ(list.data[0].float_param, 4);
+    EXPECT_EQ(list.data[1].float_param, 5);
+    EXPECT_EQ(list.data[2].float_param, 6);
 }
 
 // just a compiling test.
 TEST(set_value_by_array, params_list_test) {
     TestParamsList2 list;
     list.P1 = 1;
-    list.data[1] = 2;
-    list.data[3] = 3;
+    list.data[1].float_param = 2;
+    list.data[3].float_param = 3;
 
     std::array<param_const, 3> params = {4, 5, 6};
     list.setValues(params);
 
-    EXPECT_EQ(list.data[0], 4);
-    EXPECT_EQ(list.data[1], 5);
-    EXPECT_EQ(list.data[2], 6);
+    EXPECT_EQ(list.data[0].float_param, 4);
+    EXPECT_EQ(list.data[1].float_param, 5);
+    EXPECT_EQ(list.data[2].float_param, 6);
 }

@@ -28,7 +28,7 @@ public:
     /**
      * the keys(or names) of model parameters.
      */
-    static const std::array<std::string, N> keys;
+    static const std::array<params_key, N> keys;
 
     /**
      * id of of this parameter list.
