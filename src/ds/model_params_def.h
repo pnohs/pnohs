@@ -33,5 +33,21 @@ typedef param_const _type_param;
 
 typedef std::string params_key;
 
+/**
+ * different types of parameters
+ */
+enum param_type {
+    integer_tp, // type of integer (int) parameter
+    float_tp, // type of double precision float (float) parameter
+    boolean_tp, // type of boolean (bool) parameter
+};
+
+// the metadata of model parameter
+struct param_meta {
+    const param_type type; // type of parameter
+    const params_key key; // name or key of parameter
+    const param_const max; // maximum value of this parameter
+    const param_const min; // minimal value of this parameter
+};
 
 #endif //PNOHS_MODEL_PARAMS_DEF_H

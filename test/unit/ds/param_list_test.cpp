@@ -11,10 +11,6 @@ class TestParamsList : public ParamsList<3, 1> {
     // it have 3 parameters.
 };
 
-// set params keys/names
-template<>
-const std::array<std::string, 3> TestParamsList::ParamsList<3, 0>::keys = {"A", "B", "C"};
-
 TEST(params_list_test_get_count, params_list_test) {
     TestParamsList list;
     EXPECT_EQ(list.getParamsSize(), 3);
@@ -26,9 +22,13 @@ public:
     double &P1 = data[0].float_param;
 };
 
-// set params keys/names
+// set params metadata
 template<>
-const std::array<std::string, 3> TestParamsList2::ParamsList<3, 1>::keys = {"A", "B", "C"};
+const std::array<param_meta, 3> TestParamsList::ParamsList<3, 1>::metadata_list = {
+        param_meta{param_type::float_tp, "A", {0.0}, {1.0}},
+        param_meta{param_type::float_tp, "B", {0.0}, {1.0}},
+        param_meta{param_type::float_tp, "C", {0.0}, {1.0}},
+};
 
 TEST(params_list_test_params_name, params_list_test) {
     TestParamsList2 list;
