@@ -21,13 +21,13 @@ union param_union {
 typedef param_union param_const;
 
 // type used for status variable (e.g. the variable of last time step).
-typedef param_union var_status_double;
+typedef double var_status_double;
 
 // type used for initial status variable.
-typedef param_union init_status_double;
+typedef double init_status_double;
 
 // type used for temporary variable, local variable.
-typedef param_union var_local_double;
+typedef double var_local_double;
 
 typedef param_const _type_param;
 
