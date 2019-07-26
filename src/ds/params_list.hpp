@@ -39,7 +39,7 @@ public:
     /**
      * type of iterator of parameter map.
      */
-    typedef typename std::map<std::string, param_const>::const_iterator tp_params_map_itl;
+    typedef typename std::map<params_key, param_const>::const_iterator tp_params_map_itl;
 
     static size_t getParamsSize();
 
@@ -47,13 +47,13 @@ public:
      * fill array of parameters keys.
      * @param keys returned parameters keys.
      */
-    static void getKeys(std::string keys[]);
+    static void getKeys(params_key keys[]);
 
     /**
      * assign values by a map, whose key is params key (or name) and value is params value.
      * @param
      */
-    void setValuesMap(const std::map<std::string, param_const> &params_map);
+    void setValuesMap(const std::map<params_key, param_const> &params_map);
 };
 
 template<size_t N, unsigned long ID>
@@ -62,7 +62,7 @@ size_t ParamsList<N, ID>::getParamsSize() {
 }
 
 template<size_t N, unsigned long ID>
-void ParamsList<N, ID>::getKeys(std::string keys[]) {
+void ParamsList<N, ID>::getKeys(params_key keys[]) {
     // loop over metadata_list to fill keys array.
     for (size_t i = 0; i < N; ++i) {
         keys[i] = metadata_list[i].key;
@@ -70,7 +70,7 @@ void ParamsList<N, ID>::getKeys(std::string keys[]) {
 }
 
 template<size_t N, unsigned long ID>
-void ParamsList<N, ID>::setValuesMap(const std::map<std::string, param_const> &params_map) {
+void ParamsList<N, ID>::setValuesMap(const std::map<params_key, param_const> &params_map) {
     for (tp_params_map_itl itl = params_map.begin(); itl != params_map.end(); ++itl) {
         for (size_t i = 0; i < N; ++i) {
             if (metadata_list[i].key == itl->first) {
