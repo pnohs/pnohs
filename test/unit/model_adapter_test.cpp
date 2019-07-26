@@ -6,7 +6,7 @@
 
 class SimpleCtx : public ModelContext {
 public:
-    param_const P_A;
+    param_tp_float P_A;
     bool is_bind = false;
 
     ~SimpleCtx() override = default;
@@ -31,7 +31,7 @@ public:
     }
 
     void onParamsPassed(ModelContext *p_model_context, param_const params[], size_t size) override {
-        ((SimpleCtx *) p_model_context)->P_A = params[0];
+        ((SimpleCtx *) p_model_context)->P_A = params[0].float_param;
     }
 
     void exec(ModelContext *p_context, unsigned long time_steps) override {

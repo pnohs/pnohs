@@ -21,3 +21,8 @@ void SysContext::abort(const std::string &reason, int code) {
     kiwi::logs::e("abort", (reason + "\n").c_str());
     MPI_Abort(MPI_COMM_WORLD, code);
 }
+
+void SysContext::onThreadBlock(double delta_blocking_time) {
+    blocking_time += delta_blocking_time;
+    block_times++;
+}

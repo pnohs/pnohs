@@ -44,6 +44,7 @@ bool Scheduler::select() {
         pthread_mutex_lock(&(ctx._t_mu)); // lock
         pickedNode = pickup->pickRunnable(); // read queue
         if (pickedNode == nullptr) {
+            const double t1 = MPI_Wtime();
             // if time line (stopwatch) is disabled, function appendToTimeLine will do nothing.
             stopwatch::appendToTimeLine(stopwatch::STOP_ID_NONE, stopwatch::STOP_STEP_NONE,
                                         stopwatch::EventSignals::EVENT_SIGNAL_WAITING);
@@ -53,6 +54,8 @@ bool Scheduler::select() {
             pthread_mutex_unlock(&(ctx._t_mu)); // lock
             stopwatch::appendToTimeLine(stopwatch::STOP_ID_NONE, stopwatch::STOP_STEP_NONE,
                                         stopwatch::EventSignals::EVENT_SIGNAL_RESUME);
+            const double t2 = MPI_Wtime();
+            ctx.onThreadBlock(t2 - t1); // set blocking time.
             continue;
         } else {
             schCtx.curNode = pickedNode;
