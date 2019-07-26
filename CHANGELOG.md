@@ -1,8 +1,43 @@
 
+<a name="v0.3.0-alpha-3"></a>
+## [v0.3.0-alpha-3](https://github.com/genshen/pnohs/compare/v0.3.0-alpha-2...v0.3.0-alpha-3)
+
+> 2019-07-26
+
+### Feat
+
+* **params:** add parameters metadata to class ParamsList.
+* **params:** change type of params(e.g type param_const) from double to union to support different param types.
+* **scheduler:** add blocking time counting for simulation nodes selecting.
+
+### Merge
+
+* Merge branch 'dev' into 'master' for v0.3.0-alpha-3.
+
+### Refactor
+
+* **params:** rename func parameter type(params key) in ParamsList from std::string to params_ke
+
+### Revert
+
+* **params:** change type of initial variable, temporary variable and status variable to double, not param_union.
+
+### BREAKING CHANGE
+
+
+member keys in class ParamsList is moved to member metadata_list.
+
+type of param_const have been changed from double to union type.
+
+
 <a name="v0.3.0-alpha-2"></a>
 ## [v0.3.0-alpha-2](https://github.com/genshen/pnohs/compare/v0.3.0-alpha...v0.3.0-alpha-2)
 
 > 2019-06-07
+
+### Docs
+
+* **changelog:** update changelog for version 0.3.0-alpha-2.
 
 ### Fix
 
