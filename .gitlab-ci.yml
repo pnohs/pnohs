@@ -1,4 +1,4 @@
-image: hpcer/hpcdev:pkg-0.2.0
+image: hpcer/hpcdev:pkg-0.3.0
 #services:
 #  - postgres
 
