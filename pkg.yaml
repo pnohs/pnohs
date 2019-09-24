@@ -16,8 +16,8 @@ packages:
       cmake_lib: |
         find_package(GTest PATHS {{.CMAKE_VENDOR_PATH_PKG}})
     kiwi:
-      path: https://git.gensh.me/genshen/kiwi.git
-      tag: v0.2.0-beta
+      path: https://git.hpcer.dev/genshen/kiwi.git
+      tag: v0.2.0
 
   files:
     nlohmann:
