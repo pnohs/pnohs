@@ -39,6 +39,7 @@ void SimulationNode::routing() {
     // and the other thread only add data to task queue (don't remove data).
     std::list<TypeRouting> routing_data;
     if (!isRiverOrigin()) {
+        // todo may large data coping
         routing_data = upstream.deQueue();
     }
     // if the node is river origin, the empty upstream data(std::list<TypeRouting>) will be passed.
@@ -55,18 +56,13 @@ void SimulationNode::outletReached() const {
 //                  _p_model_ctx->flow); // todo for an example, we just output the flow of outlet.
 }
 
-TypeRouting SimulationNode::constructRouting() const {
-    TypeRouting data = TypeRouting(); // todo just example
-    data.routing_data = _p_model_ctx->flow;
-    data.source_id = id;
-    data.destination_id = downstream.nodes[0].id;
-    return data;
+void SimulationNode::constructRoutingData(TypeRouting &routing_data) const {
+    // the vector is empty, just a new vector.
+    _p_model_ctx->flowsToDownstream(&routing_data.routing_data);
 }
 
 void SimulationNode::beforeStep() {
-    // todo just example.
-    // reset flow for current step.
-    _p_model_ctx->flow = 0;
+    _p_model_ctx->beforeStep();
 }
 
 void SimulationNode::postStep() {

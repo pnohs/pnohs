@@ -6,6 +6,7 @@
 #define PNOHS_MODEL_CONTEXT_H
 
 #include "utils/predefine.h"
+#include "type_routing.h"
 
 /**
  * Model Context is used in simulation for passing node information (e.g. area of simulation node.)
@@ -15,11 +16,28 @@
 class ModelContext {
 public:
     double area; // todo example property of this node.
+
+    // flow at outlet of the sub-basin at current step
     double flow;
 
     ModelContext();
 
     virtual ~ModelContext();
+
+    /**
+     * function be called before each simulation step.
+     * Which also be executed before running run-off and routing models of each time step.
+     * e.g. reset flows for current step in this function.
+     */
+    virtual void beforeStep();
+
+    /**
+     * When the run-off and routing model are executed on sub-basin,
+     * the results should be passed to its downstream sub-basin.
+     * In this function, the data passed to sub-basin will be append to parameter \param flows.
+     * \param flows the flows to be passed to downstream (set here)
+     */
+    virtual void flowsToDownstream(TypeRouting::tp_routing_data *flows);
 
     /**
      * When the model context is bind to a simulation node,

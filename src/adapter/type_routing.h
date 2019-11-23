@@ -11,10 +11,9 @@
  * basic data type for river/stream routing communication among processors.
  */
 struct TypeRouting {
-    TypeRouting() = default;
+    // todo: use vector pointer to reduce data copy
+    typedef double tp_routing_data;
 
-    TypeRouting(_type_node_id source, _type_node_id des);
-//    kiwi::RID ird;
     /**
      * Considering deliver routing results to its downstream node, denoted as D,
      * the source_id is the id of the upstream node of D.
@@ -25,7 +24,16 @@ struct TypeRouting {
      * destination_id is the id of downstream node D.
      */
     _type_node_id destination_id;
-    double routing_data; // just an example of stream routing data.
+
+    /**
+     * stream routing data.
+     */
+    tp_routing_data routing_data;
+
+    TypeRouting() = default;
+
+    TypeRouting(_type_node_id source, _type_node_id des);
+
 
 };
 
