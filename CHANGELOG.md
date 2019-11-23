@@ -1,8 +1,63 @@
 
+<a name="v0.3.1"></a>
+## [v0.3.1](https://github.com/genshen/pnohs/compare/v0.3.0...v0.3.1)
+
+> 2019-11-23
+
+### Build
+
+* **pkg:** update googletest to version 1.10.0
+
+### Ci
+
+* **gitlab-ci:** update gitlab-ci dokcer images version to hpcer/hpcdev:pkg-0.3.0.
+
+### Docs
+
+* **changelog:** update changelog for version 0.3.1
+
+### Improvement
+
+* **routing:** set the routing data type as vector<double>(not just double)
+
+### Merge
+
+* Merge branch 'dev' into 'master'
+* Merge branch 'feature-routing-vector' into 'dev'
+
+### Refactor
+
+* **params:** make vector params in function NodesPool::setNodesParams as const and ref
+* **routing:** refactor reouting deliver code of getting routing data from model context
+
+### Style
+
+* update files mode to 644: .chglog and src/pnohs-config.cmake.in
+
+### BREAKING CHANGE
+
+
+now the routing data type is vector<double>, not double.
+
+
+<a name="v0.3.0"></a>
+## [v0.3.0](https://github.com/genshen/pnohs/compare/v0.3.0-alpha-3...v0.3.0)
+
+> 2019-09-24
+
+### Chore
+
+* replace dead domain to git.hpcer.dev and update kiwi version.
+
+
 <a name="v0.3.0-alpha-3"></a>
 ## [v0.3.0-alpha-3](https://github.com/genshen/pnohs/compare/v0.3.0-alpha-2...v0.3.0-alpha-3)
 
 > 2019-07-26
+
+### Docs
+
+* **changelog:** update changelog for version 0.3.0-alpha-3.
 
 ### Feat
 
