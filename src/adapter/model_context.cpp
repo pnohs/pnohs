@@ -4,8 +4,16 @@
 
 #include "model_context.h"
 
-ModelContext::ModelContext() : area(0), flow(0) {
+ModelContext::ModelContext() : area(0) {
 
 }
 
 ModelContext::~ModelContext() = default;
+
+void ModelContext::flowsToDownstream(TypeRouting::tp_routing_data *flows) {
+    flows->emplace_back(flow);
+}
+
+void ModelContext::beforeStep() {
+
+}

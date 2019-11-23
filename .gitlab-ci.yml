@@ -3,7 +3,7 @@ image: hpcer/hpcdev:pkg-0.3.0
 #  - postgres
 
 cache:
-  key: "$CI_COMMIT_REF_SLUG"
+  key: vendor_version_gtest_1.10.0
   paths:
   - vendor/
 

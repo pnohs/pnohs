@@ -73,9 +73,9 @@ public:
      * Each element in this vector points to a 1-d parameters array.
      * Its length must be equals to nodes_ids's length.
      */
-    void setNodesParams(std::vector<_type_node_id> nodes_ids,
-                        std::vector<param_const *> runoff_params,
-                        std::vector<param_const *> routing_params);
+    void setNodesParams(const std::vector<_type_node_id> &nodes_ids,
+                        const std::vector<param_const *> &runoff_params,
+                        const std::vector<param_const *> &routing_params);
 
     /**
      * convert simulation nodes list to pure graph (which is nodes list. {@see graph/graph.h and graph/node.h })
@@ -134,13 +134,8 @@ private:
      * just do memory copy.
      * @param current_node the current simulation node.
      */
-    void straightforwardDeliver(const SimulationNode &current_node);
+    void straightforwardDeliver(const SimulationNode &current_node, TypeRouting &routing_data);
 
-    /**
-     * deliver stream routing data to the downstream node on the remote processor.
-     * @param current_node the current simulation node.
-     */
-    void remoteDeliver(const SimulationNode &current_node);
 };
 
 

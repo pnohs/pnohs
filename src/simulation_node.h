@@ -78,10 +78,9 @@ public:
     void outletReached() const; // todo refactor.
 
     /**
-     * construct data of {TypeRouting} type to use(e.g. passing routing data to its downstream).
-     * @return
+     * set routing data of {TypeRouting} type to use(e.g. passing routing data to its downstream).
      */
-    TypeRouting constructRouting() const;
+    void constructRoutingData(TypeRouting &routing_data) const;
 
     /**
      * this method should be called before each time step of simulation.
