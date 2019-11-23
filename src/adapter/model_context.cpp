@@ -11,7 +11,7 @@ ModelContext::ModelContext() : area(0) {
 ModelContext::~ModelContext() = default;
 
 void ModelContext::flowsToDownstream(TypeRouting::tp_routing_data *flows) {
-    *flows = flow;
+    flows->emplace_back(flow);
 }
 
 void ModelContext::beforeStep() {

@@ -136,11 +136,6 @@ private:
      */
     void straightforwardDeliver(const SimulationNode &current_node, TypeRouting &routing_data);
 
-    /**
-     * deliver stream routing data to the downstream node on the remote processor.
-     * @param current_node the current simulation node.
-     */
-    void remoteDeliver(const SimulationNode &current_node, TypeRouting &routing_data);
 };
 
 

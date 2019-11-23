@@ -68,17 +68,14 @@ void NodesPool::deliver(const SimulationNode &current_node) {
         if (domain::mpi_sim_process.own_rank == current_node.downstream.nodes[0].location) {
             straightforwardDeliver(current_node, routing_data);
         } else {
-            remoteDeliver(current_node, routing_data); // deliver to the node on other processor.
+            // deliver stream routing data to the downstream node on the remote processor
+            // using MPI message sending
+            const DownstreamNode &downstream_node = current_node.downstream.nodes[0];
+            // set routing data
+            current_node.constructRoutingData(routing_data);
+            routing_data.routingSend(downstream_node.location, domain::mpi_sim_process.comm);
         }
     }
-}
-
-void NodesPool::remoteDeliver(const SimulationNode &current_node, TypeRouting &routing_data) {
-    const DownstreamNode &downstream_node = current_node.downstream.nodes[0];
-    // set routing data
-    current_node.constructRoutingData(routing_data);
-    MPI_Send(&current_node, sizeof(TypeRouting), MPI_BYTE,
-             downstream_node.location, TagStreamRoutingMessage, domain::mpi_sim_process.comm);
 }
 
 // todo usr event message.
