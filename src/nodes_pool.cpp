@@ -63,30 +63,31 @@ void NodesPool::deliver(const SimulationNode &current_node) {
         // if its outlet of this river
         current_node.outletReached();
     } else {
+        TypeRouting routing_data(current_node.id, current_node.downstream.nodes[0].id);
         // if its downstream is on this processor, just do data copy in memory.
         if (domain::mpi_sim_process.own_rank == current_node.downstream.nodes[0].location) {
-            straightforwardDeliver(current_node);
+            straightforwardDeliver(current_node, routing_data);
         } else {
-            remoteDeliver(current_node); // deliver to the node on other processor.
+            // deliver stream routing data to the downstream node on the remote processor
+            // using MPI message sending
+            const DownstreamNode &downstream_node = current_node.downstream.nodes[0];
+            // set routing data
+            current_node.constructRoutingData(routing_data);
+            routing_data.routingSend(downstream_node.location, domain::mpi_sim_process.comm);
         }
     }
 }
 
-void NodesPool::remoteDeliver(const SimulationNode &current_node) {
-    const DownstreamNode &downstream_node = current_node.downstream.nodes[0];
-    TypeRouting data = current_node.constructRouting();
-    MPI_Send(&data, sizeof(TypeRouting), MPI_BYTE,
-             downstream_node.location, TagStreamRoutingMessage, domain::mpi_sim_process.comm);
-}
-
 // todo usr event message.
-void NodesPool::straightforwardDeliver(const SimulationNode &current_node) {
+void NodesPool::straightforwardDeliver(const SimulationNode &current_node, TypeRouting &routing_data) {
     _type_node_id downstream_node_id = current_node.downstream.nodes[0].id;
     SimulationNode *downstreamNode = findNodeById(downstream_node_id);
     if (downstreamNode != nullptr) {
+        // set routing data
+        current_node.constructRoutingData(routing_data);
         // append routing results to upstream task list directly.
-        TypeRouting data = current_node.constructRouting();
-        bool append_status = downstreamNode->upstream.appendUpstreamRouting(current_node.id, data);
+        // todo may large data coping
+        bool append_status = downstreamNode->upstream.appendUpstreamRouting(current_node.id, routing_data);
         // New task will be append to the task queue, but there is no need to wake up the blocked main thread.
         // because the main thread is running here.
         if (!append_status) {

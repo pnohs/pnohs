@@ -8,6 +8,7 @@
 
 #include <io/io_writer.h>
 #include <event/message_runner.h>
+#include "../adapter/type_routing.h"
 #include "../sys_context.h"
 
 /**
@@ -47,6 +48,10 @@ private:
     SysContext &ctx;
     NodesPool *pNodesPool;
 
+    /**
+     * routing touing data to queue and weak up the main thread
+     */
+    void queueAppend(TypeRouting &up_routing);
 };
 
 
