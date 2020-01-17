@@ -1,43 +1,16 @@
 # an example program, version: 1.0.0
 # author: genshen <genshenchu@gmail.com>
 
-version: 1
+version: 2
 
 args:
 
+pkg: "github.com/genshen/pnohs"
+target: "pnohs"
 
-packages:
-  git:
-    googletest:
-      path: https://github.com/google/googletest.git
-      tag: release-1.10.0
-      build:
-        - RUN {{.CACHE}} cmake {{.SRC_DIR}} -DCMAKE_INSTALL_PREFIX={{.PKG_DIR}}; make -j {{.CORES}}; make install
-      cmake_lib: |
-        find_package(GTest PATHS {{.CMAKE_VENDOR_PATH_PKG}})
-    kiwi:
-      path: https://git.hpcer.dev/genshen/kiwi.git
-      tag: v0.2.0
-
-  files:
-    nlohmann:
-      path: https://github.com/nlohmann/json/raw/v3.1.2/single_include/nlohmann
-      files:
-        json.hpp: json.hpp
-      build:
-      - CP json.hpp {{.INCLUDE}}/json.hpp
-    agrs:
-      path: https://raw.githubusercontent.com/Taywee/args/master   # version 6.2.0 has less features.
-      files:
-        args.hxx: args.hpp
-      build:
-      - CP args.hpp {{.INCLUDE}}/args.hpp
-
-build:
-  linux:
-  - RUN {{.CACHE}} cmake {{.SRC_DIR}} -DCMAKE_INSTALL_PREFIX={{.PKG_DIR}}; make -j {{.CORES}}; make install
-  darwin:
-  - RUN {{.CACHE}} cmake {{.SRC_DIR}} -DCMAKE_INSTALL_PREFIX={{.PKG_DIR}}; make -j {{.CORES}}; make install
-
-cmake_lib: |
-  find_package(pnohs PATHS {{.CMAKE_VENDOR_PATH_PKG}})
+dependencies:
+  packages:
+    github.com/google/googletest: {version: release-1.10.0, target: GTest}
+    git.hpcer.dev/genshen/kiwi: {version: v0.3.0, target: kiwi}
+    github.com/nlohmann/json: {version: v3.1.2, target: nlohmann_json, build: ["CP json.hpp {{.INCLUDE}}/json.hpp"]}
+    github.com/Taywee/args: {version: master, target: args, build: ["CP args.hxx {{.INCLUDE}}/args.hpp"]}
