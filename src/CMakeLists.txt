@@ -116,6 +116,9 @@ set(PNOHS_LIB_CMAKE_NAMESPACE ${PNOHS_LIB_NAME}::)
 set(PNOHS_LIB_CMAKE_CONFIG_IN "${PNOHS_LIB_NAME}-config.cmake.in")
 set(PNOHS_LIB_CMAKE_CONFIG_OUT "${CMAKE_CURRENT_BINARY_DIR}/${PNOHS_LIB_NAME}-config.cmake")
 
+# lib alias to makes it possible to always use the namespace version consistently
+add_library(${PNOHS_LIB_NAME}::${PNOHS_LIB_NAME} ALIAS ${PNOHS_LIB_NAME})
+
 # install bin and libs.
 install(TARGETS ${PNOHS_LIB_NAME}
         EXPORT ${TARGETS_EXPORT_NAME}
