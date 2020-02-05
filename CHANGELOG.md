@@ -1,4 +1,35 @@
 
+<a name="v0.3.2"></a>
+## [v0.3.2](https://github.com/genshen/pnohs/compare/v0.3.1...v0.3.2)
+
+> 2020-02-05
+
+### Build
+
+* **cmake:** add pnohs lib alias to make it can always be linked by namespace version
+* **cmake:** support linking gtest without namespace GTest:: when it is added by add_subdirectory
+* **pkg:** fix copy path in nlohmann_json package building
+* **pkg:** use package `github.com/Taywee/args` version 6.2.2 instead of master branch
+* **pkg:** upgrade pkg.yaml file to version 2
+
+### Docs
+
+* **changelog:** update changelog for version 0.3.2
+
+### Merge
+
+* Merge branch 'dev' into 'master' for release v0.3.2
+
+### BREAKING CHANGE
+
+
+we need pkg tool v0.4.0 or upper version to build this package
+
+See merge request HPCer/hydrology/pnohs!25
+
+we need pkg tool v0.4.0 or upper version to build this package
+
+
 <a name="v0.3.1"></a>
 ## [v0.3.1](https://github.com/genshen/pnohs/compare/v0.3.0...v0.3.1)
 
