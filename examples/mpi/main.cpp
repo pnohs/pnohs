@@ -12,7 +12,7 @@
 #include <event/message_looper.h>
 #include <message/looper.h>
 #include <logs/logs.h>
-#include "model.hpp"
+#include "model_mpi.hpp"
 
 void setupNodes(NodesPool *p_node_pool) {
     int rank = 0;
@@ -189,6 +189,10 @@ int main(int argc, char **argv) {
         schCtx->curNode->beforeStep();
         schCtx->curNode->runoff();
         schCtx->curNode->routing();
+        if (schCtx->curNode->_time_step + 1 == STEPS) { // only print flow of each node at the last step
+            kiwi::logs::v("flow", "flow of node {} at step {} is {}\n",
+                          schCtx->curNode->id, STEPS, schCtx->curNode->_p_model_ctx->flow);
+        }
         // deliver simulation results.
         schCtx->pNodesPool->deliver(*(schCtx->curNode));
         schCtx->curNode->postStep();

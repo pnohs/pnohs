@@ -42,7 +42,7 @@ public:
     }
 
     void exec(ModelContext *p_context, unsigned long time_steps) override {
-        p_context->flow += 0.01; // add 0.01 to flow.
+        p_context->flow = 1.0;
     }
 
     static RunoffAdapter *newInstance() {
@@ -66,7 +66,12 @@ public:
     }
 
     void exec(ModelContext *p_context, unsigned long time_steps) override {
-        p_context->flow += 1.0; // add 1.0 to flow.
+        // add flow from upstream nodes
+        double up_flows = 0.0;
+        for (auto up : this->upstream_routing) {
+            up_flows += up.routing_data[0];
+        }
+        p_context->flow += up_flows; // add flow of runoff model of this node, and flows of direct up streams.
     }
 
     static RoutingAdapter *newInstance() {
