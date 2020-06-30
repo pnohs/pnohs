@@ -18,7 +18,7 @@ struct domain {
      * set mpi_sim_process by mpi communicator.
      * @param comm the mpi communicator for simulation.
      */
-    void setCommDomain(MPI_Comm comm);
+    static void setCommDomain(MPI_Comm comm);
 };
 
 #endif //PNOHS_SIM_DOMAIN_H
