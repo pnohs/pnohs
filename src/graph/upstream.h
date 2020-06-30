@@ -23,6 +23,8 @@ public:
      */
     Upstream();
 
+    Upstream(const Upstream &u);
+
     /**
      *  count of upstream nodes of this node.
      * @return the count of upstream nodes.
@@ -93,7 +95,7 @@ public:
     std::list<TypeRouting> deQueue(); // todo std:: array or list? // todo function name.
 private:
 
-    // read-write lock for taskqueue.
+    // read-write lock for task queue.
     pthread_rwlock_t _task_queue_rwlock;
 };
 

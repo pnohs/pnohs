@@ -9,6 +9,10 @@ Upstream::Upstream() {
     pthread_rwlock_init(&_task_queue_rwlock, nullptr);
 }
 
+Upstream::Upstream(const Upstream &u) : nodes(u.nodes) {
+    pthread_rwlock_init(&_task_queue_rwlock, nullptr);
+}
+
 // todo call minQueSize to set isReady.
 // todo use a bool ready flag?
 bool Upstream::isReady() {
