@@ -1,5 +1,7 @@
 set(EXAMPLE_SOURCE_FILES
         main.cpp
+        model_mpi.hpp
+        ../common/set_nodes.cpp
         )
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin/examples)
