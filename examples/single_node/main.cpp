@@ -1,6 +1,8 @@
 //
 // Created by genshen on 2020/6/12.
 //
+// This file is a implementation of single node with runoff and routing model.
+//
 
 #include <iostream>
 #include <mpi.h>
