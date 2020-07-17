@@ -28,8 +28,7 @@
 
 #define ITERATION 4
 #define STEPS 10
-#define STEPS 10
-#define PROS_PER_GROUPS 3
+#define PROS_PER_GROUP 3
 #define runoffModelName  "example_runoff_multi_domain"
 #define routingModelName "example_routing_multi_domain"
 
@@ -96,14 +95,14 @@ int main(int argc, char **argv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 
-    if (world_size % PROS_PER_GROUPS != 0) {
-        printf("You must run this with %dn processes (where n is number of simulation domains).\n", PROS_PER_GROUPS);
+    if (world_size % PROS_PER_GROUP != 0) {
+        printf("You must run this with %dn processes (where n is number of simulation domains).\n", PROS_PER_GROUP);
         return 1;
     }
 
     // split the global domain into ${GROUPS} groups.
     // Each groups has 3 processes
-    int color = world_rank / PROS_PER_GROUPS;
+    int color = world_rank / PROS_PER_GROUP;
     // Split the communicator based on the color.
     MPI_Comm row_comm;
     MPI_Comm_split(MPI_COMM_WORLD, color, world_rank, &row_comm);

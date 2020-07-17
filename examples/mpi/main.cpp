@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
     // start message loop
     kiwi::MessageLooper::registerRunner(
             new StreamRoutingMessageRunner(*sysCtx, schCtx->pNodesPool, STEPS));
-    // New message loop for listening message from other processors.
+    // New message loop for listening message from other processes.
     // message listener domain must be set before starting this looper.
     Looper *loop = Looper::NewMessageLooper(); // todo delete
     if (loop == nullptr) {
