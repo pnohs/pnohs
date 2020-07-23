@@ -47,6 +47,8 @@ set(HEADER_FILES
         scheduler/scheduler.h
         scheduler/strategy_adapter.h
         scheduler/strategy_container.h
+        store/store_define.h
+        store/store_writer.hpp
         utils/stopwatch.h
         utils/sim_domain.h
         utils/sim_reduction.hpp
@@ -82,6 +84,7 @@ set(SOURCE_FILES
         scheduler/scheduler.cpp
         scheduler/strategy_adapter.cpp
         scheduler/strategy_container.cpp
+        store/store_writer.inl
         utils/stopwatch.cpp
         utils/sim_domain.cpp
         )
