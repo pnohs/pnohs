@@ -7,33 +7,33 @@
 
 
 template<typename TID, typename T>
-StoreReader<TID, T>::StoreReader(std::fstream &fs):sfs(fs) {
+StoreReader<TID, T>::StoreReader(std::fstream &fs): StoreWRBase<TID, sizeof(T)>(0), sfs(fs) {
     // read block number and block size
-    kiwi::seekRead(fs, &block_num, 0, std::ios_base::beg, 1);
-    kiwi::seekRead(fs, &block_size, 0, std::ios_base::cur, 1);
-    assert(block_num >= 0);
-    assert(block_size == sizeof(T));
+    kiwi::seekRead(fs, &(_type_wr_base::block_num), 0, std::ios_base::beg, 1);
+    kiwi::seekRead(fs, &(_type_wr_base::block_size), 0, std::ios_base::cur, 1);
+    assert(_type_wr_base::block_num >= 0);
+    assert(_type_wr_base::block_size == sizeof(T));
 
     // load block metadata (id map) in header
-    id_map.resize(block_num);
-    kiwi::seekRead(sfs, id_map.data(), sizeof(block_num) + sizeof(block_size), std::ios_base::beg, block_num);
+    id_map.resize(_type_wr_base::block_num);
+    kiwi::seekRead(sfs, id_map.data(), sizeof(_type_wr_base::block_num) + sizeof(_type_wr_base::block_size),
+                   std::ios_base::beg, _type_wr_base::block_num);
     // sort to make sure
     sort(id_map.begin(), id_map.end(), store::lessBlockMetaSort<TID>);
 }
 
 template<typename TID, typename T>
 store::_type_block_size StoreReader<TID, T>::getBlockCount() {
-    return block_num;
+    return _type_wr_base::block_num;
 }
 
 template<typename TID, typename T>
 void StoreReader<TID, T>::read(TID id, T *data) {
-    store::_type_block_num index = id_map_binary_search(id, block_num);
-    if (index == block_num) {
+    store::_type_block_num index = id_map_binary_search(id, _type_wr_base::block_num);
+    if (index == _type_wr_base::block_num) {
         throw std::runtime_error("not found");
     }
-    kiwi::seekRead(sfs, data, sizeof(block_num) + sizeof(block_size) + sizeof(store::BlockMeta<TID>) * block_num +
-                              id_map[index].index * sizeof(T), std::ios_base::beg, 1);
+    kiwi::seekRead(sfs, data, _type_wr_base::blockDataOffset(id_map[index].index), std::ios_base::beg, 1);
 }
 
 template<typename TID, typename T>

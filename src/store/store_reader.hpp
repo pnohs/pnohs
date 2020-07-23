@@ -14,8 +14,10 @@
  * @tparam T the type for each block
  */
 template<typename TID, typename T>
-class StoreReader {
+class StoreReader : public StoreWRBase<TID, sizeof(T)> {
 public:
+    typedef StoreWRBase<TID, sizeof(T)> _type_wr_base;
+
     /**
      * Initialize reader with file stream
      * @param fs the file for reading
@@ -36,10 +38,6 @@ public:
     void read(TID id, T *data);
 
 private:
-    // the size of bytes for each block
-    store::_type_block_size block_size;
-    // the total number of blocks
-    store::_type_block_num block_num;
     // file stream for storage.
     std::fstream &sfs;
     // the map of block id and map storage index (or called block metadata).

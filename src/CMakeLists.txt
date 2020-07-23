@@ -87,6 +87,7 @@ set(SOURCE_FILES
         scheduler/strategy_container.cpp
         store/store_reader.inl
         store/store_writer.inl
+        store/store_wr_base.hpp
         utils/stopwatch.cpp
         utils/sim_domain.cpp
         )
