@@ -4,6 +4,7 @@
 
 #include <io/io_utils.hpp>
 #include "store_reader.hpp"
+#include "store_utils.hpp"
 
 
 template<typename TID, typename T>
@@ -29,35 +30,10 @@ store::_type_block_size StoreReader<TID, T>::getBlockCount() {
 
 template<typename TID, typename T>
 void StoreReader<TID, T>::read(TID id, T *data) {
-    store::_type_block_num index = id_map_binary_search(id, _type_wr_base::block_num);
+    store::_type_block_num index = binarySearchById<TID, typename _type_wr_base::_type_block_metadata>(
+            id, id_map.data(), _type_wr_base::block_num);
     if (index == _type_wr_base::block_num) {
         throw std::runtime_error("not found");
     }
     kiwi::seekRead(sfs, data, _type_wr_base::offsetWithFixedBlockSize(id_map[index].index), std::ios_base::beg, 1);
-}
-
-template<typename TID, typename T>
-size_t StoreReader<TID, T>::id_map_binary_search(const TID id, const size_t length) {
-    if (length == 0) {
-        return length;
-    }
-    int p = 0;
-    int r = length - 1;
-    int q = (r + p) / 2;
-    int counter = 0;
-    while (p <= r) {
-        counter++;
-        if (id_map[q].id == id)
-            return q;
-        else {
-            if (id_map[q].id < id) {
-                p = q + 1;
-                q = (r + p) / 2;
-            } else {
-                r = q - 1;
-                q = (r + p) / 2;
-            }
-        }
-    }
-    return length;
 }

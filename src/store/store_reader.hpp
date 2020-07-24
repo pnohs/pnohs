@@ -6,6 +6,7 @@
 #define PNOHS_STORE_READER_HPP
 
 #include <fstream>
+#include <vector>
 #include "store_define.h"
 
 /**
