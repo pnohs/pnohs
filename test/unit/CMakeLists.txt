@@ -20,14 +20,16 @@ set(TEST_SOURCE_FILES
         dispatch/dispatch_parse_test.cpp
         ds/base_data_list_test.cpp
         ds/param_list_test.cpp
+        ds/param_meta_data_test.cpp
         graph/graph_test.cpp
         graph/graph_traversing_test.cpp
         graph/node_test.cpp
         scheduler/longest_pickup_test.cpp
         scheduler/strategy_adapter_test.cpp
+        store/store_test.cpp
         utils/sim_reduction_test.cpp
         adapter/model_register_test.cpp
-        ds/param_meta_data_test.cpp)
+        )
 
 # set binary path and lib storage path wile compiling process.
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
