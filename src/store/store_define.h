@@ -21,6 +21,17 @@ namespace store {
     typedef std::size_t _type_data_cursor;
     typedef _type_data_cursor _type_block_size;
     typedef std::size_t _type_block_num;
+
+    template<typename TID>
+    struct BlockMeta2D {
+        TID id;
+        _type_block_num sub_blocks_num;
+        _type_data_cursor cursor;
+    };
+
+    template<typename TID>
+    inline bool lessBlockMeta2DSort(struct BlockMeta2D<TID> a, struct BlockMeta2D<TID> b) { return a.id < b.id; }
+
 }
 
 #endif //PNOHS_STORE_DEFINE_H

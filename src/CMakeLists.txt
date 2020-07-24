@@ -50,6 +50,9 @@ set(HEADER_FILES
         store/store_define.h
         store/store_reader.hpp
         store/store_writer.hpp
+        store/store_utils.hpp
+        store/2d_store_reader.hpp
+        store/2d_store_writer.hpp
         utils/stopwatch.h
         utils/sim_domain.h
         utils/sim_reduction.hpp
@@ -88,6 +91,8 @@ set(SOURCE_FILES
         store/store_reader.inl
         store/store_writer.inl
         store/store_wr_base.hpp
+        store/2d_store_reader.inl
+        store/2d_store_writer.inl
         utils/stopwatch.cpp
         utils/sim_domain.cpp
         )
