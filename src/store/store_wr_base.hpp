@@ -9,17 +9,17 @@
 
 /**
 * base class for store read and write
-* @tparam TID type of block id
-* @tparam size_of_block size in bytes of block data
+* @tparam BM type of block metadata
+* @tparam S size in bytes of block data. For 2d store, it is the size of sub block.
 */
-template<typename TID, std::size_t size_of_block>
+template<typename BM, std::size_t S>
 class StoreWRBase {
 public:
-    typedef store::BlockMeta<TID> _type_block_metadata;
+    typedef BM _type_block_metadata;
     typedef std::vector<_type_block_metadata> _type_vec_block_meta;
 
     // the size of bytes for each block (for writer it is const, for reader its variable).
-    store::_type_block_size block_size = size_of_block;
+    store::_type_block_size block_size = S;
     // the total number of blocks (for writer it is const, for reader its variable).
     store::_type_block_num block_num;
 
@@ -38,10 +38,11 @@ protected:
 
     /**
      * get absolute offset in file for begin for {block_index}th block data.
+     * \note This func can only be used for 1d store (fixed block size).
      * \param block_index the index of block. We are going to write {block_index}th block.
      * \return the offset we should move when using std::ios_base::beg (from file beginning) to write file.
      */
-    inline store::_type_data_cursor blockDataOffset(store::_type_block_num block_index) {
+    inline store::_type_data_cursor offsetWithFixedBlockSize(store::_type_block_num block_index) {
         return headerSize() + block_size * block_index;
     }
 };

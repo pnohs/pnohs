@@ -16,9 +16,9 @@
  * @tparam T the type for each block
  */
 template<typename TID, typename T>
-class StoreWriter : public StoreWRBase<TID, sizeof(T)> {
+class StoreWriter : public StoreWRBase<store::BlockMeta<TID>, sizeof(T)> {
 public:
-    typedef StoreWRBase<TID, sizeof(T)> _type_wr_base;
+    typedef StoreWRBase<store::BlockMeta<TID>, sizeof(T)> _type_wr_base;
 
     /**
      * Initialize writer with file stream and blocks number

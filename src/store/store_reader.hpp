@@ -14,9 +14,9 @@
  * @tparam T the type for each block
  */
 template<typename TID, typename T>
-class StoreReader : public StoreWRBase<TID, sizeof(T)> {
+class StoreReader : public StoreWRBase<store::BlockMeta<TID>, sizeof(T)> {
 public:
-    typedef StoreWRBase<TID, sizeof(T)> _type_wr_base;
+    typedef StoreWRBase<store::BlockMeta<TID>, sizeof(T)> _type_wr_base;
 
     /**
      * Initialize reader with file stream

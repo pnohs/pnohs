@@ -7,7 +7,7 @@
 
 template<typename TID, typename T>
 StoreWriter<TID, T>::StoreWriter(std::fstream &fs, const store::_type_block_num block_num)
-        : StoreWRBase<TID, sizeof(T)>(block_num), sfs(fs), id_buffer() {
+        : StoreWRBase<store::BlockMeta<TID>, sizeof(T)>(block_num), sfs(fs), id_buffer() {
 }
 
 template<typename TID, typename T>
@@ -28,7 +28,7 @@ template<typename TID, typename T>
 void StoreWriter<TID, T>::write(const TID *ids, const T *blocks, store::_type_block_num n) {
     // we are going to write {blocks_written}th blocks
     // block (0,1,2,.. blocks_written-1) have been written.
-    kiwi::seekWrite(sfs, blocks, _type_wr_base::blockDataOffset(blocks_written) - sfs.tellg(), std::ios_base::cur, n);
+    kiwi::seekWrite(sfs, blocks, _type_wr_base::offsetWithFixedBlockSize(blocks_written) - sfs.tellg(), std::ios_base::cur, n);
     // buffer block ids
     for (store::_type_block_num i = 0; i < n; i++) {
         typename _type_wr_base::_type_block_metadata data  {ids[i], blocks_written + i};

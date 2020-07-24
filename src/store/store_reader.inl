@@ -7,7 +7,7 @@
 
 
 template<typename TID, typename T>
-StoreReader<TID, T>::StoreReader(std::fstream &fs): StoreWRBase<TID, sizeof(T)>(0), sfs(fs) {
+StoreReader<TID, T>::StoreReader(std::fstream &fs): StoreWRBase<store::BlockMeta<TID>, sizeof(T)>(0), sfs(fs) {
     // read block number and block size
     kiwi::seekRead(fs, &(_type_wr_base::block_num), 0, std::ios_base::beg, 1);
     kiwi::seekRead(fs, &(_type_wr_base::block_size), 0, std::ios_base::cur, 1);
@@ -33,7 +33,7 @@ void StoreReader<TID, T>::read(TID id, T *data) {
     if (index == _type_wr_base::block_num) {
         throw std::runtime_error("not found");
     }
-    kiwi::seekRead(sfs, data, _type_wr_base::blockDataOffset(id_map[index].index), std::ios_base::beg, 1);
+    kiwi::seekRead(sfs, data, _type_wr_base::offsetWithFixedBlockSize(id_map[index].index), std::ios_base::beg, 1);
 }
 
 template<typename TID, typename T>
