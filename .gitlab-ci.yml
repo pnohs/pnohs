@@ -61,6 +61,7 @@ test:
       --ignore-filename-regex=".*vendor/*."
   script:
     - mkdir -p coverage
+    - mkdir -p cmake-build-debug/test/unit # for save temp files in tests
     - LLVM_PROFILE_FILE="pnohs-test.profraw" ./cmake-build-debug/bin/pnohs-unit-tests
     - llvm-profdata merge -sparse pnohs-test.profraw -o pnohs-test.profdata
     - llvm-cov report ./cmake-build-debug/bin/pnohs-unit-tests  -instr-profile=pnohs-test.profdata ${COV_IGNORE_FILES}
