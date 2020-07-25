@@ -144,6 +144,7 @@ install(DIRECTORY "./"
         FILES_MATCHING
         PATTERN "*.h"
         PATTERN "*.hpp"
+        PATTERN "*.inl"
         )
 
 # install export target and config for find_package
