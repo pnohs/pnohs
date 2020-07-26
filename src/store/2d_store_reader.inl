@@ -28,13 +28,23 @@ store::_type_block_size StoreReader2D<TID, T>::getBlockCount() {
 }
 
 template<typename TID, typename T>
-void StoreReader2D<TID, T>::read(TID id, T *data) {
+void StoreReader2D<TID, T>::read(const TID id, T *data) {
     const block_meta meta = getBlockMeta(id);
     kiwi::seekRead(sfs, data, _type_wr2d_base::headerSize() + meta.cursor, std::ios_base::beg, meta.sub_blocks_num);
 }
 
 template<typename TID, typename T>
-typename StoreReader2D<TID, T>::block_meta StoreReader2D<TID, T>::getBlockMeta(TID block_id) {
+void StoreReader2D<TID, T>::read(const TID id, T *data, const std::size_t size) {
+    const block_meta meta = getBlockMeta(id);
+    store::_type_block_num read_sub_blocks_num = meta.sub_blocks_num;
+    if (meta.sub_blocks_num >= size) {
+        read_sub_blocks_num = size;
+    }
+    kiwi::seekRead(sfs, data, _type_wr2d_base::headerSize() + meta.cursor, std::ios_base::beg, read_sub_blocks_num);
+}
+
+template<typename TID, typename T>
+typename StoreReader2D<TID, T>::block_meta StoreReader2D<TID, T>::getBlockMeta(const TID block_id) {
     store::_type_block_num index = binarySearchById<TID, typename _type_wr2d_base::_type_block_metadata>(
             block_id, id_map.data(), _type_wr2d_base::block_num);
     if (index == _type_wr2d_base::block_num) {

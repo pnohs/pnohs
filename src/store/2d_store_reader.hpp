@@ -38,15 +38,24 @@ public:
      * \param block_id block id
      * \return metadata of the block specified by the block id
      */
-    block_meta getBlockMeta(TID block_id);
+    block_meta getBlockMeta(const TID block_id);
 
     /**
      * read data block by the specified id.
      * @param id id of data block
      * @param data the result data block just read.
-     * // fixme: we dont known the size of sub block before calling
      */
-    void read(TID id, T *data);
+    void read(const TID id, T *data);
+
+    /**
+     * the same as above, but it only return a part of sub-blocks controlled by size
+     * @param id id of data block
+     * @param data the result data block just read.
+     * @param size Fill data with sub-blocks, but the max number of sub-blocks is size.
+     * If size > the total number of sub-blocks. Fill data with all sub-blocks.
+     * If size < the total number of sub-blocks. Fill data with size sub-blocks.
+     */
+    void read(const TID id, T *data, const std::size_t size);
 
 private:
     // file stream for storage.
