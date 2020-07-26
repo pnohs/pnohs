@@ -74,6 +74,7 @@ TEST(store_test_read_write_2d, store_test) {
     };
     std::vector<TestStoreDataType> block4 = {
             {5, 50.0, 'E'},
+            {6, 60.0, 'F'},
     };
     std::vector<int> ids = {0, 1, 4, 2};
     writer.write(ids[0], block1.data(), block1.size());
@@ -104,6 +105,17 @@ TEST(store_test_read_write_2d, store_test) {
     EXPECT_EQ(sub_blocks[1].c, 'D');
 
     reader.read(2, sub_blocks);
-    EXPECT_EQ(reader.getBlockMeta(2).sub_blocks_num, 1);
+    EXPECT_EQ(reader.getBlockMeta(2).sub_blocks_num, 2);
     EXPECT_EQ(sub_blocks[0].c, 'E');
+    EXPECT_EQ(sub_blocks[1].c, 'F');
+
+    // test part read, case 1
+    reader.read(4, sub_blocks, 1);
+    EXPECT_EQ(sub_blocks[0].c, 'C');
+    EXPECT_EQ(sub_blocks[1].c, 'F'); // not change
+
+    // test part read, case 2: large size. Expect read 2 sub-blocks.
+    reader.read(4, sub_blocks, 100);
+    EXPECT_EQ(sub_blocks[0].c, 'C');
+    EXPECT_EQ(sub_blocks[1].c, 'D');
 }
