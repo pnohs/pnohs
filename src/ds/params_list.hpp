@@ -26,6 +26,7 @@ template<std::size_t N, unsigned long ID>
 class ParamsList : public DataListWithMeta<param_const, N, ID, param_meta> {
 public:
     typedef DataListWithMeta<param_const, N, ID, param_meta> base_type_with_meta;
+    typedef typename DataListWithMeta<param_const, N, ID, param_meta>::_type_raw_data_list _type_raw_param_list;
 
     static size_t getParamsSize();
 };

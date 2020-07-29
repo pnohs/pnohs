@@ -36,6 +36,9 @@ class DataListWithMeta : public BaseDataList<T, N> {
     static_assert(std::is_member_pointer<decltype(&M::key)>::value, "M must have a member `key` of string type");
 
 public:
+    // just pass down '_type_raw_data_list' type from base class
+    typedef typename BaseDataList<T, N>::_type_raw_data_list _type_raw_data_list;
+
     /**
      * the metadata of model parameters, including parameter key(or name),
      * max and min value, type of parameter.

@@ -16,6 +16,8 @@
 template<typename T, std::size_t N>
 class BaseDataList {
 public:
+    typedef std::array<T, N> _type_raw_data_list;
+
     /*
      * all data are saved here.
      */
