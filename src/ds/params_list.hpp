@@ -8,7 +8,7 @@
 
 #include <array>
 #include <map>
-#include "base_data_list.hpp"
+#include "data_list_with_meta.hpp"
 
 /**
  * Due to almost the types of model parameters are double,
@@ -23,62 +23,16 @@
  * it will raise a compiling error.
  */
 template<std::size_t N, unsigned long ID>
-class ParamsList : public BaseDataList<param_const, N> {
+class ParamsList : public DataListWithMeta<param_const, N, ID, param_meta> {
 public:
-    /**
-     * the metadata of model parameters, including parameter key(or name),
-     * max and min value, type of parameter.
-     */
-    static const std::array<param_meta, N> metadata_list;
-
-    /**
-     * id of of this parameter list.
-     */
-    static const unsigned long id = ID;
-
-    /**
-     * type of iterator of parameter map.
-     */
-    typedef typename std::map<params_key, param_const>::const_iterator tp_params_map_itl;
+    typedef DataListWithMeta<param_const, N, ID, param_meta> base_type_with_meta;
 
     static size_t getParamsSize();
-
-    /**
-     * fill array of parameters keys.
-     * @param keys returned parameters keys.
-     */
-    static void getKeys(params_key keys[]);
-
-    /**
-     * assign values by a map, whose key is params key (or name) and value is params value.
-     * @param
-     */
-    void setValuesMap(const std::map<params_key, param_const> &params_map);
 };
 
-template<size_t N, unsigned long ID>
+template<std::size_t N, unsigned long ID>
 size_t ParamsList<N, ID>::getParamsSize() {
     return N;
-}
-
-template<size_t N, unsigned long ID>
-void ParamsList<N, ID>::getKeys(params_key keys[]) {
-    // loop over metadata_list to fill keys array.
-    for (size_t i = 0; i < N; ++i) {
-        keys[i] = metadata_list[i].key;
-    }
-}
-
-template<size_t N, unsigned long ID>
-void ParamsList<N, ID>::setValuesMap(const std::map<params_key, param_const> &params_map) {
-    for (tp_params_map_itl itl = params_map.begin(); itl != params_map.end(); ++itl) {
-        for (size_t i = 0; i < N; ++i) {
-            if (metadata_list[i].key == itl->first) {
-                BaseDataList<param_const, N>::data[i] = itl->second;
-                break;
-            }
-        }
-    }
 }
 
 #endif //PNOHS_PARAMS_LIST_H

@@ -28,6 +28,7 @@ set(HEADER_FILES
         dispatch/node_parse.h
         dispatch/dispatch_writer.h
         ds/base_data_list.hpp
+        ds/data_list_with_meta.hpp
         ds/model_params_def.h
         ds/params_list.hpp
         graph/downstream.h
