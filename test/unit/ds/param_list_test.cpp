@@ -24,7 +24,7 @@ public:
 
 // set params metadata
 template<>
-const std::array<param_meta, 3> TestParamsList::ParamsList<3, 1>::metadata_list = {
+const std::array<param_meta, 3> TestParamsList::base_type_with_meta::metadata_list = {
         param_meta{param_type::float_tp, "A", {0.0}, {1.0}},
         param_meta{param_type::float_tp, "B", {0.0}, {1.0}},
         param_meta{param_type::float_tp, "C", {0.0}, {1.0}},
@@ -62,7 +62,7 @@ TEST(set_value_by_array, params_list_test) {
     list.data[1].float_param = 2;
     list.data[3].float_param = 3;
 
-    std::array<param_const, 3> params = {4, 5, 6};
+    std::array<param_const, 3> params = {param_const{4}, param_const{5}, param_const{6}};
     list.setValues(params);
 
     EXPECT_EQ(list.data[0].float_param, 4);

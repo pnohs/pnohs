@@ -28,6 +28,7 @@ set(HEADER_FILES
         dispatch/node_parse.h
         dispatch/dispatch_writer.h
         ds/base_data_list.hpp
+        ds/data_list_with_meta.hpp
         ds/model_params_def.h
         ds/params_list.hpp
         graph/downstream.h
@@ -47,6 +48,12 @@ set(HEADER_FILES
         scheduler/scheduler.h
         scheduler/strategy_adapter.h
         scheduler/strategy_container.h
+        store/store_define.h
+        store/store_reader.hpp
+        store/store_writer.hpp
+        store/store_utils.hpp
+        store/2d_store_reader.hpp
+        store/2d_store_writer.hpp
         utils/stopwatch.h
         utils/sim_domain.h
         utils/sim_reduction.hpp
@@ -82,6 +89,11 @@ set(SOURCE_FILES
         scheduler/scheduler.cpp
         scheduler/strategy_adapter.cpp
         scheduler/strategy_container.cpp
+        store/store_reader.inl
+        store/store_writer.inl
+        store/store_wr_base.hpp
+        store/2d_store_reader.inl
+        store/2d_store_writer.inl
         utils/stopwatch.cpp
         utils/sim_domain.cpp
         )
@@ -133,6 +145,7 @@ install(DIRECTORY "./"
         FILES_MATCHING
         PATTERN "*.h"
         PATTERN "*.hpp"
+        PATTERN "*.inl"
         )
 
 # install export target and config for find_package

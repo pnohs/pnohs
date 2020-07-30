@@ -15,7 +15,7 @@ public:
 
 // set params metadata
 template<>
-const std::array<param_meta, 3> ParamsListMetaTest::ParamsList<3, 4>::metadata_list = {
+const std::array<param_meta, 3> ParamsListMetaTest::base_type_with_meta::metadata_list = {
         param_meta{param_type::float_tp, "A", {0.0}, {1.0}},
         param_meta{param_type::float_tp, "B", {0.0}, {1.0}},
         param_meta{param_type::float_tp, "C", {0.0}, {1.0}},
@@ -24,7 +24,7 @@ const std::array<param_meta, 3> ParamsListMetaTest::ParamsList<3, 4>::metadata_l
 TEST(params_metadata_getKeys, params_list_test) {
     std::string keys[3];
     ParamsListMetaTest::getKeys(keys);
-    EXPECT_EQ(keys[0],"A");
-    EXPECT_EQ(keys[1],"B");
-    EXPECT_EQ(keys[2],"C");
+    EXPECT_EQ(keys[0], "A");
+    EXPECT_EQ(keys[1], "B");
+    EXPECT_EQ(keys[2], "C");
 }
