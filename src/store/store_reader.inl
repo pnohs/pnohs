@@ -37,3 +37,9 @@ void StoreReader<TID, T>::read(TID id, T *data) {
     }
     kiwi::seekRead(sfs, data, _type_wr_base::offsetWithFixedBlockSize(id_map[index].index), std::ios_base::beg, 1);
 }
+
+template<typename TID, typename T>
+bool StoreReader<TID, T>::isBlockExist(const TID id) {
+    return binarySearchById<TID, typename _type_wr_base::_type_block_metadata>(
+            id, id_map.data(), _type_wr_base::block_num) != _type_wr_base::block_num;
+}

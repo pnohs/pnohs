@@ -52,3 +52,9 @@ typename StoreReader2D<TID, T>::block_meta StoreReader2D<TID, T>::getBlockMeta(c
     }
     return id_map[index];
 }
+
+template<typename TID, typename T>
+bool StoreReader2D<TID, T>::isBlockExist(const TID id) {
+    return binarySearchById<TID, typename _type_wr2d_base::_type_block_metadata>(
+            id, id_map.data(), _type_wr2d_base::block_num) != _type_wr2d_base::block_num;
+}

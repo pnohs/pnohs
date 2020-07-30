@@ -23,12 +23,10 @@ std::size_t binarySearchById(const TID id, const T *id_map, const std::size_t le
     if (length == 0) {
         return length;
     }
-    int p = 0;
-    int r = length - 1;
-    int q = (r + p) / 2;
-    int counter = 0;
+    std::size_t p = 0;
+    std::size_t r = length - 1;
+    std::size_t q = (r + p) / 2;
     while (p <= r) {
-        counter++;
         if (id_map[q].id == id)
             return q;
         else {

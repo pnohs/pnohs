@@ -57,6 +57,14 @@ public:
      */
     void read(const TID id, T *data, const std::size_t size);
 
+    /**
+     * To check whether a block specified by id exists in this 2d store file,
+     * by searching metadata of blocks in header.
+     * @param id the block id to search
+     * @return true for existence, otherwise, return false.
+     */
+    bool isBlockExist(const TID id);
+
 private:
     // file stream for storage.
     std::fstream &sfs;

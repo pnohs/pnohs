@@ -23,7 +23,7 @@ public:
      * Initialize reader with file stream
      * @param fs the file for reading
      */
-    StoreReader(std::fstream &fs);
+    explicit StoreReader(std::fstream &fs);
 
     /**
      *
@@ -32,25 +32,25 @@ public:
     store::_type_block_size getBlockCount();
 
     /**
+     * To check whether a block specified by id exists in this store file,
+     * by searching metadata of blocks in header.
+     * @param id the block id to search
+     * @return true for existence, otherwise, return false.
+     */
+    bool isBlockExist(const TID id);
+
+    /**
      * read data block by the specified id.
      * @param id id of data block
      * @param data the result data block just read.
      */
-    void read(TID id, T *data);
+    void read(const TID id, T *data);
 
 private:
     // file stream for storage.
     std::fstream &sfs;
     // the map of block id and map storage index (or called block metadata).
     std::vector<store::BlockMeta<TID>> id_map;
-
-    /**
-     * do binary search for a given id
-     * \param id the given id
-     * \param length the length of array/vector
-     * \return the index of found id, if not found, length will be returned.
-     */
-    size_t id_map_binary_search(const TID id, const size_t length);
 };
 
 #include "store_reader.inl"
