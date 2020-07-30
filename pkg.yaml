@@ -5,7 +5,7 @@ version: 2
 
 args:
 
-pkg: "github.com/genshen/pnohs"
+pkg: "github.com/pnohs/pnohs"
 target: "pnohs"
 
 dependencies:
