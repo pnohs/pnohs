@@ -2,6 +2,8 @@
 // Created by genshen on 2020/7/23.
 //
 
+#include <cassert>
+#include <algorithm>
 #include <io/io_utils.hpp>
 #include "store_reader.hpp"
 #include "store_utils.hpp"
@@ -20,7 +22,7 @@ StoreReader<TID, T>::StoreReader(std::fstream &fs): StoreWRBase<store::BlockMeta
     kiwi::seekRead(sfs, id_map.data(), sizeof(_type_wr_base::block_num) + sizeof(_type_wr_base::block_size),
                    std::ios_base::beg, _type_wr_base::block_num);
     // sort to make sure
-    sort(id_map.begin(), id_map.end(), store::lessBlockMetaSort<TID>);
+    std::sort(id_map.begin(), id_map.end(), store::lessBlockMetaSort<TID>);
 }
 
 template<typename TID, typename T>

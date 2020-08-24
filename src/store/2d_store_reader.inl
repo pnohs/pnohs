@@ -2,6 +2,8 @@
 // Created by genshen on 2020/7/24.
 //
 
+#include <cassert>
+#include <algorithm>
 #include <io/io_utils.hpp>
 #include "2d_store_reader.hpp"
 #include "store_utils.hpp"
@@ -19,7 +21,7 @@ StoreReader2D<TID, T>::StoreReader2D(std::fstream &fs): StoreWRBase<store::Block
     kiwi::seekRead(sfs, id_map.data(), sizeof(_type_wr2d_base::block_num) + sizeof(_type_wr2d_base::block_size),
                    std::ios_base::beg, _type_wr2d_base::block_num);
     // sort to make sure
-    sort(id_map.begin(), id_map.end(), store::lessBlockMeta2DSort<TID>);
+    std::sort(id_map.begin(), id_map.end(), store::lessBlockMeta2DSort<TID>);
 }
 
 template<typename TID, typename T>

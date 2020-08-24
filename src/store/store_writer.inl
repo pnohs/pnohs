@@ -2,6 +2,8 @@
 // Created by genshen on 2020/7/18.
 //
 
+#include <cassert>
+#include <algorithm>
 #include <io/io_utils.hpp>
 #include "store_writer.hpp"
 
@@ -20,7 +22,7 @@ void StoreWriter<TID, T>::writeHeader() {
     // write metadata of blocks
     assert(blocks_written == _type_wr_base::block_num); // make sure all expected data is written
     // sort before writing
-    sort(id_buffer.begin(), id_buffer.end(), store::lessBlockMetaSort<TID>);
+    std::sort(id_buffer.begin(), id_buffer.end(), store::lessBlockMetaSort<TID>);
     kiwi::seekWrite(sfs, id_buffer.data(), 0, std::ios_base::cur, _type_wr_base::block_num);
 }
 

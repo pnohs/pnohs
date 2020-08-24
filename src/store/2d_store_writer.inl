@@ -2,6 +2,8 @@
 // Created by genshen on 2020/7/24.
 //
 
+#include <cassert>
+#include <algorithm>
 #include <io/io_utils.hpp>
 #include "2d_store_writer.hpp"
 
@@ -31,6 +33,6 @@ void StoreWriter2D<TID, T>::done() {
     // write metadata of blocks
     assert(blocks_written == _type_wr2d_base::block_num); // make sure all expected data is written
     // sort before writing
-    sort(id_buffer.begin(), id_buffer.end(), store::lessBlockMeta2DSort<TID>);
+    std::sort(id_buffer.begin(), id_buffer.end(), store::lessBlockMeta2DSort<TID>);
     kiwi::seekWrite(sfs, id_buffer.data(), 0, std::ios_base::cur, _type_wr2d_base::block_num);
 }
