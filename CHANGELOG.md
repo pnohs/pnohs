@@ -1,4 +1,79 @@
 
+<a name="v0.4.0"></a>
+## [v0.4.0](https://github.com/genshen/pnohs/compare/v0.3.2...v0.4.0)
+
+> 2020-08-24
+
+### Build
+
+* **cmake:** also install *.inl files to include dir when performing 'make install'
+
+### Chore
+
+* rename package name in pkg.yaml to github.com/pnohs/pnohs
+* **typos:** fix typos in examples code
+
+### Ci
+
+* **gitlab-ci:** fix "ignore filename regex" in generating coverage report
+* **gitlab-ci:** fix file not found error in unit tests when creating or reading temp file for test
+* **gitlab-ci:** reduce artifacts size of stage `fetch`
+* **gitlab-ci:** setup gitlab-ci for pkg version 0.4.x and report of code coverage of test in CI
+
+### Docs
+
+* **changelog:** update changelog for version 0.4.0
+* **readme:** update building document in README.md
+
+### Feat
+
+* add feature of setting simulation communicator domain
+* **example:** add another example code: multiple domain
+* **example:** change models to accumulate flow and print flow values for mpi example
+* **example:** add example of using pnohs lib with MPI
+* **example:** add example code of running models on a single node of graph
+* **params:** add typedef _type_raw_param_list and _type_raw_data_list for raw array data
+* **store:** add func isBlockExist for store and 2d store to check block existence via binary search
+* **store:** add ability to write data blocks and its matedata (e.g. blocks count, index) into file
+* **store:** when reading 2d block, now we can specify the number of sub-blocks to read (part read)
+* **store:** add ability of reading and writing 2d data block and add unit test for this feature
+* **store:** add test for reading and writing block data
+* **store:** add ability to read data block by block id
+
+### Fix
+
+* **compile:** add missing cassert and algorithm header to source files in src/store to fix compiling issue
+* **graph:** git bug of "program get stuck on MacOS" ([#3](https://github.com/genshen/pnohs/issues/3) on github)
+
+### Merge
+
+* Merge branch 'dev' into 'master'
+* **example:** Merge branch 'example-multi-domain' into 'dev'
+* **example:** Merge branch 'feature-examples' into 'dev'
+* **gitlab-ci:** Merge branch 'ci-coverage-report' into 'dev'
+* **graph:** Merge branch 'fix-macos-stuck' into 'dev'
+* **store:** Merge branch 'feature-store' into 'dev'
+
+### Refactor
+
+* **example:** move setupNodes function to `common` directory
+* **params:** extract metadata in ParamsList to a separated class DataListWithMeta
+* **store:** move binary search function in class StoreReader to a new file 'store_utils.hpp'
+* **store:** add BM(block meta) as template param of StoreWRBase and remove TID(block id) param
+* **store:** create StoreWRBase as base class for StoreWriter and StoreReader
+
+### Test
+
+* **store:** add tests for func isBlockExist of 1d store and 2d store
+* **store:** add test for "part reading" of 2d data block reading
+
+### BREAKING CHANGE
+
+
+You must use base_type_with_meta::metadata_list to reference static member
+metadata_list in class ParamsList or other class derived from ParamsList.
+
+
 <a name="v0.3.2"></a>
 ## [v0.3.2](https://github.com/genshen/pnohs/compare/v0.3.1...v0.3.2)
 
