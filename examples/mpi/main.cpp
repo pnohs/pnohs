@@ -23,7 +23,13 @@
 void setupNodes(NodesPool *p_node_pool, MPI_Comm comm);
 
 int main(int argc, char **argv) {
-    MPI_Init(&argc, &argv);
+    int provided;
+    // initialize MPI with multiple threads support.
+    MPI_Init_thread(&argc, &argv, MPI_THREAD_MULTIPLE, &provided);
+    if (provided != MPI_THREAD_MULTIPLE) { // todo smaller then?
+        kiwi::logs::e("MPI", "mpi thread not supported.\n");
+        return 1;
+    }
 
     int world_size;
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
