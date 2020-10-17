@@ -11,6 +11,6 @@ target: "pnohs"
 dependencies:
   packages:
     github.com/google/googletest: {version: release-1.10.0, target: GTest}
-    git.hpcer.dev/genshen/kiwi: {version: v0.3.0, target: kiwi}
+    git.hpcer.dev/genshen/kiwi: {version: v0.3.1, target: kiwi}
     github.com/nlohmann/json: {version: v3.1.2, target: nlohmann_json, build: ["CP single_include/nlohmann/json.hpp {{.INCLUDE}}/json.hpp"]}
     github.com/Taywee/args: {version: 6.2.2, target: args, build: ["CP args.hxx {{.INCLUDE}}/args.hpp"]}
