@@ -23,8 +23,8 @@
 #include <scheduler/longest_pickup.h>
 #include <scheduler/strategy_container.h>
 #include <event/message_looper.h>
-#include <message/looper.h>
 #include "model_multi_domain.hpp"
+#include "joinable_message_looper.h"
 
 #define ITERATION 4
 #define STEPS 50
@@ -144,7 +144,7 @@ int main(int argc, char **argv) {
                 new StreamRoutingMessageRunner(*sysCtx, schCtx->pNodesPool, STEPS));
         // New message loop for listening message from other processes.
         // message listener domain must be set before starting this looper.
-        Looper *loop = Looper::NewMessageLooper(); // todo delete
+        JoinableMessageLooper *loop = JoinableMessageLooper::NewMessageLooper();
         if (loop == nullptr) {
             sysCtx->abort("Error: pthread_create() failed.", 1);
         }
@@ -168,7 +168,10 @@ int main(int argc, char **argv) {
             scheduler->postStep(); // update simulation variable after finishing a step of simulation.
         }
 
-        MPI_Barrier(MPI_COMM_WORLD); // fixme: remove mpi barrier
+        loop->Wait(); // wait message thread to finish.
+        delete loop; // release loop memory
+
+        MPI_Barrier(row_comm); // fixme: remove mpi barrier
         // reset
         schCtx->reset(); // reset scheduler context (including resetting nodes poll).
         // reset nodes variables and time step

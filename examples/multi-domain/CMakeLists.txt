@@ -2,6 +2,7 @@ set(EXAMPLE_SOURCE_FILES
         main.cpp
         model_multi_domain.hpp
         ../common/set_nodes.cpp
+        joinable_message_looper.h
         )
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin/examples)
