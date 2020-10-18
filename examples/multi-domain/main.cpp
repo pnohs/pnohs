@@ -100,6 +100,7 @@ int main(int argc, char **argv) {
     int world_rank, world_size;
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+    kiwi::mpiUtils::onGlobalCommChanged(MPI_COMM_WORLD);
 
     if (world_size % PROS_PER_GROUP != 0) {
         printf("You must run this with %dn processes (where n is number of simulation domains).\n", PROS_PER_GROUP);
@@ -136,9 +137,7 @@ int main(int argc, char **argv) {
     std::vector<_type_node_id> ids = graph.getLocalGraphNodesIds();
 
     for (int i = 0; i < ITERATION; i++) {
-        if (world_rank == 0) {
-            kiwi::logs::v("iteration", "running iteration: {}.\n", i + 1);
-        }
+        kiwi::logs::v(0, "iteration", "running iteration: {}.\n", i + 1);
         // start message loop
         kiwi::MessageLooper::registerRunner(
                 new StreamRoutingMessageRunner(*sysCtx, schCtx->pNodesPool, STEPS));

@@ -41,6 +41,7 @@ int main(int argc, char **argv) {
 
     // set mpi domain for simulation
     domain::setCommDomain(MPI_COMM_WORLD);
+    kiwi::mpiUtils::onGlobalCommChanged(MPI_COMM_WORLD);
 
     // set nodes and upstream/downstream relationship for each process
     NodesPool *p_node_pool = new NodesPool();
