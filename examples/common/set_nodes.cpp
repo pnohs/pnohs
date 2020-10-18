@@ -69,7 +69,7 @@ void setupNodes(NodesPool *p_node_pool, MPI_Comm comm) {
             node3.upstream.putUpMetaStream(StreamMeta{4, 0});
             node3.upstream.putUpMetaStream(StreamMeta{2, 1});
             node3.upstream.putUpMetaStream(StreamMeta{5, 1});
-            node3.upstream.putUpMetaStream(StreamMeta{3, 3});
+            node3.upstream.putUpMetaStream(StreamMeta{3, 2});
             node3.downstream.putDownMetaStream(StreamMeta{12, 2});
             node3.notifyDataSetChanged();
             p_node_pool->appendNode(node3);
