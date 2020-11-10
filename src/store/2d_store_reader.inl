@@ -3,6 +3,7 @@
 //
 
 #include <cassert>
+#include <stdexcept>
 #include <algorithm>
 #include <io/io_utils.hpp>
 #include "2d_store_reader.hpp"

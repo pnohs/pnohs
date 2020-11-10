@@ -6,6 +6,7 @@
 #define PNOHS_TYPE_ROUTING_H
 
 #include <vector>
+#include <stdexcept>
 #include <utils/bundle.h>
 #include <utils/data_def.h>
 #include "../utils/predefine.h"
@@ -58,7 +59,10 @@ void TypeRouting::routingRecv(MPI_Status *p_status, MPI_Message *p_message, MPI_
     kiwi::Bundle bundle(num_recv);
 
     if (USE_MPI_MRECV) {
-        MPI_Mrecv(bundle.getPackedData(), num_recv, MPI_BYTE, p_message, p_status);
+        int error = MPI_Mrecv(bundle.getPackedData(), num_recv, MPI_BYTE, p_message, p_status);
+        if (error != MPI_SUCCESS) {
+            throw std::runtime_error("error in MPI_Mrecv");
+        }
     } else {
         MPI_Recv(bundle.getPackedData(), num_recv, MPI_BYTE, p_status->MPI_SOURCE,
                  TagStreamRoutingMessage, comm, MPI_STATUS_IGNORE); // todo use type: TypeRouting

@@ -3,6 +3,7 @@
 //
 
 #include <iterator>
+#include <stdexcept>
 #include <mpi.h>
 #include "graph.h"
 #include "../utils/sim_domain.h"
