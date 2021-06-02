@@ -47,14 +47,27 @@ public:
      *
      * @param params global parameters data.
      * @param length the length of parameters array.
-     * @param size the size of parameters for one node.
+     * @param size the size of parameters for one simulation node.
+     *  We assume the parameters size of each simulation node is all the same.
      * @param local_params parameters for local nodes in current processor.
      * @param global_nodes_count nodes counts on each processor.
      * @param root the rank of root processor.
      * @return return true if conversation success, false for otherwise.
      */
     static bool distParams(_type_param params[], const size_t length, const size_t size,
-                           _type_param local_params[], _type_nodes_count global_nodes_count[], const kiwi::RID root);
+                           _type_param local_params[], const _type_nodes_count global_nodes_count[],
+                           const kiwi::RID root);
+
+    /**
+     * It is almost the same as above.
+     * But, the parameters size of each simulation node can be distinguishing.
+     * \param params, length, local_params, global_nodes_count, root the same as above one.
+     * \param sizes the global parameters number on each MPI processors.
+     * \return return true if conversation success, false for otherwise.
+     */
+    static bool distParams(_type_param params[], const size_t length, const size_t sizes[],
+                           _type_param local_params[], const _type_nodes_count global_nodes_count[],
+                           const kiwi::RID root);
 
     /**
      * It returns id of next simulation node.
@@ -77,6 +90,24 @@ private:
      */
     const kiwi::RID root;
 
+private:
+    /**
+     * implementation of distributing global parameters (parameters for all nodes in all processors) to each processor.
+     * @param params global parameters data.
+     * @param length the length of parameters array.
+     * @param size the size of parameters for one simulation node.
+     *   It can be used if the parameters size of each simulation node is all the same.
+     * \param sizes the global parameters number on each MPI processors.
+     *   It can be used if the parameters size of each simulation node can be distinguishing.
+     *   Otherwise, it can be nullptr.
+     * @param local_params parameters for local nodes in current processor.
+     * @param global_nodes_count nodes counts on each processor.
+     * @param root the rank of root processor.
+     * @return return true if conversation success, false for otherwise.
+     */
+    static bool privateDistParams(_type_param params[], const size_t length, const size_t size, const size_t sizes[],
+                                  _type_param _local_params[], const _type_nodes_count global_nodes_count[],
+                                  const kiwi::RID root);
 };
 
 
