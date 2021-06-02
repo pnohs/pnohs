@@ -24,6 +24,7 @@ set(TEST_SOURCE_FILES
         graph/graph_test.cpp
         graph/graph_traversing_test.cpp
         graph/node_test.cpp
+        graph_extra/api_params_test.cpp
         scheduler/longest_pickup_test.cpp
         scheduler/strategy_adapter_test.cpp
         store/store_test.cpp
