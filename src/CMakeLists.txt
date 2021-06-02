@@ -85,6 +85,7 @@ set(SOURCE_FILES
         graph/upstream_node.cpp
         graph_extra/api_graph_meta.cpp
         graph_extra/api_params.cpp
+        graph_extra/api_params.inl
         message/looper.cpp
         message/stream_routing_message_runner.cpp
         scheduler/longest_pickup.cpp

@@ -17,6 +17,9 @@
 class ApiParams {
     friend class Params;
 
+    const static short PARAMS_LOAD_MODE_RUNOFF = 1 << 0;
+    const static short PARAMS_LOAD_MODE_ROUTING = 1 << 1;
+    const static short PARAMS_LOAD_MODE_BOTH = (1 << 0) | (1 << 1);
 public:
     /**
      * Initialize api environment,
@@ -70,6 +73,16 @@ public:
                            const kiwi::RID root);
 
     /**
+     * this api is used for get total parameters number of simulation nodes on current processor.
+     * The parameters includes routing parameters and runoff parameters.
+     * \tparam MODE MODE is used to control only count routing parameters or, only runoff parameters,
+     *  or both routing parameters and runoff parameters.
+     * \return the parameters number of simulation nodes on current processor.
+     */
+    template<short MODE>
+    unsigned int localParamsCount(SContext *s_ctx);
+
+    /**
      * It returns id of next simulation node.
      * This function must be called by all processor in simulation domain.
      * @deprecated
@@ -110,5 +123,6 @@ private:
                                   const kiwi::RID root);
 };
 
+#include "api_params.inl"
 
 #endif //PNOHS_ALPHA_API_PARAMS_H
