@@ -2,8 +2,8 @@
 // Created by genshen on 8/9/18.
 //
 
-#ifndef PNOHS_ALPHA_API_PARAMS_INC
-#define PNOHS_ALPHA_API_PARAMS_INC
+#ifndef PNOHS_API_PARAMS_INC
+#define PNOHS_API_PARAMS_INC
 
 #include "api_params.h"
 
@@ -27,4 +27,4 @@ unsigned int ApiParams::localParamsCount(SContext *s_ctx) {
     return counter;
 }
 
-#endif //PNOHS_ALPHA_API_PARAMS_INC
+#endif //PNOHS_API_PARAMS_INC

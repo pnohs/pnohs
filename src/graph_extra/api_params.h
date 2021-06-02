@@ -2,8 +2,8 @@
 // Created by genshen on 8/9/18.
 //
 
-#ifndef PNOHS_ALPHA_API_PARAMS_H
-#define PNOHS_ALPHA_API_PARAMS_H
+#ifndef PNOHS_API_PARAMS_H
+#define PNOHS_API_PARAMS_H
 
 #include "graph/graph.h"
 #include "utils/predefine.h"
@@ -125,4 +125,4 @@ private:
 
 #include "api_params.inl"
 
-#endif //PNOHS_ALPHA_API_PARAMS_H
+#endif //PNOHS_API_PARAMS_H

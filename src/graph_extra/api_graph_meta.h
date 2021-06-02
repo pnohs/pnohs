@@ -2,8 +2,8 @@
 // Created by genshen on 9/12/18.
 //
 
-#ifndef PNOHS_ALPHA_API_GRAPHMETA_H
-#define PNOHS_ALPHA_API_GRAPHMETA_H
+#ifndef PNOHS_API_GRAPHMETA_H
+#define PNOHS_API_GRAPHMETA_H
 
 #include <functional>
 
@@ -151,4 +151,4 @@ private:
 };
 
 
-#endif //PNOHS_ALPHA_API_GRAPHMETA_H
+#endif //PNOHS_API_GRAPHMETA_H
