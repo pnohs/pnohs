@@ -39,6 +39,8 @@ set(HEADER_FILES
         graph/stream_meta.h
         graph/upstream.h
         graph/upstream_node.h
+        graph_extra/api_graph_meta.h
+        graph_extra/api_params.h
         message/looper.h
         message/stream_routing_message_runner.h
         utils/predefine.h
@@ -81,6 +83,8 @@ set(SOURCE_FILES
         graph/stream_meta.cpp
         graph/upstream.cpp
         graph/upstream_node.cpp
+        graph_extra/api_graph_meta.cpp
+        graph_extra/api_params.cpp
         message/looper.cpp
         message/stream_routing_message_runner.cpp
         scheduler/longest_pickup.cpp
